@@ -9,4 +9,4 @@ npx expo start
 ```
 Then scan the barcode with your device
     1. With Expo Go (Android)
-    2. With your camera app (IOS)
+    2. With your camera app (IOS) 
