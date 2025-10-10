@@ -10,3 +10,14 @@ npx expo start
 Then scan the barcode with your device
     1. With Expo Go (Android)
     2. With your camera app (IOS)
+
+## Running Linting
+To run ESLint and Prettier:
+```bash
+npx expo lint .
+```
+
+To fix any errors:
+```bash
+npx expo lint --fix
+```
