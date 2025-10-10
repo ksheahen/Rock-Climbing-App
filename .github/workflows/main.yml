@@ -1,0 +1,13 @@
+# The linting stage will run ESLint and fix any code formatting issues.
+name: linting
+on: [push]
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Installing modules
+        run: npm install
+      - name: Running ESLint
+        run: npm run lint
+      - name: Fixing formatting
+        run: npm run lint --fix
