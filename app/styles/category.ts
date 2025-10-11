@@ -6,11 +6,12 @@ export const styles = StyleSheet.create({
 		width: "100%",
 		display: "flex",
 		flexDirection: "row",
-		padding: PADDING.page_padding,
+		paddingLeft: PADDING.page_padding,
+    paddingRight: PADDING.page_padding,
 	},
 	title: {
 		fontSize: FONT_SIZES.small,
-    paddingTop: 2.5, //offset for the dropdown
+    paddingTop: 5, //offset for the dropdown
 	},
 	dropdown_container: {
 		display: "flex",
