@@ -1,11 +1,11 @@
 import { Text } from "react-native";
-import NavBarComponent from "../(components)/navbar";
+import CategoryComponent from "../(components)/category";
 
 function IndividualClimbPage () {
     return (
         <>
             <Text>individual climb page</Text>
-            <NavBarComponent/>
+            <CategoryComponent/>
         </>
     )
 }
