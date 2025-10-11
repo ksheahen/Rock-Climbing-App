@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
 		padding: PADDING.page_padding,
 	},
     line: {
-        borderColor: COLORS.text1,
+        borderColor: COLORS.background3,
         borderStyle: "solid",
         borderWidth: 1,
         borderRadius: BORDERRADIUS.default,
