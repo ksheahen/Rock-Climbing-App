@@ -1,10 +1,11 @@
+import { Text } from "react-native";
 
-function navbar() {
+function NavBarComponent() {
     return (
         <>
-            Hello World
+            <Text>Hello World</Text>
         </>
     );
 };
 
-export default navbar;
+export default NavBarComponent;
