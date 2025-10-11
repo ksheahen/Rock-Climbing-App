@@ -8,12 +8,14 @@ function CategoryComponent() {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Category</Text>
-			<Text style={styles.dropdown}>Gym</Text>
-			<View style={styles.icon_container}>
-				<Icon name="arrow-drop-down-line"></Icon>
+			<View style={styles.dropdown_container}>
+				<Text style={styles.dropdown}>Gym</Text>
+				<View style={styles.icon_container}>
+					<Icon name="arrow-drop-down-line" size="24"></Icon>
+				</View>
 			</View>
 
-			{/* For now we wont implement the picker */}
+			{/* TODO: implement the picker */}
 			{/* <Picker
 				selectedValue={selectedLanguage}
 				onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}

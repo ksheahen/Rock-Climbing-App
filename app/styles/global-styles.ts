@@ -16,3 +16,12 @@ export const FONT_SIZES = {
     blue: "#5A99E4",
     green: "#5CE26E",
   };
+
+  export const PADDING = {
+    page_padding: 10,
+    dropdown_padding: 5,
+  }
+
+  export const BORDERRADIUS = {
+    default: 4,
+  }
