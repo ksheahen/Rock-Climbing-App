@@ -2,9 +2,20 @@ import { Tabs } from "expo-router";
 import Icon from "react-native-remix-icon";
 
 // the navbar at the bottom of the screen
-export default function TabLayout() {
+function TabLayout() {
   return (
     <Tabs>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          headerShown: false,
+          tabBarIcon: ({ size }) => (
+            <Icon name="home-line" size={size} color="#000000" />
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="analytics"
         options={{
@@ -38,13 +49,6 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="index"
-        options={{
-          href: null,
-        }}
-      />
-
-      <Tabs.Screen
         name="individual-climb-page"
         options={{
           href: null,
@@ -53,3 +57,5 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+export default TabLayout;
