@@ -1,5 +1,6 @@
 {
   "name": "rock-climbing-app",
+  "type": "module",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -7,13 +8,16 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "test": "vitest"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.8",
+    "@supabase/supabase-js": "^2.75.0",
+    "dotenv": "^17.2.3",
     "expo": "~54.0.12",
     "expo-constants": "~18.0.9",
     "expo-font": "~14.0.8",
@@ -38,10 +42,15 @@
   },
   "devDependencies": {
     "@tsconfig/react-native": "^3.0.7",
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^24.7.2",
     "@types/react": "~19.1.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
-    "typescript": "~5.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9.2",
+    "vitest": "^3.2.4"
   },
   "private": true
 }
