@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
-import { styles } from "../styles/attempt";
+import styles from "../styles/attempt";
 
 function AttemptComponent() {
   // const [selectedLanguage, setSelectedLanguage] = useState();

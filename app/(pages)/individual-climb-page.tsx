@@ -1,4 +1,4 @@
-import { Text } from "react-native";
+import { View } from "react-native";
 import AttemptComponent from "../(components)/attempt";
 import CategoryComponent from "../(components)/category";
 import CompleteComponent from "../(components)/complete";
@@ -8,11 +8,12 @@ import DifficultyComponent from "../(components)/difficulty";
 import LineComponent from "../(components)/line";
 import RatingComponent from "../(components)/rating";
 import TypeComponent from "../(components)/type";
+import styles from "../styles/individual-climb-page";
 
 function IndividualClimbPage() {
   return (
-    <>
-      <Text>individual climb page</Text>
+    <View style={styles.container}>
+      <View style={styles.media}></View>
       <CategoryComponent />
       <LineComponent />
       <TypeComponent />
@@ -28,7 +29,7 @@ function IndividualClimbPage() {
       <DateTimeComponent />
       <LineComponent />
       <DescriptionComponent />
-    </>
+    </View>
   );
 }
 

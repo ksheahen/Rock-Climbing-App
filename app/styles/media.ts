@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING } from "./global-styles";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: "100%",
     display: "flex",
@@ -25,3 +25,5 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export default styles;

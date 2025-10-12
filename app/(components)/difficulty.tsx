@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
-import { styles } from "../styles/difficulty";
+import styles from "../styles/difficulty";
 
 function DifficultyComponent() {
   // const [selectedLanguage, setSelectedLanguage] = useState();

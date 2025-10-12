@@ -1,12 +1,19 @@
-import { View, Text, Pressable } from "react-native";
-import { styles } from "../styles/header";
+import { Pressable, Text, View } from "react-native";
+import styles from "../styles/header";
+
+interface HeaderProps {
+  leftText: string;
+  rightText: string;
+  onLeftPress: () => void;
+  onRightPress: () => void;
+}
 
 export default function HeaderComponent({
   leftText,
   rightText,
   onLeftPress,
   onRightPress,
-}) {
+}: HeaderProps) {
   return (
     <View style={styles.container}>
       <Pressable onPress={onLeftPress} style={styles.button}>

@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles } from "../styles/description";
+import styles from "../styles/description";
 
 function DescriptionComponent() {
   return (

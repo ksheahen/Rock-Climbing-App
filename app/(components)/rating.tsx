@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles } from "../styles/rating";
+import styles from "../styles/rating";
 
 function RatingComponent() {
   return (

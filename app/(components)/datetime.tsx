@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles } from "../styles/datetime";
+import styles from "../styles/datetime";
 
 function DateTimeComponent() {
   return (

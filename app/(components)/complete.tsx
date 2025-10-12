@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { styles } from "../styles/complete";
+import styles from "../styles/complete";
 
 function CompleteComponent() {
   return (
