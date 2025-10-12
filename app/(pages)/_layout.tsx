@@ -1,35 +1,38 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import Icon from "react-native-remix-icon";
 
+// the navbar at the bottom of the screen
 export default function TabLayout() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="index"
+        name="analytics"
         options={{
-          title: "Home",
+          title: "Analytics",
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+          tabBarIcon: ({ size }) => (
+            <Icon name="bar-chart-2-line" size={size} color="#000000" />
           ),
         }}
       />
       <Tabs.Screen
         name="log"
         options={{
-          title: "Log Ascent",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="create-outline" size={size} color={color} />
+          title: "Log",
+          headerShown: false,
+          tabBarIcon: ({ size }) => (
+            <Icon name="add-circle-line" size={size} color="#000000" />
           ),
         }}
       />
 
       <Tabs.Screen
-        name="individual-climb-page"
+        name="profile"
         options={{
-          title: "IndividualClimbPage",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
+          title: "Profile",
+          headerShown: false,
+          tabBarIcon: ({ size }) => (
+            <Icon name="account-circle-line" size={size} color="#000000" />
           ),
         }}
       />
