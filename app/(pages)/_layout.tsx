@@ -9,6 +9,7 @@ function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
+          borderColor: COLORS.background1,
           backgroundColor: COLORS.background1,
           height: 70,
         },
