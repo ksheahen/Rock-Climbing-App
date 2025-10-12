@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
-import { styles } from "../styles/type";
+import styles from "../styles/type";
 
 function TypeComponent() {
   // const [selectedLanguage, setSelectedLanguage] = useState();

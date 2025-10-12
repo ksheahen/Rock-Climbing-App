@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { COLORS, PADDING, BORDERRADIUS } from "./global-styles";
+import { BORDERRADIUS, COLORS, PADDING } from "./global-styles";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -21,3 +21,5 @@ export const styles = StyleSheet.create({
     fontSize: 15,
   },
 });
+
+export default styles;

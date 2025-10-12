@@ -1,6 +1,6 @@
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
-import { styles } from "../styles/media";
+import styles from "../styles/media";
 
 function MediaComponent() {
   return (

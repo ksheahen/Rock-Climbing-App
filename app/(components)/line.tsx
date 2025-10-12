@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { styles } from "../styles/line";
+import styles from "../styles/line";
 
 function LineComponent() {
   return (

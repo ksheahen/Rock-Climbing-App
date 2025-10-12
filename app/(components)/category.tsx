@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
-import { styles } from "../styles/category";
+import styles from "../styles/category";
 
 function CategoryComponent() {
   // const [selectedLanguage, setSelectedLanguage] = useState();
