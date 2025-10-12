@@ -1,15 +1,24 @@
 import { Tabs } from "expo-router";
 import Icon from "react-native-remix-icon";
+import { COLORS } from "../styles/global-styles";
 
 // the navbar at the bottom of the screen
 function TabLayout() {
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: COLORS.background1,
+          height: 70,
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          headerShown: false,
+          tabBarShowLabel: false,
           tabBarIcon: ({ size }) => (
             <Icon name="home-line" size={size} color="#000000" />
           ),
@@ -20,7 +29,7 @@ function TabLayout() {
         name="analytics"
         options={{
           title: "Analytics",
-          headerShown: false,
+          tabBarShowLabel: false,
           tabBarIcon: ({ size }) => (
             <Icon name="bar-chart-2-line" size={size} color="#000000" />
           ),
@@ -30,7 +39,7 @@ function TabLayout() {
         name="log"
         options={{
           title: "Log",
-          headerShown: false,
+          tabBarShowLabel: false,
           tabBarIcon: ({ size }) => (
             <Icon name="add-circle-line" size={size} color="#000000" />
           ),
@@ -41,7 +50,7 @@ function TabLayout() {
         name="profile"
         options={{
           title: "Profile",
-          headerShown: false,
+          tabBarShowLabel: false,
           tabBarIcon: ({ size }) => (
             <Icon name="account-circle-line" size={size} color="#000000" />
           ),
