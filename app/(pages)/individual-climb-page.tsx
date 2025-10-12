@@ -1,5 +1,6 @@
 import { View } from "react-native";
 import AttemptComponent from "../(components)/attempt";
+import BackBtnComponent from "../(components)/back-btn";
 import CategoryComponent from "../(components)/category";
 import CompleteComponent from "../(components)/complete";
 import DateTimeComponent from "../(components)/datetime";
@@ -13,6 +14,7 @@ import styles from "../styles/individual-climb-page";
 function IndividualClimbPage() {
   return (
     <View style={styles.container}>
+      <BackBtnComponent />
       <View style={styles.media}></View>
       <CategoryComponent />
       <LineComponent />
