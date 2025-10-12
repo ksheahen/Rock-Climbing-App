@@ -1,5 +1,5 @@
 export const FONT_SIZES = {
-  small: 18,
+  small: 16,
   medium: 24,
   large: 32,
 };
@@ -19,9 +19,14 @@ export const COLORS = {
 
 export const PADDING = {
   page_padding: 10,
+  top_page_padding: 50,
   dropdown_padding: 5,
 };
 
 export const BORDERRADIUS = {
   default: 4,
+};
+
+export const MARGIN = {
+  element_margin: 10,
 };
