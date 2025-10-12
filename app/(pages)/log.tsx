@@ -16,13 +16,8 @@ function LogAscent() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <HeaderComponent
-        leftText="Cancel"
-        rightText="Save"
-        
-      />
+      <HeaderComponent leftText="Cancel" rightText="Save" />
 
-      
       {/* Scrollable Inputs */}
       <ScrollView
         style={styles.scroll}
@@ -30,8 +25,8 @@ function LogAscent() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.titleContainer}>
-        <Text style={styles.title}>Log Ascent</Text>
-      </View>
+          <Text style={styles.title}>Log Ascent</Text>
+        </View>
 
         <CategoryComponent />
         <LineComponent />

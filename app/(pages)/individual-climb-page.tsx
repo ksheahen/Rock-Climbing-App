@@ -9,28 +9,27 @@ import LineComponent from "../(components)/line";
 import RatingComponent from "../(components)/rating";
 import TypeComponent from "../(components)/type";
 
-function IndividualClimbPage () {
-    return (
-        <>
-            <Text>individual climb page</Text>
-            <CategoryComponent/>
-            <LineComponent/>
-            <TypeComponent/>
-            <LineComponent/>
-            <CompleteComponent/>
-            <LineComponent/>
-            <AttemptComponent/>
-            <LineComponent/>
-            <DifficultyComponent/>
-            <LineComponent/>
-            <RatingComponent/>
-            <LineComponent/>
-            <DateTimeComponent/>
-            <LineComponent/>
-            <DescriptionComponent/>
-            
-        </>
-    )
+function IndividualClimbPage() {
+  return (
+    <>
+      <Text>individual climb page</Text>
+      <CategoryComponent />
+      <LineComponent />
+      <TypeComponent />
+      <LineComponent />
+      <CompleteComponent />
+      <LineComponent />
+      <AttemptComponent />
+      <LineComponent />
+      <DifficultyComponent />
+      <LineComponent />
+      <RatingComponent />
+      <LineComponent />
+      <DateTimeComponent />
+      <LineComponent />
+      <DescriptionComponent />
+    </>
+  );
 }
 
 export default IndividualClimbPage;

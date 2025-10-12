@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: PADDING.page_padding,
     paddingVertical: 10,
     backgroundColor: COLORS.background1, // white background
-    
   },
   button: {
     backgroundColor: "#E5E5EA",
@@ -22,4 +21,3 @@ export const styles = StyleSheet.create({
     fontSize: 15,
   },
 });
-
