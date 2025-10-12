@@ -16,11 +16,11 @@ function LogAscent() {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <HeaderComponent 
-        leftText="Cancel" 
-        rightText="Save" 
-        onLeftPress={() => console.log("Cancel pressed")} 
-        onRightPress={() => console.log("Save pressed")} 
+      <HeaderComponent
+        leftText="Cancel"
+        rightText="Save"
+        onLeftPress={() => console.log("Cancel pressed")}
+        onRightPress={() => console.log("Save pressed")}
       />
 
       {/* Scrollable Inputs */}
