@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import styles from "../styles/timeframe-filter";
+import styles from "../styles/timeframefilter";
 
 function TimeframeFilterComponent() {
   return (

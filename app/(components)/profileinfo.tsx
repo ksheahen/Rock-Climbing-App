@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
-import styles from "../styles/profile-info";
+import styles from "../styles/profileinfo";
 
 function ProfileInfoComponent() {
   return (

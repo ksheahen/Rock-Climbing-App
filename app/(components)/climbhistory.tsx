@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
-import styles from "../styles/climb-history";
+import styles from "../styles/climbhistory";
 
 function ClimbHistoryComponent() {
   return (

@@ -1,18 +1,21 @@
 import { View } from "react-native";
-import BottomNavComponent from "../(components)/bottom-nav";
-import ClimbHistoryComponent from "../(components)/climb-history";
+import BottomNavComponent from "../(components)/bottomnav";
+import ClimbHistoryComponent from "../(components)/climbhistory";
 import LineComponent from "../(components)/line";
-import ProfileInfoComponent from "../(components)/profile-info";
-import TimeframeFilterComponent from "../(components)/timeframe-filter";
+import ProfileInfoComponent from "../(components)/profileinfo";
+import TimeframeFilterComponent from "../(components)/timeframefilter";
+import styles from "../styles/profile";
 
 function ProfilePage() {
   return (
-    <View>
-      <ProfileInfoComponent />
-      <LineComponent />
-      <TimeframeFilterComponent />
-      <LineComponent />
-      <ClimbHistoryComponent />
+    <View style={styles.container}>
+      <View style={styles.mainContent}>
+        <ProfileInfoComponent />
+        <LineComponent />
+        <TimeframeFilterComponent />
+        <LineComponent />
+        <ClimbHistoryComponent />
+      </View>
       <LineComponent />
       <BottomNavComponent />
     </View>
@@ -20,4 +23,5 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
+
 

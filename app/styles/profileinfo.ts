@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background3,
   },
   editButton: {
-    backgroundColor: COLORS.text1,
+    backgroundColor: COLORS.background3,
     paddingVertical: PADDING.dropdown_padding / 2,
     paddingHorizontal: PADDING.dropdown_padding,
     borderRadius: BORDERRADIUS.default,
