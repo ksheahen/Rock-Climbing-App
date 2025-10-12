@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-const log = () => {
+const analytics = () => {
   return (
     <View>
-      <Text>log</Text>
+      <Text>analytics</Text>
     </View>
   );
 };
 
-export default log;
+export default analytics;

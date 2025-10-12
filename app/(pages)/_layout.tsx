@@ -25,9 +25,9 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="profile"
+        name="climb page"
         options={{
-          title: "Profile",
+          title: "IndividualClimbPage",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),
