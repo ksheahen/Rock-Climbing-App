@@ -4,7 +4,7 @@
     "slug": "Rock-Climbing-App",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "rockclimbingapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
