@@ -19,7 +19,9 @@ function TabLayout() {
         options={{
           title: "Home",
           tabBarShowLabel: false,
-          tabBarIcon: () => <Icon name="home-line" size={30} color="#000000" />,
+          tabBarIcon: () => (
+            <Icon name="home-line" size={30} color={COLORS.text1} />
+          ),
         }}
       />
 
@@ -29,7 +31,7 @@ function TabLayout() {
           title: "Analytics",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="bar-chart-2-line" size={30} color="#000000" />
+            <Icon name="bar-chart-2-line" size={30} color={COLORS.text1} />
           ),
         }}
       />
@@ -39,7 +41,7 @@ function TabLayout() {
           title: "Log",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="add-circle-line" size={30} color="#000000" />
+            <Icon name="add-circle-line" size={30} color={COLORS.text1} />
           ),
         }}
       />
@@ -50,7 +52,7 @@ function TabLayout() {
           title: "Profile",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="account-circle-line" size={30} color="#000000" />
+            <Icon name="account-circle-line" size={30} color={COLORS.text1} />
           ),
         }}
       />
