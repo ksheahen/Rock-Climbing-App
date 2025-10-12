@@ -1,5 +1,5 @@
 export const FONT_SIZES = {
-  small: 18,
+  small: 16,
   medium: 24,
   large: 32,
 };
