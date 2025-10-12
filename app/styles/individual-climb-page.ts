@@ -3,15 +3,16 @@ import { COLORS, MARGIN, PADDING } from "./global-styles";
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: "red",
-    borderStyle: "solid",
-    borderWidth: 2,
     backgroundColor: COLORS.background1,
     width: "100%",
     height: "100%",
     paddingTop: PADDING.top_page_padding,
     paddingLeft: PADDING.page_padding,
     paddingRight: PADDING.page_padding,
+  },
+  header_container: {
+    display: "flex",
+    flexDirection: "row",
   },
   media: {
     width: "100%",

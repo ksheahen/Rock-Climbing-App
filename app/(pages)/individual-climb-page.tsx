@@ -8,13 +8,17 @@ import DescriptionComponent from "../(components)/description";
 import DifficultyComponent from "../(components)/difficulty";
 import LineComponent from "../(components)/line";
 import RatingComponent from "../(components)/rating";
+import SettingsBtnComponent from "../(components)/settings-btn";
 import TypeComponent from "../(components)/type";
 import styles from "../styles/individual-climb-page";
 
 function IndividualClimbPage() {
   return (
     <View style={styles.container}>
-      <BackBtnComponent />
+      <View style={styles.header_container}>
+        <BackBtnComponent />
+        <SettingsBtnComponent />
+      </View>
       <View style={styles.media}></View>
       <CategoryComponent />
       <LineComponent />
