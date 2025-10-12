@@ -28,6 +28,7 @@ function IndividualClimbPage () {
             <DateTimeComponent/>
             <LineComponent/>
             <DescriptionComponent/>
+            
         </>
     )
 }
