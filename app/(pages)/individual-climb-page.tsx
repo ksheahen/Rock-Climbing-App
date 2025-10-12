@@ -8,10 +8,12 @@ import DifficultyComponent from "../(components)/difficulty";
 import LineComponent from "../(components)/line";
 import RatingComponent from "../(components)/rating";
 import TypeComponent from "../(components)/type";
+import styles from "../styles/individual-climb-page";
 
 function IndividualClimbPage() {
   return (
-    <View>
+    <View style={styles.container}>
+      <View style={styles.media}></View>
       <CategoryComponent />
       <LineComponent />
       <TypeComponent />

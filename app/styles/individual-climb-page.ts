@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, PADDING } from "./global-styles";
+import { COLORS, MARGIN, PADDING } from "./global-styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -8,15 +8,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     width: "100%",
     height: "100%",
-    display: "flex",
-    flexDirection: "row",
+    paddingTop: PADDING.top_page_padding,
     paddingLeft: PADDING.page_padding,
     paddingRight: PADDING.page_padding,
   },
   media: {
-    // width: "100%",
-    // height: 200,
+    width: "100%",
+    height: 250,
     backgroundColor: COLORS.background3,
+    marginBottom: MARGIN.element_margin,
   },
 });
 

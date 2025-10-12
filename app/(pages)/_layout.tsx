@@ -61,7 +61,12 @@ function TabLayout() {
       <Tabs.Screen
         name="individual-climb-page"
         options={{
-          href: null,
+          // href: null,
+          title: "Individual climb page",
+          tabBarShowLabel: false,
+          tabBarIcon: () => (
+            <Icon name="circle-line" size={30} color={COLORS.text1} />
+          ),
         }}
       />
     </Tabs>
