@@ -25,7 +25,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="climb page"
+        name="individual-climb-page"
         options={{
           title: "IndividualClimbPage",
           tabBarIcon: ({ color, size }) => (
