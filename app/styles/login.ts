@@ -12,20 +12,20 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     paddingBottom: 10,
-    paddingTop: 20
+    paddingTop: 20,
   },
   passwordContainer: {
     flexDirection: "row",
     borderBottomWidth: 1,
     paddingBottom: 10,
-    paddingTop: 20
+    paddingTop: 20,
   },
   input: {
     flex: 1,
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   logo: {
     height: 150,
     width: 150,
-  }
+  },
 });
