@@ -1,32 +1,44 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Button, Image, Text, TextInput, View } from "react-native";
-import { styles } from "../styles/login";
+import { Image, StatusBar, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import ButtonComponent from "../(components)/button";
 import EmailComponent from "../(components)/email";
 import PasswordComponent from "../(components)/password";
+import { styles } from "../styles/login";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // TODO: Find something else and/or create our own logo
   const logo = require("../../assets/icon.png");
+  const login = "Login";
   const router = useRouter();
   return (
-    <View style={styles.container}>
-      {/* App Logo */}
-      <Image source={logo} alt="logo" style={styles.logo} />
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView style={styles.container}>
+        {/* App Logo */}
+        <Image source={logo} alt="logo" style={styles.logo} />
 
-      {/* Email Container */}
-      <EmailComponent email={email} setEmail={setEmail} />
+        {/* Email Container */}
+        <EmailComponent email={email} setEmail={setEmail} />
 
-      {/* Password Container */}
-      <PasswordComponent password={password} setPassword={setPassword} />
+        {/* Password Container */}
+        <PasswordComponent password={password} setPassword={setPassword} />
 
-      {/* Misc stuff  - forgot pwd, sign up here, login btn */}
-      <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
-      <Button title="Log In" />
-      <Text>Dont have an account? Sign up here.</Text>
-    </View>
+        {/* Forgot Password */}
+        <View style={styles.forgotPasswordContainer}>
+          <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
+        </View>
+
+        {/* Button Component */}
+        {/* TODO: Update what button does onPress */}
+        <ButtonComponent title={login} onPress={() => router.navigate("/")} />
+
+        <Text>Dont have an account? Sign up here.</Text>
+      </SafeAreaView>
+    </>
   );
 };
 
