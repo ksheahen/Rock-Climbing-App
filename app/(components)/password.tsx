@@ -7,9 +7,14 @@ import { styles } from "../styles/login";
 interface PasswordProps {
   password: string;
   setPassword: (text: string) => void;
+  displayText: string;
 }
 
-function PasswordComponent({ password, setPassword }: PasswordProps) {
+function PasswordComponent({
+  password,
+  setPassword,
+  displayText,
+}: PasswordProps) {
   return (
     <View style={styles.passwordContainer}>
       <MaterialIcons name="lock" size={20} />
@@ -17,7 +22,7 @@ function PasswordComponent({ password, setPassword }: PasswordProps) {
         style={styles.input}
         onChangeText={(text) => setPassword(text)}
         value={password}
-        placeholder="Password"
+        placeholder={displayText}
         placeholderTextColor={COLORS.text2}
         autoCapitalize={"none"}
         secureTextEntry={true}

@@ -3,7 +3,7 @@ import { COLORS, FONT_SIZES } from "./global-styles";
 
 export const styles = StyleSheet.create({
   button: {
-    backgroundColor: COLORS.green,
+    backgroundColor: COLORS.blue,
     padding: 12,
     borderRadius: 10,
     width: "100%",

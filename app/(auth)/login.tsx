@@ -24,8 +24,12 @@ const Login = () => {
         {/* Email Container */}
         <EmailComponent email={email} setEmail={setEmail} />
 
-        {/* Password Container */}
-        <PasswordComponent password={password} setPassword={setPassword} />
+        {/* Password Container - add eye symbol for revealing pwd*/}
+        <PasswordComponent
+          password={password}
+          setPassword={setPassword}
+          displayText="Password"
+        />
 
         {/* Forgot Password */}
         <View style={styles.forgotPasswordContainer}>
@@ -36,7 +40,15 @@ const Login = () => {
         {/* TODO: Update what button does onPress */}
         <ButtonComponent title={login} onPress={() => router.navigate("/")} />
 
-        <Text>Dont have an account? Sign up here.</Text>
+        <Text>
+          Don&apos;t have an account? Signup{" "}
+          <Text
+            onPress={() => router.navigate("/signup")}
+            style={{ color: "#007AFF", textDecorationLine: "underline" }}
+          >
+            here.
+          </Text>
+        </Text>
       </SafeAreaView>
     </>
   );
