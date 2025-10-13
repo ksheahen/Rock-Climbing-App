@@ -1,5 +1,4 @@
 import { View } from "react-native";
-import BottomNavComponent from "../(components)/bottomnav";
 import ClimbHistoryComponent from "../(components)/climbhistory";
 import LineComponent from "../(components)/line";
 import ProfileInfoComponent from "../(components)/profileinfo";
@@ -16,8 +15,6 @@ function ProfilePage() {
         <LineComponent />
         <ClimbHistoryComponent />
       </View>
-      <LineComponent />
-      <BottomNavComponent />
     </View>
   );
 }

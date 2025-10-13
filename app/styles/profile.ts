@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     paddingRight: PADDING.page_padding,
     display: "flex",
     flexDirection: "column",
+    paddingTop: PADDING.page_padding * 4,
   },
   mainContent: {
     flex: 1, // allows the main content area to expand
