@@ -3,6 +3,7 @@ import { BORDERRADIUS, COLORS, PADDING } from "./global-styles";
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: PADDING.page_padding * 4,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
