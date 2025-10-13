@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { COLORS } from "./global-styles";
 
 // TODO: Styling looks a little weird on Android for the email and pwd inputs
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 30,
@@ -39,3 +39,5 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
+
+export default styles;

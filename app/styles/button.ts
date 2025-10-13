@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { COLORS, FONT_SIZES } from "./global-styles";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   button: {
     backgroundColor: COLORS.blue,
     padding: 12,
@@ -16,3 +16,5 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+export default styles;
