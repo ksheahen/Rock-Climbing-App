@@ -1,15 +1,21 @@
-import { Leaderboard, LeaderboardInsert, LeaderboardUpdate } from '../types/Leaderboard.ts';
-import { table } from './supabaseHelper.ts';
+import {
+  Leaderboard,
+  LeaderboardInsert,
+  LeaderboardUpdate,
+} from "../types/Leaderboard.ts";
+import { table } from "./supabaseHelper.ts";
 
 // Fetch a single leaderboard entry by ID
-export const getLeaderboardById = async (leaderboardId: string): Promise<Leaderboard | null> => {
-  const { data, error } = await table('leaderboard')
-    .select('*')
-    .eq('leaderboard_id', leaderboardId)
+export const getLeaderboardById = async (
+  leaderboardId: string,
+): Promise<Leaderboard | null> => {
+  const { data, error } = await table("leaderboard")
+    .select("*")
+    .eq("leaderboard_id", leaderboardId)
     .maybeSingle();
 
   if (error) {
-    console.error('Error fetching leaderboard:', error);
+    console.error("Error fetching leaderboard:", error);
     return null;
   }
 
@@ -17,32 +23,37 @@ export const getLeaderboardById = async (leaderboardId: string): Promise<Leaderb
 };
 
 // Create a new leaderboard entry
-export const createLeaderboard = async (newLeaderboard: LeaderboardInsert): Promise<Leaderboard | null> => {
-  const { data, error } = await table('leaderboard')
+export const createLeaderboard = async (
+  newLeaderboard: LeaderboardInsert,
+): Promise<Leaderboard | null> => {
+  const { data, error } = await table("leaderboard")
     .insert(newLeaderboard)
     .select()
     .maybeSingle();
 
   if (error) {
-    console.error('Error creating leaderboard:', error);
+    console.error("Error creating leaderboard:", error);
     return null;
   }
 
-  if (!data) throw new Error('No data returned when creating leaderboard');
+  if (!data) throw new Error("No data returned when creating leaderboard");
 
   return data as Leaderboard;
 };
 
 // Update a leaderboard entry
-export const updateLeaderboard = async (leaderboardId: string, updates: LeaderboardUpdate): Promise<Leaderboard | null> => {
-  const { data, error } = await table('leaderboard')
+export const updateLeaderboard = async (
+  leaderboardId: string,
+  updates: LeaderboardUpdate,
+): Promise<Leaderboard | null> => {
+  const { data, error } = await table("leaderboard")
     .update(updates)
-    .eq('leaderboard_id', leaderboardId)
+    .eq("leaderboard_id", leaderboardId)
     .select()
     .maybeSingle();
 
   if (error) {
-    console.error('Error updating leaderboard:', error);
+    console.error("Error updating leaderboard:", error);
     return null;
   }
 
@@ -50,16 +61,17 @@ export const updateLeaderboard = async (leaderboardId: string, updates: Leaderbo
 };
 
 // Delete a leaderboard entry
-export const deleteLeaderboard = async (leaderboardId: string): Promise<boolean> => {
-  const { error } = await table('leaderboard')
+export const deleteLeaderboard = async (
+  leaderboardId: string,
+): Promise<boolean> => {
+  const { error } = await table("leaderboard")
     .delete()
-    .eq('leaderboard_id', leaderboardId);
+    .eq("leaderboard_id", leaderboardId);
 
   if (error) {
-    console.error('Error deleting leaderboard:', error);
+    console.error("Error deleting leaderboard:", error);
     return false;
   }
 
   return true;
 };
-

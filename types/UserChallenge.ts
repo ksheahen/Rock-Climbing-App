@@ -5,7 +5,9 @@ export interface UserChallenge {
   status?: string;
 }
 
-export type UserChallengeInsert = Omit<UserChallenge, 'progress' | 'status'>;
+export type UserChallengeInsert = Omit<UserChallenge, "progress" | "status">;
 
 // For updates: progress and status are optional
-export type UserChallengeUpdate = Partial<Omit<UserChallenge, 'user_id' | 'challenge_id'>>;
+export type UserChallengeUpdate = Partial<
+  Omit<UserChallenge, "user_id" | "challenge_id">
+>;

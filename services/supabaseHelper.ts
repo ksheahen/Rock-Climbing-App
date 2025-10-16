@@ -1,3 +1,3 @@
-import { supabase } from './supabaseClient.ts';
+import { supabase } from "./supabaseClient.ts";
 
 export const table = (tableName: string) => supabase.from(tableName);

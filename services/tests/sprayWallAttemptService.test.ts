@@ -1,46 +1,46 @@
 // Run with:
 // npx vitest run services/tests/sprayWallAttemptService.test.ts
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
-    createSprayWallAttempt,
-    deleteSprayWallAttempt,
-    getSprayWallAttemptById,
-    getSprayWallAttemptsByUser,
-    updateSprayWallAttempt,
-} from '../sprayWallAttemptService';
+  createSprayWallAttempt,
+  deleteSprayWallAttempt,
+  getSprayWallAttemptById,
+  getSprayWallAttemptsByUser,
+  updateSprayWallAttempt,
+} from "../sprayWallAttemptService";
 import {
-    createSprayWallProblem,
-    deleteSprayWallProblem,
-} from '../sprayWallProblemService';
-import { createUser, deleteUser } from '../userService';
+  createSprayWallProblem,
+  deleteSprayWallProblem,
+} from "../sprayWallProblemService";
+import { createUser, deleteUser } from "../userService";
 
 let testUserId: string;
 let testProblemId: string;
 let testAttemptId: string;
 
 const testUserData = {
-  name: 'Test User',
-  email: 'sprayattempt@example.com',
-  password_hash: 'password123',
+  name: "Test User",
+  email: "sprayattempt@example.com",
+  password_hash: "password123",
 };
 
-describe('SprayWallAttempt Service Tests', () => {
+describe("SprayWallAttempt Service Tests", () => {
   beforeAll(async () => {
     // Create temporary user
     const user = await createUser(testUserData);
-    if (!user) throw new Error('Failed to create test user');
+    if (!user) throw new Error("Failed to create test user");
     testUserId = user.user_id;
 
     // Create a temporary spray wall problem properly
     const problemData = {
       user_id: testUserId,
-      holds: { start: ['A1'], finish: ['B2'], moves: ['A1->B2'] },
-      assigned_difficulty: 'V3',
-      description: 'Test problem description',
+      holds: { start: ["A1"], finish: ["B2"], moves: ["A1->B2"] },
+      assigned_difficulty: "V3",
+      description: "Test problem description",
     };
     const problem = await createSprayWallProblem(problemData);
-    if (!problem) throw new Error('Failed to create test spray wall problem');
+    if (!problem) throw new Error("Failed to create test spray wall problem");
     testProblemId = problem.problem_id;
   });
 
@@ -51,7 +51,7 @@ describe('SprayWallAttempt Service Tests', () => {
     if (testUserId) await deleteUser(testUserId);
   });
 
-  it('should create a new spray wall attempt', async () => {
+  it("should create a new spray wall attempt", async () => {
     const attemptData = {
       user_id: testUserId,
       problem_id: testProblemId,
@@ -64,14 +64,14 @@ describe('SprayWallAttempt Service Tests', () => {
     testAttemptId = attempt!.attempt_id;
   });
 
-  it('should fetch the attempt by ID', async () => {
+  it("should fetch the attempt by ID", async () => {
     const attempt = await getSprayWallAttemptById(testAttemptId);
     expect(attempt).not.toBeNull();
     expect(attempt?.user_id).toBe(testUserId);
     expect(attempt?.problem_id).toBe(testProblemId);
   });
 
-  it('should update the spray wall attempt', async () => {
+  it("should update the spray wall attempt", async () => {
     const updates = { attempts: 2, completed: true };
     const updated = await updateSprayWallAttempt(testAttemptId, updates);
     expect(updated).not.toBeNull();
@@ -79,18 +79,18 @@ describe('SprayWallAttempt Service Tests', () => {
     expect(updated?.completed).toBe(true);
   });
 
-  it('should fetch attempts by user', async () => {
+  it("should fetch attempts by user", async () => {
     const attempts = await getSprayWallAttemptsByUser(testUserId);
     expect(attempts.length).toBeGreaterThan(0);
     expect(attempts[0].user_id).toBe(testUserId);
   });
 
-  it('should delete the spray wall attempt', async () => {
+  it("should delete the spray wall attempt", async () => {
     const deleted = await deleteSprayWallAttempt(testAttemptId);
     expect(deleted).toBe(true);
 
     const attempt = await getSprayWallAttemptById(testAttemptId);
     expect(attempt).toBeNull();
-    testAttemptId = ''; // mark as deleted
+    testAttemptId = ""; // mark as deleted
   });
 });

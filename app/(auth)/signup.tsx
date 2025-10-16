@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonComponent from "../(components)/button";
 import EmailComponent from "../(components)/email";
 import PasswordComponent from "../(components)/password";
-import { styles } from "../styles/signup";
+import styles from "../styles/signup";
 
 const Signup = () => {
   const [email, setEmail] = useState("");

@@ -5,7 +5,7 @@ export interface Media {
   uploaded_at?: string;
 }
 
-export type MediaInsert = Omit<Media, 'media_id' | 'uploaded_at'>;
+export type MediaInsert = Omit<Media, "media_id" | "uploaded_at">;
 
 // New type for updating media
 export type MediaUpdate = Partial<MediaInsert>;

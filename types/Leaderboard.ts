@@ -5,7 +5,7 @@ export interface Leaderboard {
   score?: number;
 }
 
-export type LeaderboardInsert = Omit<Leaderboard, 'leaderboard_id'>;
+export type LeaderboardInsert = Omit<Leaderboard, "leaderboard_id">;
 
 // New type for updating a leaderboard entry
-export type LeaderboardUpdate = Partial<Omit<Leaderboard, 'leaderboard_id'>>;
+export type LeaderboardUpdate = Partial<Omit<Leaderboard, "leaderboard_id">>;

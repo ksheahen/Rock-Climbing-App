@@ -1,17 +1,17 @@
 // Run with:
 // npx vitest run services/tests/climbService.test.ts
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   createClimb,
   deleteClimb,
   getClimbById,
   getClimbsBySession,
   updateClimb,
-} from '../climbService';
-import { createMedia, deleteMedia } from '../mediaService';
-import { createSession, deleteSession } from '../sessionService';
-import { createUser, deleteUser } from '../userService';
+} from "../climbService";
+import { createMedia, deleteMedia } from "../mediaService";
+import { createSession, deleteSession } from "../sessionService";
+import { createUser, deleteUser } from "../userService";
 
 let testUserId: string;
 let testSessionId: string;
@@ -19,34 +19,34 @@ let testMediaId: string;
 let testClimbId: string;
 
 const testUserData = {
-  name: 'Climb Test User',
-  email: 'climbuser@example.com',
-  password_hash: 'password123',
+  name: "Climb Test User",
+  email: "climbuser@example.com",
+  password_hash: "password123",
 };
 
-describe('Climb Service Tests', () => {
+describe("Climb Service Tests", () => {
   beforeAll(async () => {
     // Create temporary user
     const user = await createUser(testUserData);
-    if (!user) throw new Error('Failed to create test user');
+    if (!user) throw new Error("Failed to create test user");
     testUserId = user.user_id;
 
     // Create temporary session
     const session = await createSession({
       user_id: testUserId,
       date: new Date().toISOString(),
-      location: 'Indoor',
-      source: 'Test App',
+      location: "Indoor",
+      source: "Test App",
     });
-    if (!session) throw new Error('Failed to create test session');
+    if (!session) throw new Error("Failed to create test session");
     testSessionId = session.session_id;
 
     // Create temporary media
     const media = await createMedia({
-      file_url: 'https://example.com/media/climb_image.jpg',
-      type: 'image',
+      file_url: "https://example.com/media/climb_image.jpg",
+      type: "image",
     });
-    if (!media) throw new Error('Failed to create test media');
+    if (!media) throw new Error("Failed to create test media");
     testMediaId = media.media_id;
   });
 
@@ -58,15 +58,15 @@ describe('Climb Service Tests', () => {
     if (testUserId) await deleteUser(testUserId);
   });
 
-  it('should create a new climb', async () => {
+  it("should create a new climb", async () => {
     const climbData = {
       session_id: testSessionId,
-      type: 'boulder',
-      grade: 'V5',              
-      attempts: 3,              
-      rating: 5,               
-      comments: 'Felt good!',   
-      media_id: testMediaId,    
+      type: "boulder",
+      grade: "V5",
+      attempts: 3,
+      rating: 5,
+      comments: "Felt good!",
+      media_id: testMediaId,
     };
     const climb = await createClimb(climbData);
     expect(climb).not.toBeNull();
@@ -74,28 +74,28 @@ describe('Climb Service Tests', () => {
     testClimbId = climb!.climb_id;
   });
 
-  it('should fetch the climb by ID', async () => {
+  it("should fetch the climb by ID", async () => {
     const climb = await getClimbById(testClimbId);
     expect(climb).not.toBeNull();
     expect(climb?.session_id).toBe(testSessionId);
     expect(climb?.media_id).toBe(testMediaId);
   });
 
-  it('should update the climb', async () => {
-    const updates = { grade: '5.11b', attempts: 2 };
+  it("should update the climb", async () => {
+    const updates = { grade: "5.11b", attempts: 2 };
     const updated = await updateClimb(testClimbId, updates);
     expect(updated).not.toBeNull();
-    expect(updated?.grade).toBe('5.11b');
+    expect(updated?.grade).toBe("5.11b");
     expect(updated?.attempts).toBe(2);
   });
 
-  it('should fetch climbs by session', async () => {
+  it("should fetch climbs by session", async () => {
     const climbs = await getClimbsBySession(testSessionId);
     expect(climbs.length).toBeGreaterThan(0);
     expect(climbs[0].session_id).toBe(testSessionId);
   });
 
-  it('should delete the climb', async () => {
+  it("should delete the climb", async () => {
     const deleted = await deleteClimb(testClimbId);
     expect(deleted).toBe(true);
 
@@ -103,5 +103,3 @@ describe('Climb Service Tests', () => {
     expect(climb).toBeNull();
   });
 });
-
-
