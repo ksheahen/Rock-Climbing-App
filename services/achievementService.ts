@@ -1,15 +1,21 @@
-import { Achievement, AchievementInsert, AchievementUpdate } from '../types/Achievement.ts';
-import { table } from './supabaseHelper.ts';
+import {
+  Achievement,
+  AchievementInsert,
+  AchievementUpdate,
+} from "../types/Achievement.ts";
+import { table } from "./supabaseHelper.ts";
 
 // Fetch a single achievement by UUID
-export const getAchievementById = async (achievementId: string): Promise<Achievement | null> => {
-  const { data, error } = await table('achievement')
-    .select('*')
-    .eq('achievement_id', achievementId)
+export const getAchievementById = async (
+  achievementId: string,
+): Promise<Achievement | null> => {
+  const { data, error } = await table("achievement")
+    .select("*")
+    .eq("achievement_id", achievementId)
     .maybeSingle();
 
   if (error) {
-    console.error('Error fetching achievement:', error);
+    console.error("Error fetching achievement:", error);
     return null;
   }
 
@@ -17,14 +23,16 @@ export const getAchievementById = async (achievementId: string): Promise<Achieve
 };
 
 // Insert a new achievement
-export const createAchievement = async (newAchievement: AchievementInsert): Promise<Achievement | null> => {
-  const { data, error } = await table('achievement')
+export const createAchievement = async (
+  newAchievement: AchievementInsert,
+): Promise<Achievement | null> => {
+  const { data, error } = await table("achievement")
     .insert(newAchievement)
     .select()
     .maybeSingle();
 
   if (error) {
-    console.error('Error creating achievement:', error);
+    console.error("Error creating achievement:", error);
     return null;
   }
 
@@ -32,15 +40,18 @@ export const createAchievement = async (newAchievement: AchievementInsert): Prom
 };
 
 // Update an achievement
-export const updateAchievement = async (achievementId: string, updates: AchievementUpdate): Promise<Achievement | null> => {
-  const { data, error } = await table('achievement')
+export const updateAchievement = async (
+  achievementId: string,
+  updates: AchievementUpdate,
+): Promise<Achievement | null> => {
+  const { data, error } = await table("achievement")
     .update(updates)
-    .eq('achievement_id', achievementId)
+    .eq("achievement_id", achievementId)
     .select()
     .maybeSingle();
 
   if (error) {
-    console.error('Error updating achievement:', error);
+    console.error("Error updating achievement:", error);
     return null;
   }
 
@@ -48,13 +59,15 @@ export const updateAchievement = async (achievementId: string, updates: Achievem
 };
 
 // Delete an achievement
-export const deleteAchievement = async (achievementId: string): Promise<boolean> => {
-  const { error } = await table('achievement')
+export const deleteAchievement = async (
+  achievementId: string,
+): Promise<boolean> => {
+  const { error } = await table("achievement")
     .delete()
-    .eq('achievement_id', achievementId);
+    .eq("achievement_id", achievementId);
 
   if (error) {
-    console.error('Error deleting achievement:', error);
+    console.error("Error deleting achievement:", error);
     return false;
   }
 

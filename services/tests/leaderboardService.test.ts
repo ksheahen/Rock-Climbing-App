@@ -1,24 +1,29 @@
 // Run with:
 // npx vitest run services/tests/leaderboardService.test.ts
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { createLeaderboard, deleteLeaderboard, getLeaderboardById, updateLeaderboard } from '../leaderboardService';
-import { createUser, deleteUser } from '../userService';
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import {
+  createLeaderboard,
+  deleteLeaderboard,
+  getLeaderboardById,
+  updateLeaderboard,
+} from "../leaderboardService";
+import { createUser, deleteUser } from "../userService";
 
 let testUserId: string;
 let testLeaderboardId: string;
 
 const testUserData = {
-  name: 'Test User',
+  name: "Test User",
   email: `testuser${Date.now()}@example.com`,
-  password_hash: 'password123',
+  password_hash: "password123",
 };
 
-describe('Leaderboard Service Tests', () => {
+describe("Leaderboard Service Tests", () => {
   beforeAll(async () => {
     // Create a temporary user for the leaderboard
     const user = await createUser(testUserData);
-    if (!user) throw new Error('Failed to create test user');
+    if (!user) throw new Error("Failed to create test user");
     testUserId = user.user_id;
 
     const leaderboard = await createLeaderboard({
@@ -41,16 +46,18 @@ describe('Leaderboard Service Tests', () => {
     }
   });
 
-  it('should fetch the leaderboard by ID', async () => {
+  it("should fetch the leaderboard by ID", async () => {
     const leaderboard = await getLeaderboardById(testLeaderboardId);
     expect(leaderboard).toBeDefined();
     expect(leaderboard?.leaderboard_id).toBe(testLeaderboardId);
     expect(leaderboard?.score).toBe(100);
   });
 
-  it('should update the leaderboard', async () => {
+  it("should update the leaderboard", async () => {
     const updatedScore = 200;
-    const updatedLeaderboard = await updateLeaderboard(testLeaderboardId, { score: updatedScore });
+    const updatedLeaderboard = await updateLeaderboard(testLeaderboardId, {
+      score: updatedScore,
+    });
     expect(updatedLeaderboard).toBeDefined();
     expect(updatedLeaderboard?.score).toBe(updatedScore);
 
@@ -58,8 +65,11 @@ describe('Leaderboard Service Tests', () => {
     expect(fetched?.score).toBe(updatedScore);
   });
 
-  it('should delete a temporary leaderboard', async () => {
-    const tempLeaderboard = await createLeaderboard({ user_id: testUserId, score: 50 });
+  it("should delete a temporary leaderboard", async () => {
+    const tempLeaderboard = await createLeaderboard({
+      user_id: testUserId,
+      score: 50,
+    });
     expect(tempLeaderboard).toBeDefined();
 
     const deleted = await deleteLeaderboard(tempLeaderboard!.leaderboard_id);

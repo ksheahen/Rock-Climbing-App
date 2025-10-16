@@ -7,7 +7,7 @@ export interface Achievement {
 }
 
 // Type for inserting a new achievement
-export type AchievementInsert = Omit<Achievement, 'achievement_id'>;
+export type AchievementInsert = Omit<Achievement, "achievement_id">;
 
 // Type for updating an achievement
 export interface AchievementUpdate {
@@ -15,4 +15,3 @@ export interface AchievementUpdate {
   description?: string;
   badge_icon?: string;
 }
-

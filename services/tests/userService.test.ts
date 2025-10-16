@@ -1,19 +1,24 @@
 // Run with:
 // npx vitest run services/tests/userService.test.ts
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { createUser, deleteUser, getUserById, updateUser } from '../userService.ts';
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import {
+  createUser,
+  deleteUser,
+  getUserById,
+  updateUser,
+} from "../userService.ts";
 
 let testUserId: string;
 
 const testUserData = {
-  name: 'Test User',
+  name: "Test User",
   email: `test${Date.now()}@example.com`,
-  password_hash: 'hashedpassword123',
+  password_hash: "hashedpassword123",
   profile_info: {},
 };
 
-describe('User Service Tests', () => {
+describe("User Service Tests", () => {
   // Create a test user before all tests
   beforeAll(async () => {
     const user = await createUser(testUserData);
@@ -29,15 +34,15 @@ describe('User Service Tests', () => {
     }
   });
 
-  it('should fetch the user by ID', async () => {
+  it("should fetch the user by ID", async () => {
     const user = await getUserById(testUserId);
     expect(user).not.toBeNull();
     expect(user?.user_id).toBe(testUserId);
     expect(user?.name).toBe(testUserData.name);
   });
 
-  it('should update the user', async () => {
-    const updatedName = 'Updated Test User';
+  it("should update the user", async () => {
+    const updatedName = "Updated Test User";
     const updatedUser = await updateUser(testUserId, { name: updatedName });
     expect(updatedUser).not.toBeNull();
     expect(updatedUser?.name).toBe(updatedName);
@@ -47,12 +52,12 @@ describe('User Service Tests', () => {
     expect(fetchedUser?.name).toBe(updatedName);
   });
 
-  it('should delete the user', async () => {
+  it("should delete the user", async () => {
     // Create a temporary user to delete (we don't delete the main testUser here)
     const tempUser = await createUser({
-      name: 'Temp User',
+      name: "Temp User",
       email: `temp${Date.now()}@example.com`,
-      password_hash: 'temp123',
+      password_hash: "temp123",
       profile_info: {},
     });
     expect(tempUser).not.toBeNull();
@@ -64,4 +69,3 @@ describe('User Service Tests', () => {
     expect(fetched).toBeNull();
   });
 });
-
