@@ -53,6 +53,7 @@
     "eslint-config-expo": "~10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "jsdom": "^27.0.1",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "typescript": "~5.9.2",
