@@ -2,16 +2,15 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ButtonComponent from "../(components)/button";
-import EmailComponent from "../(components)/email";
-import PasswordComponent from "../(components)/password";
-import styles from "../styles/login";
+import ButtonComponent from "./(components)/button";
+import EmailComponent from "./(components)/email";
+import PasswordComponent from "./(components)/password";
+import styles from "./styles/login";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // TODO: Find something else and/or create our own logo
-  const logo = require("../../assets/icon.png");
+  const logo = require("../assets/icon.png");
   const login = "Login";
   const router = useRouter();
   return (
