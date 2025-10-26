@@ -1,0 +1,14 @@
+name: testing
+on: [push]
+jobs:
+  Vitest:
+    runs-on: ubuntu-lastest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+            node-version: '18'
+      - name: Installing modules...
+        run: npm ci
+      - name: Running tests...
+        run: npm run test
