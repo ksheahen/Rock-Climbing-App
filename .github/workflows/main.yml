@@ -19,7 +19,7 @@ jobs:
         run: npm run test
 
   # Linting Job
-  eslint:
+  linting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
