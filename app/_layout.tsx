@@ -1,10 +1,35 @@
+import { supabase } from "@/services/supabaseClient";
+import { Session } from "@supabase/supabase-js";
 import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { SessionProvider } from "./context/SessionContext";
 
 function RootLayout() {
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(pages)" options={{ headerShown: false }} />
-    </Stack>
+    <SessionProvider session={session}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Protected guard={!!session}>
+          <Stack.Screen name="(pages)" />
+        </Stack.Protected>
+
+        <Stack.Protected guard={!session}>
+          <Stack.Screen name="login" />
+          <Stack.Screen name="signup" />
+        </Stack.Protected>
+      </Stack>
+    </SessionProvider>
   );
 }
 

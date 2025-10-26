@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput, View } from "react-native";
 import { COLORS } from "../styles/global-styles";
-import { styles } from "../styles/login";
+import styles from "../styles/login";
 
 interface EmailProps {
   email: string;
