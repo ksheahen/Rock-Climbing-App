@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 
-// Refreshes session automtatically if the app is in the foreground
+// Refreshes session automtically if the app is in the foreground
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
     supabase.auth.startAutoRefresh();
@@ -24,6 +24,7 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Sign In with Email
   async function signInWithEmail() {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
@@ -35,7 +36,7 @@ export default function Auth() {
     setLoading(false);
   }
 
-  // Sign Up Function
+  // Sign Up using Email
   async function signUpWithEmail() {
     setLoading(true);
     const {
@@ -47,7 +48,8 @@ export default function Auth() {
     });
 
     if (error) Alert.alert(error.message);
-    if (!session) Alert.alert("Please check your inbox for email verification");
+    if (!session)
+      Alert.alert("Please check your inbox for email verification!");
     setLoading(false);
   }
 

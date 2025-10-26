@@ -1,22 +1,36 @@
-// import { useAuthState } from "@/utils/authState";
+import { supabase } from "@/services/supabaseClient";
+import { Session } from "@supabase/supabase-js";
 import { Stack } from "expo-router";
-
-const isLoggedIn = false;
+import { useEffect, useState } from "react";
+import { SessionProvider } from "./context/SessionContext";
 
 function RootLayout() {
-  // const { isLoggedIn } = useAuthState();
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      // console.log("Session from getSession:", session); // Debugging line
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      // console.log("Session from onAuthStateChange:", session); // Debugging line
+      setSession(session);
+    });
+  }, []);
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={isLoggedIn}>
-        <Stack.Screen name="(pages)" />
-      </Stack.Protected>
+    <SessionProvider session={session}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Protected guard={!!session}>
+          <Stack.Screen name="(pages)" />
+        </Stack.Protected>
 
-      <Stack.Protected guard={!isLoggedIn}>
-        <Stack.Screen name="login" />
-        <Stack.Screen name="signup" />
-      </Stack.Protected>
-    </Stack>
+        <Stack.Protected guard={!session}>
+          <Stack.Screen name="auth" />
+        </Stack.Protected>
+      </Stack>
+    </SessionProvider>
   );
 }
 
