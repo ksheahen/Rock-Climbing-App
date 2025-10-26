@@ -41,32 +41,21 @@ export default function Login() {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
-        {/* App Logo */}
         <Image source={logo} alt="logo" style={styles.logo} />
-
-        {/* Email Container */}
         <EmailComponent email={email} setEmail={setEmail} />
-
-        {/* Password Container - add eye symbol for revealing pwd*/}
         <PasswordComponent
           password={password}
           setPassword={setPassword}
           displayText="Password"
         />
-
-        {/* Forgot Password */}
         <View style={styles.forgotPasswordContainer}>
           <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
         </View>
-
-        {/* Button Component */}
-        {/* TODO: Update what button does onPress */}
         <ButtonComponent
           title={login}
           disabled={loading}
           onPress={() => signInWithEmail()}
         />
-
         <Text>
           Don&apos;t have an account? Signup{" "}
           <Text

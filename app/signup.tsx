@@ -41,10 +41,12 @@ export default function Signup() {
       password: password,
     });
 
+    // TODO: 'User already registered' error message
     if (error) Alert.alert(error.message);
     if (!session)
       Alert.alert("Please check your inbox for email verification!");
     setLoading(false);
+    router.navigate("/login");
   }
 
   return (
