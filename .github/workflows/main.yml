@@ -1,7 +1,7 @@
 on: [push]
 jobs:
   # Testing Job
-  vitest:
+  testing:
     runs-on: ubuntu-latest
     env:
       EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
