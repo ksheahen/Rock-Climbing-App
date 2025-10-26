@@ -13,18 +13,21 @@ function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
   const session = useSession();
+
+  // Note to Kaden: this is mostly test code, feel free to use it as a starting point
+  // or toss it all together - just make sure to keep the session stuff so it retains
+  // its state :)
   useEffect(() => {
     if (!session) {
       console.log("Session undefined");
     }
     if (session) getProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   async function getProfile() {
     try {
       setLoading(true);
-      if (!session?.user) throw new Error("No user on the session!");
+      if (!session?.user) throw new Error("No user on the session");
 
       const { data, error, status } = await supabase
         .from("user")
@@ -57,7 +60,7 @@ function ProfilePage() {
         <TimeframeFilterComponent />
         <LineComponent />
         <ClimbHistoryComponent />
-        {/* Here for testing :) */}
+        {/* also here for testing */}
         <ButtonComponent
           title={"Sign Out"}
           onPress={() => supabase.auth.signOut()}

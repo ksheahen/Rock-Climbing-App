@@ -9,12 +9,10 @@ function RootLayout() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      // console.log("Session from getSession:", session); // Debugging line
       setSession(session);
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      // console.log("Session from onAuthStateChange:", session); // Debugging line
       setSession(session);
     });
   }, []);

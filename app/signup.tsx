@@ -22,12 +22,10 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  // TODO: Find something else and/or create our own logo
   const logo = require("../assets/icon.png");
   const btnText = "Signup";
   const router = useRouter();
 
-  // Sign Up using Email
   async function signUpWithEmail() {
     if (password !== confirmPassword) {
       Alert.alert("Passwords do not match.");
@@ -53,13 +51,10 @@ export default function Signup() {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
-        {/* App Logo */}
         <Image source={logo} alt="logo" style={styles.logo} />
 
-        {/* Email Container */}
         <EmailComponent email={email} setEmail={setEmail} />
 
-        {/* Password Container - add eye symbol for revealing pwd*/}
         <PasswordComponent
           password={password}
           setPassword={setPassword}
@@ -75,7 +70,6 @@ export default function Signup() {
           <Text></Text>
         </View>
 
-        {/* Button Component */}
         <ButtonComponent
           title={btnText}
           disabled={loading}
