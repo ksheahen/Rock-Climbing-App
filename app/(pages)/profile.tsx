@@ -9,7 +9,7 @@ import TimeframeFilterComponent from "../(components)/timeframefilter";
 import { useSession } from "../context/SessionContext";
 import styles from "../styles/profile";
 
-export default function ProfilePage() {
+function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
   const session = useSession();
@@ -67,3 +67,4 @@ export default function ProfilePage() {
     </View>
   );
 }
+export default ProfilePage;
