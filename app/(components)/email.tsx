@@ -16,7 +16,7 @@ function EmailComponent({ email, setEmail }: EmailProps) {
         style={styles.input}
         onChangeText={(text) => setEmail(text)}
         value={email}
-        placeholder="Email Address"
+        placeholder="email@address.com"
         placeholderTextColor={COLORS.text2}
         autoCapitalize={"none"}
         autoComplete={"email"}

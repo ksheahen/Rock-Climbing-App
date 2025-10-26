@@ -1,18 +1,42 @@
+import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Image, StatusBar, Text, View } from "react-native";
+import { Alert, AppState, Image, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonComponent from "./(components)/button";
 import EmailComponent from "./(components)/email";
 import PasswordComponent from "./(components)/password";
 import styles from "./styles/login";
 
-const Login = () => {
+// Refreshes session automtically if the app is in the foreground
+AppState.addEventListener("change", (state) => {
+  if (state === "active") {
+    supabase.auth.startAutoRefresh();
+  } else {
+    supabase.auth.stopAutoRefresh();
+  }
+});
+
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const logo = require("../assets/icon.png");
   const login = "Login";
   const router = useRouter();
+
+  // Sign In with Email
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+  }
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -37,7 +61,11 @@ const Login = () => {
 
         {/* Button Component */}
         {/* TODO: Update what button does onPress */}
-        <ButtonComponent title={login} onPress={() => router.navigate("/")} />
+        <ButtonComponent
+          title={login}
+          disabled={loading}
+          onPress={() => signInWithEmail()}
+        />
 
         <Text>
           Don&apos;t have an account? Signup{" "}
@@ -51,6 +79,4 @@ const Login = () => {
       </SafeAreaView>
     </>
   );
-};
-
-export default Login;
+}
