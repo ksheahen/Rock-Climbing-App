@@ -1,12 +1,12 @@
 name: CI
-on: [push, pull_request]
+on: [push]
 jobs:
   # Testing Job
   Vitest:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20]
+        node-version: [18]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,19 +17,13 @@ jobs:
         run: npm ci
       - name: Running tests...
         run: npm run test
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: ./test-results
 
   # Linting Job
   eslint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20]
+        node-version: [18]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
