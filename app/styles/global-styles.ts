@@ -1,7 +1,10 @@
 export const FONT_SIZES = {
-  small: 16,
-  medium: 24,
-  large: 32,
+  tiny: 10,
+  small: 12,
+  medium: 14,
+  regular: 16,
+  large: 18,
+  xlarge: 32,
 };
 
 export const COLORS = {
@@ -11,10 +14,19 @@ export const COLORS = {
   border: "#F0F1F9",
   text1: "#000000",
   text2: "#333333",
+  textGray: "#8E8E93",
+  white: "#FFF",
   yellow: "#FFCC02",
+  starYellow: "#FFD700",
   red: "#EF6065",
+  streakRed: "#FF3B30",
   blue: "#5A99E4",
   green: "#5CE26E",
+  streakGreen: "#34C759",
+  lightGray: "#E5E5EA",
+  pageBackground: "#F2F2F7",
+  cardBackground: "#FFF",
+  analyticsBackground: "#F8F8F8",
 };
 
 export const PADDING = {
@@ -25,6 +37,9 @@ export const PADDING = {
 
 export const BORDERRADIUS = {
   default: 4,
+  small: 8,
+  medium: 12,
+  large: 20,
 };
 
 export const MARGIN = {
