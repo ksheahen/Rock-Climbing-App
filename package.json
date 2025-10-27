@@ -1,5 +1,6 @@
 {
   "name": "rock-climbing-app",
+  "type": "module",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -7,13 +8,17 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint app services types",
+    "test": "vitest"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
+    "@react-native-picker/picker": "^2.11.2",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.8",
+    "@supabase/supabase-js": "^2.75.0",
+    "dotenv": "^17.2.3",
     "expo": "~54.0.12",
     "expo-constants": "~18.0.9",
     "expo-font": "~14.0.8",
@@ -30,17 +35,27 @@
     "react-dom": "19.1.0",
     "react-native": "0.81.4",
     "react-native-gesture-handler": "~2.28.0",
-    "react-native-worklets": "0.5.1",
     "react-native-reanimated": "~4.1.1",
+    "react-native-remix-icon": "^4.6.3",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
-    "react-native-web": "~0.21.0"
+    "react-native-web": "~0.21.0",
+    "react-native-worklets": "0.5.1"
   },
   "devDependencies": {
+    "@tsconfig/react-native": "^3.0.7",
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^24.7.2",
     "@types/react": "~19.1.0",
-    "typescript": "~5.9.2",
+    "cross-env": "^10.1.0",
     "eslint": "^9.25.0",
-    "eslint-config-expo": "~10.0.0"
+    "eslint-config-expo": "~10.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9.2",
+    "vitest": "^3.2.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2"
   },
   "private": true
 }
