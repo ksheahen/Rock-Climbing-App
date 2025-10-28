@@ -13,34 +13,34 @@ import TypeComponent from "../(components)/type";
 import styles from "../styles/individual-climb-page";
 
 function IndividualClimbPage() {
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.leftright_container}>
-        <View style={styles.left}>
-          <BackbtnComponent />
-        </View>
-        <View style={styles.right}>
-          <SettingsbtnComponent />
-        </View>
-      </View>
-      <View style={styles.media}></View>
-      <CategoryComponent />
-      <LineComponent />
-      <TypeComponent />
-      <LineComponent />
-      <CompleteComponent />
-      <LineComponent />
-      <AttemptComponent />
-      <LineComponent />
-      <DifficultyComponent />
-      <LineComponent />
-      <RatingComponent />
-      <LineComponent />
-      <DateTimeComponent />
-      <LineComponent />
-      <DescriptionComponent />
-    </ScrollView>
-  );
+	return (
+		<ScrollView contentContainerStyle={styles.container}>
+			<View style={styles.leftright_container}>
+				<View style={styles.left}>
+					<BackbtnComponent />
+				</View>
+				<View style={styles.right}>
+					<SettingsbtnComponent />
+				</View>
+			</View>
+			<View style={styles.media}></View>
+			<CategoryComponent />
+			<LineComponent />
+			<TypeComponent />
+			<LineComponent />
+			<CompleteComponent />
+			<LineComponent />
+			<AttemptComponent />
+			<LineComponent />
+			<DifficultyComponent />
+			<LineComponent />
+			<RatingComponent />
+			<LineComponent />
+			<DateTimeComponent />
+			<LineComponent />
+			<DescriptionComponent />
+		</ScrollView>
+	);
 }
 
 export default IndividualClimbPage;

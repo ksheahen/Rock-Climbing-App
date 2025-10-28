@@ -1,7 +1,7 @@
 import {
-  Leaderboard,
-  LeaderboardInsert,
-  LeaderboardUpdate,
+    Leaderboard,
+    LeaderboardInsert,
+    LeaderboardUpdate,
 } from "../types/Leaderboard.ts";
 import { table } from "./supabaseHelper.ts";
 

@@ -1,7 +1,7 @@
 import {
-  Achievement,
-  AchievementInsert,
-  AchievementUpdate,
+    Achievement,
+    AchievementInsert,
+    AchievementUpdate,
 } from "../types/Achievement.ts";
 import { table } from "./supabaseHelper.ts";
 
