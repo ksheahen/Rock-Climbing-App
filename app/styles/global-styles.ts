@@ -35,6 +35,7 @@ export const GLOBAL = {
   // page padding
   page_leftright_margin: 15,
   page_top_margin: 50,
+  page_bottom_margin: 15,
 
   // spacing between components
   component_spacing_small: 5,

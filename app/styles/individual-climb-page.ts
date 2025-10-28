@@ -6,16 +6,28 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background1,
     display: "flex",
     width: "100%",
-    height: "100%",
     paddingLeft: GLOBAL.page_leftright_margin,
     paddingRight: GLOBAL.page_leftright_margin,
     paddingTop: GLOBAL.page_top_margin,
+    paddingBottom: GLOBAL.page_bottom_margin,
     gap: GLOBAL.component_spacing_medium,
   },
+  leftright_container: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+  },
+  left: {},
+  right: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginLeft: "auto",
+  },
   media: {
+    marginTop: GLOBAL.component_spacing_large,
     borderRadius: GLOBAL.border_radius,
     width: "100%",
-    height: 280, // placeholder until dynamic media
+    height: 400, // placeholder until dynamic media
     backgroundColor: COLORS.background3,
   },
 });
