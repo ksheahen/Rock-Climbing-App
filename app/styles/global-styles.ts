@@ -30,3 +30,17 @@ export const BORDERRADIUS = {
 export const MARGIN = {
   element_margin: 10,
 };
+
+export const GLOBAL = {
+  // page padding
+  page_leftright_margin: 15,
+  page_top_margin: 50,
+
+  // spacing between components
+  component_spacing_small: 5,
+  component_spacing_medium: 10,
+  component_spacing_large: 15,
+
+  // border radius for buttons, images, ext
+  border_radius: 3,
+};

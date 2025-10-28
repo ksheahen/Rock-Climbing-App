@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, PADDING } from "./global-styles";
+import { BORDERRADIUS, COLORS } from "./global-styles";
 
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    padding: PADDING.page_padding,
+    // padding: PADDING.page_padding,
   },
   line: {
     borderColor: COLORS.background3,

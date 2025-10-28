@@ -6,8 +6,8 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    paddingLeft: PADDING.page_padding,
-    paddingRight: PADDING.page_padding,
+    // paddingLeft: PADDING.page_padding,
+    // paddingRight: PADDING.page_padding,
   },
   title: {
     fontSize: FONT_SIZES.small,

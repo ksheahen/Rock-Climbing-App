@@ -1,20 +1,22 @@
 import { StyleSheet } from "react-native";
-import { COLORS, MARGIN, PADDING } from "./global-styles";
+import { COLORS, GLOBAL } from "./global-styles";
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.background1,
+    display: "flex",
     width: "100%",
     height: "100%",
-    paddingTop: PADDING.top_page_padding,
-    paddingLeft: PADDING.page_padding,
-    paddingRight: PADDING.page_padding,
+    paddingLeft: GLOBAL.page_leftright_margin,
+    paddingRight: GLOBAL.page_leftright_margin,
+    paddingTop: GLOBAL.page_top_margin,
+    gap: GLOBAL.component_spacing_medium,
   },
   media: {
+    borderRadius: GLOBAL.border_radius,
     width: "100%",
-    height: 280,
+    height: 280, // placeholder until dynamic media
     backgroundColor: COLORS.background3,
-    marginBottom: MARGIN.element_margin,
   },
 });
 
