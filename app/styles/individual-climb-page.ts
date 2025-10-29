@@ -30,6 +30,13 @@ const styles = StyleSheet.create({
     height: 400, // placeholder until dynamic media
     backgroundColor: COLORS.background3,
   },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
 });
 
 export default styles;
