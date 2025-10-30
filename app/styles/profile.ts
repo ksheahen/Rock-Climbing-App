@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, PADDING } from "./global-styles";
+import { COLORS, GLOBAL, PADDING } from "./global-styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     flex: 1, // allows the main content area to expand
     display: "flex",
     flexDirection: "column",
+    gap: GLOBAL.component_spacing_medium,
   },
 });
 

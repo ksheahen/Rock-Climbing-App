@@ -1,13 +1,23 @@
-import { Pressable, Text, View } from "react-native";
+import { useNavigation } from "expo-router";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import styles from "../styles/climbhistory";
 
 function ClimbHistoryComponent() {
+  const navigation = useNavigation();
+
+  const handleRedirect = () => {
+    navigation.navigate("individual-climb-page" as never);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.date}>2025-08-18</Text>
 
-      <View style={styles.climbItem}>
+      <TouchableOpacity
+        style={styles.climbItem}
+        onPress={() => handleRedirect()}
+      >
         <View style={styles.info}>
           <Text style={styles.time}>6:55 PM</Text>
           <View style={styles.gradeRow}>
@@ -20,7 +30,7 @@ function ClimbHistoryComponent() {
         <Pressable style={styles.videoButton}>
           <Text style={styles.videoText}>video{"\n"}preview</Text>
         </Pressable>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.climbItem}>
         <View style={styles.info}>
