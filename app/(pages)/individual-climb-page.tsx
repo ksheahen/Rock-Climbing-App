@@ -1,3 +1,4 @@
+import { Text } from "@react-navigation/elements";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
@@ -59,6 +60,7 @@ function IndividualClimbPage() {
     console.log("LOAD - most recent -", results[0].category);
     setSelectedCategory(results[0].category);
     console.log("LOAD - selectedcategory -", selectedCategory);
+    setClimb2(results);
   };
 
   useEffect(() => {
@@ -96,7 +98,7 @@ function IndividualClimbPage() {
       <DescriptionComponent />
       {/* <Button title="Add User" onPress={handleSubmit} /> */}
 
-      {/* Render climb2 data
+      {/* Render climb2 data */}
       {climb2.map((item) => (
         <View
           key={item.id}
@@ -108,7 +110,7 @@ function IndividualClimbPage() {
         >
           <Text>{item.category}</Text>
         </View>
-      ))} */}
+      ))}
     </ScrollView>
   );
 }
