@@ -11,6 +11,13 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.small,
     paddingTop: 5, //offset for the dropdown
   },
+  picker_container: {
+    width: "100%",
+  },
+  picker: {
+    color: COLORS.text1,
+    fontSize: FONT_SIZES.small,
+  },
   dropdown_container: {
     display: "flex",
     flexDirection: "row",
@@ -21,9 +28,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     padding: PADDING.dropdown_padding,
   },
-  dropdown: {
-    fontSize: FONT_SIZES.small,
-  },
+  dropdown: { fontSize: FONT_SIZES.small },
   icon_container: {},
 });
 
