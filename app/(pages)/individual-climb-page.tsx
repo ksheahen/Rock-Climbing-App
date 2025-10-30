@@ -1,5 +1,6 @@
+import { Text } from "@react-navigation/elements";
 import { useSQLiteContext } from "expo-sqlite";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, ScrollView, View } from "react-native";
 import AttemptComponent from "../(components)/attempt";
 import BackbtnComponent from "../(components)/backbtn";
@@ -31,6 +32,7 @@ function IndividualClimbPage() {
   //ticket to interact with sql database
   const db = useSQLiteContext();
 
+  // SEND -------
   // use state for our climb
   const [climb, setClimb] = useState({
     category: "",
@@ -39,13 +41,14 @@ function IndividualClimbPage() {
   // logic to update the database
   const handleSubmit = async () => {
     try {
-      await db.runAsync(
-        `
-                INSERT INTO log_climb2 (category) VALUES (?)`,
-        [climb.category],
-      );
+      // Update the climb object with the current selectedCategory
+      const updatedClimb = { ...climb, category: selectedCategory };
 
-      Alert.alert("Success", "Climb added succesfully");
+      await db.runAsync(`INSERT INTO log_climb2 (category) VALUES (?)`, [
+        updatedClimb.category,
+      ]);
+
+      Alert.alert("Success", "Climb added successfully");
       setClimb({
         category: "",
       });
@@ -55,10 +58,27 @@ function IndividualClimbPage() {
         "Error",
         error instanceof Error
           ? error.message
-          : "an error happened when inserting user into db.",
+          : "An error happened when inserting user into db.",
       );
     }
   };
+
+  //LOAD ------
+  const [climb2, setClimb2] = useState<any[]>([]);
+
+  const loadClimbs = async () => {
+    try {
+      const results = await db.getAllAsync(`SELECT * FROM log_climb2`);
+      setClimb2(results);
+    } catch (error) {
+      console.error("db error");
+    }
+  };
+
+  useEffect(() => {
+    console.log(climb2);
+    loadClimbs();
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -90,6 +110,20 @@ function IndividualClimbPage() {
       <LineComponent />
       <DescriptionComponent />
       <Button title="Add User" onPress={handleSubmit} />
+
+      {/* Render climb2 data */}
+      {climb2.map((item) => (
+        <View
+          key={item.id}
+          style={{
+            padding: 10,
+            borderBottomWidth: 1,
+            borderBottomColor: "#ccc",
+          }}
+        >
+          <Text>{item.category}</Text>
+        </View>
+      ))}
     </ScrollView>
   );
 }
