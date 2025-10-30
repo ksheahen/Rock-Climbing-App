@@ -61,7 +61,7 @@ function TabLayout() {
       <Tabs.Screen
         name="individual-climb-page"
         options={{
-          // href: null,
+          href: null,
           title: "Individual climb page",
           tabBarShowLabel: false,
           tabBarIcon: () => (
