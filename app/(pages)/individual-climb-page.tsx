@@ -1,4 +1,6 @@
-import { ScrollView, View } from "react-native";
+import { useSQLiteContext } from "expo-sqlite";
+import { useState } from "react";
+import { Alert, Button, ScrollView, View } from "react-native";
 import AttemptComponent from "../(components)/attempt";
 import BackbtnComponent from "../(components)/backbtn";
 import CategoryComponent from "../(components)/category";
@@ -13,6 +15,51 @@ import TypeComponent from "../(components)/type";
 import styles from "../styles/individual-climb-page";
 
 function IndividualClimbPage() {
+  const [selectedCategory, setSelectedCategory] = useState("Indoor"); //default
+
+  // type checking
+  interface CategoryChangeHandler {
+    (newCategory: string): void;
+  }
+
+  // logs the category passed in params to console
+  const handleCategoryChange: CategoryChangeHandler = (newCategory) => {
+    console.log("Category (parent):", newCategory);
+    setSelectedCategory(newCategory);
+  };
+
+  //ticket to interact with sql database
+  const db = useSQLiteContext();
+
+  // use state for our climb
+  const [climb, setClimb] = useState({
+    category: "",
+  });
+
+  // logic to update the database
+  const handleSubmit = async () => {
+    try {
+      await db.runAsync(
+        `
+                INSERT INTO log_climb2 (category) VALUES (?)`,
+        [climb.category],
+      );
+
+      Alert.alert("Success", "Climb added succesfully");
+      setClimb({
+        category: "",
+      });
+    } catch (error) {
+      console.error(error);
+      Alert.alert(
+        "Error",
+        error instanceof Error
+          ? error.message
+          : "an error happened when inserting user into db.",
+      );
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.leftright_container}>
@@ -24,7 +71,10 @@ function IndividualClimbPage() {
         </View>
       </View>
       <View style={styles.media}></View>
-      <CategoryComponent />
+      <CategoryComponent
+        selectedCategoryProp={selectedCategory}
+        onSelectedCategoryChange={handleCategoryChange}
+      />
       <LineComponent />
       <TypeComponent />
       <LineComponent />
@@ -39,6 +89,7 @@ function IndividualClimbPage() {
       <DateTimeComponent />
       <LineComponent />
       <DescriptionComponent />
+      <Button title="Add User" onPress={handleSubmit} />
     </ScrollView>
   );
 }

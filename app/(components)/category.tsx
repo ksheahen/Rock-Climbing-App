@@ -1,12 +1,30 @@
 import { Picker } from "@react-native-picker/picker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import styles from "../styles/category";
 
-function CategoryComponent() {
-  const [selectedCategory, setSelectedCategory] = useState("Indoor");
+// type checking
+interface CategoryComponentProps {
+  selectedCategoryProp: string;
+  onSelectedCategoryChange?: (category: string) => void;
+}
+
+function CategoryComponent({
+  selectedCategoryProp, // sets the initial category
+  onSelectedCategoryChange, // callback function
+}: CategoryComponentProps) {
+  const [selectedCategory, setSelectedCategory] = useState(
+    selectedCategoryProp || "Indoor",
+  );
   const [isPickerVisible, setIsPickerVisible] = useState(false);
+
+  // notifies parent whenever the state changes
+  useEffect(() => {
+    if (onSelectedCategoryChange) {
+      onSelectedCategoryChange(selectedCategory);
+    }
+  }, [selectedCategory, onSelectedCategoryChange]);
 
   return (
     <View>

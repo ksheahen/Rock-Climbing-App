@@ -11,7 +11,7 @@ function RootLayout() {
       databaseName="climb.db"
       onInit={async (db) => {
         await db.execAsync(`
-        CREATE TABLE IF NOT EXISTS log_climb (
+        CREATE TABLE IF NOT EXISTS log_climb2 (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         category TEXT NOT NULL
         );
