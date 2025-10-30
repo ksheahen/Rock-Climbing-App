@@ -27,20 +27,6 @@ function IndividualClimbPage() {
     console.log("Whats in the bubble category:", e);
   };
 
-  // SEND -------------
-  // const handleSubmit = async () => {
-  //   const updatedClimb = {
-  //     category: selectedCategory,
-  //   };
-
-  //   //send to db
-  //   await db.runAsync(`INSERT INTO log_climb2 (category) VALUES (?)`, [
-  //     updatedClimb.category,
-  //   ]);
-
-  //   console.log("Sent category to db...");
-  // };
-
   //LOAD -------------
   const [climb2, setClimb2] = useState<any[]>([]);
   const [climb, setClimb] = useState({

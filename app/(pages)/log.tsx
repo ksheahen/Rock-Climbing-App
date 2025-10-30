@@ -1,3 +1,5 @@
+import { useSQLiteContext } from "expo-sqlite";
+import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import AttemptComponent from "../(components)/attempt";
 import CategoryComponent from "../(components)/category";
@@ -13,6 +15,28 @@ import TypeComponent from "../(components)/type";
 import styles from "../styles/log";
 
 function LogAscent() {
+  // local storage
+  const [selectedCategory, setSelectedCategory] = useState("Indoor");
+  const db = useSQLiteContext();
+
+  console.log("Local Storage 'category' -", selectedCategory);
+
+  // SEND -------------
+  const handleSubmit = async () => {
+    const climb = {
+      category: selectedCategory,
+    };
+    // check
+    console.log("DB Storage 'category'=", climb.category);
+
+    // send to db
+    await db.runAsync(`INSERT INTO log_climb2 (category) VALUES (?)`, [
+      climb.category,
+    ]);
+
+    console.log("Sent climb data to db...");
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -20,7 +44,7 @@ function LogAscent() {
         leftText="Cancel"
         rightText="Save"
         onLeftPress={() => console.log("Cancel pressed")}
-        onRightPress={() => console.log("Save pressed")}
+        onRightPress={handleSubmit}
       />
 
       {/* Scrollable Inputs */}
@@ -33,7 +57,10 @@ function LogAscent() {
           <Text style={styles.title}>Log Ascent</Text>
         </View>
 
-        <CategoryComponent />
+        <CategoryComponent
+          selectedCategoryProp={selectedCategory}
+          onSelectedCategoryChange={setSelectedCategory}
+        />
         <LineComponent />
         <TypeComponent />
         <LineComponent />
