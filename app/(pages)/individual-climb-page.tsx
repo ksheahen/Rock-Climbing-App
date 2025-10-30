@@ -1,6 +1,7 @@
 import { Text } from "@react-navigation/elements";
+import { useFocusEffect } from "@react-navigation/native";
 import { useSQLiteContext } from "expo-sqlite";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { ScrollView, View } from "react-native";
 import AttemptComponent from "../(components)/attempt";
 import BackbtnComponent from "../(components)/backbtn";
@@ -49,9 +50,12 @@ function IndividualClimbPage() {
     setClimb2(results);
   };
 
-  useEffect(() => {
-    loadClimbs();
-  }, []);
+  // Trigger loadClimbs whenever the screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      loadClimbs();
+    }, []),
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
