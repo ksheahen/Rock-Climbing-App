@@ -49,9 +49,7 @@ function TypeComponent({
             itemStyle={styles.picker}
           >
             <Picker.Item label="Boulder" value="Boulder" />
-            <Picker.Item label="Top-Rope" value="Top-Rope" />
-            <Picker.Item label="Lead" value="Lead" />
-            <Picker.Item label="Auto-Belay" value="Auto-Belay" />
+            <Picker.Item label="Route" value="Top-Rope" />
           </Picker>
         </View>
       )}
