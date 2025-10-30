@@ -14,12 +14,16 @@ function CategoryComponent({
   selectedCategoryProp, // sets the initial category
   onSelectedCategoryChange, // callback function
 }: CategoryComponentProps) {
-  const [selectedCategory, setSelectedCategory] = useState(
-    selectedCategoryProp || "Indoor",
-  );
+  const [selectedCategory, setSelectedCategory] =
+    useState(selectedCategoryProp);
   const [isPickerVisible, setIsPickerVisible] = useState(false);
 
-  // notifies parent whenever the state changes
+  // Sync internal state with prop whenever the prop changes
+  useEffect(() => {
+    setSelectedCategory(selectedCategoryProp);
+  }, [selectedCategoryProp]);
+
+  // Notify parent whenever the internal state changes
   useEffect(() => {
     if (onSelectedCategoryChange) {
       onSelectedCategoryChange(selectedCategory);

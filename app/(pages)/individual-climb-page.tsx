@@ -1,7 +1,6 @@
-import { Text } from "@react-navigation/elements";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { Alert, Button, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import AttemptComponent from "../(components)/attempt";
 import BackbtnComponent from "../(components)/backbtn";
 import CategoryComponent from "../(components)/category";
@@ -16,67 +15,53 @@ import TypeComponent from "../(components)/type";
 import styles from "../styles/individual-climb-page";
 
 function IndividualClimbPage() {
+  interface HandleCategoryChange {
+    (e: string): void;
+  }
+  const db = useSQLiteContext();
   const [selectedCategory, setSelectedCategory] = useState("Indoor"); //default
 
-  // type checking
-  interface CategoryChangeHandler {
-    (newCategory: string): void;
-  }
-
-  // logs the category passed in params to console
-  const handleCategoryChange: CategoryChangeHandler = (newCategory) => {
-    console.log("Category (parent):", newCategory);
-    setSelectedCategory(newCategory);
+  // GET category from CategoryComponent
+  const getCategoryFromChild: HandleCategoryChange = (e) => {
+    console.log("Whats in the bubble category:", e);
   };
 
-  //ticket to interact with sql database
-  const db = useSQLiteContext();
+  // SEND -------------
+  // const handleSubmit = async () => {
+  //   const updatedClimb = {
+  //     category: selectedCategory,
+  //   };
 
-  // SEND -------
-  // use state for our climb
+  //   //send to db
+  //   await db.runAsync(`INSERT INTO log_climb2 (category) VALUES (?)`, [
+  //     updatedClimb.category,
+  //   ]);
+
+  //   console.log("Sent category to db...");
+  // };
+
+  //LOAD -------------
+  const [climb2, setClimb2] = useState<any[]>([]);
   const [climb, setClimb] = useState({
     category: "",
   });
 
-  // logic to update the database
-  const handleSubmit = async () => {
-    try {
-      // Update the climb object with the current selectedCategory
-      const updatedClimb = { ...climb, category: selectedCategory };
-
-      await db.runAsync(`INSERT INTO log_climb2 (category) VALUES (?)`, [
-        updatedClimb.category,
-      ]);
-
-      Alert.alert("Success", "Climb added successfully");
-      setClimb({
-        category: "",
-      });
-    } catch (error) {
-      console.error(error);
-      Alert.alert(
-        "Error",
-        error instanceof Error
-          ? error.message
-          : "An error happened when inserting user into db.",
-      );
-    }
-  };
-
-  //LOAD ------
-  const [climb2, setClimb2] = useState<any[]>([]);
-
   const loadClimbs = async () => {
-    try {
-      const results = await db.getAllAsync(`SELECT * FROM log_climb2`);
-      setClimb2(results);
-    } catch (error) {
-      console.error("db error");
-    }
+    // get all climbs
+    // const results = await db.getAllAsync(`SELECT * FROM log_climb2`);
+    // setClimb2(results);
+    // console.log("LOAD - All climbs:", results);
+
+    // get most recent climb
+    const results = await db.getAllAsync(
+      `SELECT * FROM log_climb2 ORDER BY id DESC LIMIT 1`,
+    );
+    console.log("LOAD - most recent -", results[0].category);
+    setSelectedCategory(results[0].category);
+    console.log("LOAD - selectedcategory -", selectedCategory);
   };
 
   useEffect(() => {
-    console.log(climb2);
     loadClimbs();
   }, []);
 
@@ -93,7 +78,7 @@ function IndividualClimbPage() {
       <View style={styles.media}></View>
       <CategoryComponent
         selectedCategoryProp={selectedCategory}
-        onSelectedCategoryChange={handleCategoryChange}
+        onSelectedCategoryChange={getCategoryFromChild}
       />
       <LineComponent />
       <TypeComponent />
@@ -109,9 +94,9 @@ function IndividualClimbPage() {
       <DateTimeComponent />
       <LineComponent />
       <DescriptionComponent />
-      <Button title="Add User" onPress={handleSubmit} />
+      {/* <Button title="Add User" onPress={handleSubmit} /> */}
 
-      {/* Render climb2 data */}
+      {/* Render climb2 data
       {climb2.map((item) => (
         <View
           key={item.id}
@@ -123,7 +108,7 @@ function IndividualClimbPage() {
         >
           <Text>{item.category}</Text>
         </View>
-      ))}
+      ))} */}
     </ScrollView>
   );
 }
