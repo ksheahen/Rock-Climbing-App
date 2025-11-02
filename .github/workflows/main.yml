@@ -6,7 +6,7 @@ jobs:
     env:
       EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
       EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      EXPO_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -14,7 +14,7 @@ jobs:
           node-version: "20"
           cache: "npm"
       - name: Installing modules...
-        run: npm ci
+        run: npm install
       - name: Running tests...
         run: npm run test
 
@@ -28,6 +28,6 @@ jobs:
           node-version: "20"
           cache: "npm"
       - name: Installing modules
-        run: npm ci
+        run: npm install
       - name: Running ESLint
         run: npm run lint
