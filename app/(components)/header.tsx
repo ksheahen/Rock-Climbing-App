@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import styles from "../styles/header";
+import styles from "../styles/log-page-header";
 
 interface HeaderProps {
   leftText: string;
