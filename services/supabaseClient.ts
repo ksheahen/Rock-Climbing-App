@@ -10,7 +10,7 @@ let SUPABASE_KEY: string;
 
 if (process.env.NODE_ENV === "test") {
   // Use service role key for testing / server-side tasks
-  SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  SUPABASE_KEY = process.env.EXPO_SUPABASE_SERVICE_ROLE_KEY!;
   if (!SUPABASE_KEY)
     throw new Error("SUPABASE_SERVICE_ROLE_KEY is missing in .env");
 } else {
