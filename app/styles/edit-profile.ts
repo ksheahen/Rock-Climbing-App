@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   cancelButton: {
-    backgroundColor: COLORS.background3,
+    backgroundColor: COLORS.blue,
   },
   saveButton: {
-    backgroundColor: COLORS.yellow, // Use an existing color
+    backgroundColor: COLORS.blue,
   },
   buttonText: {
-    color: COLORS.text1, // Use an existing color
+    color: COLORS.text1,
     fontWeight: "bold",
   },
 });

@@ -1,12 +1,74 @@
-import { View, Text, TextInput, Pressable, Alert } from "react-native";
+import { View, Text, TextInput, Pressable, Alert, ActivityIndicator } from "react-native";
 import { useNavigation } from "expo-router";
+import React, { useState, useEffect } from "react";
+import { useSession } from "../context/SessionContext";
+import { getUserById, updateUser } from "../../services/userService";
+import type { User } from "../../types/User";
 import styles from "../styles/edit-profile";
-import React, { useState } from "react";
 
 function EditProfilePage() {
   const navigation = useNavigation();
-  const [name, setName] = React.useState("name here");
-  const [email, setEmail] = React.useState("name@example.com");
+  const session = useSession();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (!session?.user) return;
+
+    async function fetchUser() {
+      setLoading(true);
+      try {
+        const userData: User | null = await getUserById(session!.user.id);
+        if (!userData) throw new Error("User not found");
+
+        setName(userData.name);
+        setEmail(userData.email);
+      } catch (error) {
+        if (error instanceof Error) Alert.alert("Error", error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchUser();
+  }, [session]);
+
+  const handleSave = async () => {
+    if (!session?.user) return;
+
+    if (!name.trim() || !email.trim()) {
+      Alert.alert("Validation Error", "Name and email cannot be empty.");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const updatedUser = await updateUser(session.user.id, { name, email });
+      if (!updatedUser) throw new Error("Failed to update user.");
+
+      Alert.alert("Success", "Profile updated!", [
+        {
+          text: "OK",
+          onPress: () => navigation.navigate("profile" as never),
+        },
+      ]);
+    } catch (error) {
+      if (error instanceof Error) Alert.alert("Error", error.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -30,22 +92,29 @@ function EditProfilePage() {
             value={email}
             onChangeText={setEmail}
             placeholder="Your email"
+            keyboardType="email-address"
           />
         </View>
 
         <View style={styles.buttonRow}>
           <Pressable
             style={[styles.button, styles.cancelButton]}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate("profile" as never)}
+            disabled={saving}
           >
             <Text style={styles.buttonText}>Cancel</Text>
           </Pressable>
 
           <Pressable
             style={[styles.button, styles.saveButton]}
-            onPress={() => Alert.alert("Save clicked!")}
+            onPress={handleSave}
+            disabled={saving}
           >
-            <Text style={styles.buttonText}>Save</Text>
+            {saving ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Save</Text>
+            )}
           </Pressable>
         </View>
       </View>
@@ -54,3 +123,4 @@ function EditProfilePage() {
 }
 
 export default EditProfilePage;
+
