@@ -3,7 +3,8 @@ import Icon from "react-native-remix-icon";
 import styles from "../styles/climbhistory";
 
 export interface Climb {
-  date: string; // YYYY-MM-DD
+  date: string; 
+  displayDate?: string;
   time: string;
   grade: string;
   stars: number;
@@ -12,42 +13,14 @@ export interface Climb {
 
 interface Props {
   climbs: Climb[];
-  timeframe: "day" | "week" | "month" | "all";
 }
 
-function ClimbHistoryComponent({ climbs, timeframe }: Props) {
-  const now = new Date();
-
-  const filteredClimbs = climbs.filter((climb) => {
-    const climbDate = new Date(climb.date);
-    switch (timeframe) {
-      case "day":
-        return (
-          climbDate.getFullYear() === now.getFullYear() &&
-          climbDate.getMonth() === now.getMonth() &&
-          climbDate.getDate() === now.getDate()
-        );
-      case "week": {
-        const weekAgo = new Date();
-        weekAgo.setDate(now.getDate() - 7);
-        return climbDate >= weekAgo && climbDate <= now;
-      }
-      case "month":
-        return (
-          climbDate.getFullYear() === now.getFullYear() &&
-          climbDate.getMonth() === now.getMonth()
-        );
-      case "all":
-      default:
-        return true;
-    }
-  });
-
+function ClimbHistoryComponent({ climbs }: Props) {
   return (
     <View style={styles.container}>
-      {filteredClimbs.map((climb, index) => (
+      {climbs.map((climb, index) => (
         <View key={index}>
-          <Text style={styles.date}>{climb.date}</Text>
+          <Text style={styles.date}>{climb.displayDate ?? climb.date}</Text>
           <View style={styles.climbItem}>
             <View style={styles.info}>
               <Text style={styles.time}>{climb.time}</Text>
@@ -64,11 +37,12 @@ function ClimbHistoryComponent({ climbs, timeframe }: Props) {
           </View>
         </View>
       ))}
-      {filteredClimbs.length === 0 && <Text style={{ marginTop: 10 }}>No climbs for this timeframe.</Text>}
+      {climbs.length === 0 && <Text style={{ marginTop: 10 }}>No climbs for this timeframe.</Text>}
     </View>
   );
 }
 
 export default ClimbHistoryComponent;
+
 
 

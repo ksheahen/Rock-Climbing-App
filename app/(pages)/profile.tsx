@@ -5,6 +5,8 @@ import { getUserById } from "../../services/userService";
 import { getSessionsByUser } from "../../services/sessionService";
 import { getClimbsBySession } from "../../services/climbService";
 import { supabase } from "../../services/supabaseClient";
+import { useFocusEffect } from "expo-router";
+import { useCallback } from "react";
 
 import ButtonComponent from "../(components)/button";
 import ClimbHistoryComponent, { Climb } from "../(components)/climbhistory";
@@ -26,6 +28,13 @@ function ProfilePage() {
     fetchUserAndClimbs();
   }, [session, timeframe]);
 
+  useFocusEffect(
+    useCallback(() => {
+      if (!session?.user) return;
+      fetchUserAndClimbs();
+    }, [session, timeframe])
+  );
+
   async function fetchUserAndClimbs() {
     try {
       setLoading(true);
@@ -42,11 +51,7 @@ function ProfilePage() {
         const formattedClimbs = sessionClimbs.map((c: any) => {
         const dateObj = new Date(c.datetime);
         return {
-          date: dateObj.toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        }),
+          date: dateObj.toISOString(),
           time: dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
           grade: c.difficulty,
           stars: c.rating,
@@ -57,7 +62,17 @@ function ProfilePage() {
       }
 
       const filteredClimbs = filterClimbsByTimeframe(allClimbs, timeframe);
-      setClimbs(filteredClimbs);
+
+      const displayClimbs = filteredClimbs.map(c => ({
+        ...c,
+        displayDate: new Date(c.date).toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }),
+      }));
+      setClimbs(displayClimbs);
+
     } catch (error) {
       if (error instanceof Error) Alert.alert(error.message);
     } finally {
@@ -66,8 +81,8 @@ function ProfilePage() {
   }
 
   function filterClimbsByTimeframe(climbs: Climb[], tf: typeof timeframe) {
-    if (tf === "all") return climbs;
     const now = new Date();
+
     return climbs.filter(c => {
       const climbDate = new Date(c.date);
       switch (tf) {
@@ -78,22 +93,17 @@ function ProfilePage() {
             climbDate.getDate() === now.getDate()
           );
         case "week": {
-          const weekAgo = new Date(now);
+          const weekAgo = new Date();
           weekAgo.setDate(now.getDate() - 7);
-          // Only include climbs from the last 7 days, excluding today
-          return (
-            climbDate > weekAgo &&
-            !(climbDate.getFullYear() === now.getFullYear() &&
-              climbDate.getMonth() === now.getMonth() &&
-              climbDate.getDate() === now.getDate()) &&
-            climbDate < now
-          );
+          return climbDate >= weekAgo && climbDate <= now;
         }
         case "month": {
           const monthAgo = new Date(now);
           monthAgo.setMonth(now.getMonth() - 1);
           return climbDate >= monthAgo && climbDate <= now;
         }
+        default:
+          return true;
       }
     });
   }
@@ -105,7 +115,7 @@ function ProfilePage() {
         <LineComponent />
         <TimeframeFilterComponent timeframe={timeframe} setTimeframe={setTimeframe} />
         <LineComponent />
-        <ClimbHistoryComponent climbs={climbs} timeframe={timeframe} />
+        <ClimbHistoryComponent climbs={climbs}/>
         <ButtonComponent title="Sign Out" onPress={() => supabase.auth.signOut()} />
       </View>
     </View>
