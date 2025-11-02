@@ -27,3 +27,19 @@ To fix any errors:
 ```bash
 npx expo lint --fix
 ```
+
+# Testing
+To run both server and client tests:
+```
+npm run test
+```
+
+To run client tests (by itself):
+```
+npm run test:jest
+```
+
+To run server tests (by itself):
+```
+npm run test:vitest
+```

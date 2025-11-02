@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "lint": "expo lint app services types",
     "test:vitest": "vitest --config vitest.config.ts",
-    "test:jest": "jest --config jest.config.cjs"
+    "test:jest": "jest --config jest.config.cjs",
+    "test": "npm run test:jest && npm run test:vitest"
   },
   "jest": {
     "preset": "jest-expo"
