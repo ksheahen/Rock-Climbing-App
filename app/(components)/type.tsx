@@ -49,7 +49,7 @@ function TypeComponent({
             itemStyle={styles.picker}
           >
             <Picker.Item label="Boulder" value="Boulder" />
-            <Picker.Item label="Route" value="Top-Rope" />
+            <Picker.Item label="Route" value="Route" />
           </Picker>
         </View>
       )}
