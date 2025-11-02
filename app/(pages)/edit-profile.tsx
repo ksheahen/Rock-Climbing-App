@@ -1,4 +1,11 @@
-import { View, Text, TextInput, Pressable, Alert, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigation } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { useSession } from "../context/SessionContext";
@@ -64,7 +71,12 @@ function EditProfilePage() {
 
   if (loading) {
     return (
-      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
         <ActivityIndicator size="large" color="#000" />
       </View>
     );
@@ -123,4 +135,3 @@ function EditProfilePage() {
 }
 
 export default EditProfilePage;
-
