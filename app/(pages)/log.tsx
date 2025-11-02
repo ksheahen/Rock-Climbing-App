@@ -53,10 +53,6 @@ function LogAscent() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Log Ascent</Text>
-        </View>
-
         <CategoryComponent
           selectedCategoryProp={selectedCategory}
           onSelectedCategoryChange={setSelectedCategory}

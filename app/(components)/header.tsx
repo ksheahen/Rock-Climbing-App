@@ -19,9 +19,13 @@ export default function HeaderComponent({
       <Pressable onPress={onLeftPress} style={styles.button}>
         <Text style={styles.buttonText}>{leftText}</Text>
       </Pressable>
+      <View style={styles.titleContainer}>
+          <Text style={styles.title}>Log Ascent</Text>
+      </View>
       <Pressable onPress={onRightPress} style={styles.button}>
         <Text style={styles.buttonText}>{rightText}</Text>
       </Pressable>
+      
     </View>
   );
 }

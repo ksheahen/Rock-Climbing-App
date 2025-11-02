@@ -19,15 +19,6 @@ const styles = StyleSheet.create({
     display: "flex",
     gap: GLOBAL.component_spacing_medium,
   },
-  titleContainer: {
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 8,
-  },
-  title: {
-    fontSize: FONT_SIZES.large,
-    fontWeight: "300",
-  },
 });
 
 export default styles;

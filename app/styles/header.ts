@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, PADDING } from "./global-styles";
+import { BORDERRADIUS, COLORS, PADDING,FONT_SIZES} from "./global-styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -20,6 +20,15 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#000",
     fontSize: 15,
+  },
+  titleContainer: {
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: FONT_SIZES.medium,
+    fontWeight: "600",
   },
 });
 
