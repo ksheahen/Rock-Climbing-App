@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     paddingLeft: PADDING.page_padding,
-    paddingRight: PADDING.page_padding,
+    
     alignItems: "center",
     justifyContent: "space-between",
   },
