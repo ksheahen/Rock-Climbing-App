@@ -26,6 +26,8 @@ export { PointsDisplay } from "./PointsDisplay/PointsDisplay";
 export type { PointsDisplayProps } from "./PointsDisplay/PointsDisplay";
 export { DaySelector } from "./DaySelector/DaySelector";
 export type { DaySelectorProps, DayData } from "./DaySelector/DaySelector";
+export { FilterModal } from "./FilterModal/FilterModal";
+export type { FilterModalProps, FilterOptions } from "./FilterModal/FilterModal";
 
 // Profile Components
 export { ProfileInfo } from "./ProfileInfo/ProfileInfo";

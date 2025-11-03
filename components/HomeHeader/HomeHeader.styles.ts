@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     marginTop: 2,
   },
   flameText: {
-    fontSize: FONT_SIZES.small,
+    fontSize: FONT_SIZES.medium,
     fontWeight: "600",
     color: COLORS.streakRed,
     fontFamily: "Roboto",
