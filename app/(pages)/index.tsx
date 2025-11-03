@@ -65,7 +65,7 @@ const Index = () => {
     // Filter by grade
     if (filters.grades.length > 0) {
       filtered = filtered.filter((session) =>
-        filters.grades.includes(session.grade)
+        filters.grades.includes(session.grade),
       );
     }
 
@@ -73,15 +73,15 @@ const Index = () => {
     if (filters.tries.length > 0) {
       filtered = filtered.filter((session) =>
         filters.tries.some((filterTries) =>
-          matchesTries(session.tries, filterTries)
-        )
+          matchesTries(session.tries, filterTries),
+        ),
       );
     }
 
     // Filter by stars
     if (filters.stars.length > 0) {
       filtered = filtered.filter((session) =>
-        filters.stars.includes(session.stars)
+        filters.stars.includes(session.stars),
       );
     }
 

@@ -55,4 +55,3 @@ export const styles = StyleSheet.create({
     borderRadius: BORDERRADIUS.small,
   },
 });
-

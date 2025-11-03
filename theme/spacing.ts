@@ -22,4 +22,3 @@ export const PADDING = {
 export const MARGIN = {
   element_margin: spacing.element,
 };
-

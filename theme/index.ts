@@ -18,4 +18,3 @@ export { borderRadius, BORDERRADIUS };
 
 // Default export
 export default theme;
-

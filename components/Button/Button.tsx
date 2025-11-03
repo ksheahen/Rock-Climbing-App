@@ -13,4 +13,3 @@ export const Button = ({ onPress, title }: ButtonProps) => {
     </TouchableOpacity>
   );
 };
-

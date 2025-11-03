@@ -51,4 +51,3 @@ export const DaySelector: React.FC<DaySelectorProps> = ({
     </View>
   );
 };
-

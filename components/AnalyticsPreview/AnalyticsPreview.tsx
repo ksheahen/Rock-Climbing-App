@@ -28,4 +28,3 @@ export const AnalyticsPreview: React.FC<AnalyticsPreviewProps> = ({
     </TouchableOpacity>
   );
 };
-

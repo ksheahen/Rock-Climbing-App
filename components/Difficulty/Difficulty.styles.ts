@@ -28,4 +28,3 @@ export const styles = StyleSheet.create({
   },
   icon_container: {},
 });
-

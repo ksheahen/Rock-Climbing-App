@@ -24,4 +24,3 @@ export const Email = ({ email, setEmail }: EmailProps) => {
     </View>
   );
 };
-

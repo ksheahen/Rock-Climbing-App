@@ -18,4 +18,3 @@ export const PointsDisplay: React.FC<PointsDisplayProps> = ({
     </View>
   );
 };
-

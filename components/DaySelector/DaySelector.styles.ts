@@ -48,4 +48,3 @@ export const styles = StyleSheet.create({
     color: COLORS.text1,
   },
 });
-

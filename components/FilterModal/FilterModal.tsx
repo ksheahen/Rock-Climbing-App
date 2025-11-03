@@ -24,7 +24,26 @@ export interface FilterModalProps {
   currentFilters: FilterOptions;
 }
 
-const GRADES = ["V0", "V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12", "V13", "V14", "V15", "V16", "V17"];
+const GRADES = [
+  "V0",
+  "V1",
+  "V2",
+  "V3",
+  "V4",
+  "V5",
+  "V6",
+  "V7",
+  "V8",
+  "V9",
+  "V10",
+  "V11",
+  "V12",
+  "V13",
+  "V14",
+  "V15",
+  "V16",
+  "V17",
+];
 const TRIES_OPTIONS = [
   { label: "1-2 Tries", value: "1-2" },
   { label: "3-5 Tries", value: "3-5" },
@@ -46,13 +65,13 @@ export const FilterModal: React.FC<FilterModalProps> = ({
   currentFilters,
 }) => {
   const [selectedGrades, setSelectedGrades] = useState<string[]>(
-    currentFilters.grades
+    currentFilters.grades,
   );
   const [selectedTries, setSelectedTries] = useState<string[]>(
-    currentFilters.tries
+    currentFilters.tries,
   );
   const [selectedStars, setSelectedStars] = useState<number[]>(
-    currentFilters.stars
+    currentFilters.stars,
   );
   const [selectedDateRange, setSelectedDateRange] = useState<
     "today" | "week" | "month" | "all"
@@ -60,23 +79,19 @@ export const FilterModal: React.FC<FilterModalProps> = ({
 
   const toggleGrade = (grade: string) => {
     setSelectedGrades((prev) =>
-      prev.includes(grade)
-        ? prev.filter((g) => g !== grade)
-        : [...prev, grade]
+      prev.includes(grade) ? prev.filter((g) => g !== grade) : [...prev, grade],
     );
   };
 
   const toggleTries = (tries: string) => {
     setSelectedTries((prev) =>
-      prev.includes(tries)
-        ? prev.filter((t) => t !== tries)
-        : [...prev, tries]
+      prev.includes(tries) ? prev.filter((t) => t !== tries) : [...prev, tries],
     );
   };
 
   const toggleStar = (star: number) => {
     setSelectedStars((prev) =>
-      prev.includes(star) ? prev.filter((s) => s !== star) : [...prev, star]
+      prev.includes(star) ? prev.filter((s) => s !== star) : [...prev, star],
     );
   };
 
@@ -114,7 +129,10 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       onRequestClose={onClose}
     >
       <Pressable style={styles.modalOverlay} onPress={onClose}>
-        <Pressable style={styles.modalContent} onPress={(e) => e.stopPropagation()}>
+        <Pressable
+          style={styles.modalContent}
+          onPress={(e) => e.stopPropagation()}
+        >
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Filters</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
@@ -226,9 +244,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
                     <Ionicons
                       name="star"
                       size={16}
-                      color={
-                        selectedStars.includes(star) ? "#FFF" : "#FFD700"
-                      }
+                      color={selectedStars.includes(star) ? "#FFF" : "#FFD700"}
                     />
                     <Text
                       style={[
@@ -246,18 +262,13 @@ export const FilterModal: React.FC<FilterModalProps> = ({
           </ScrollView>
 
           <View style={styles.modalFooter}>
-            <TouchableOpacity
-              style={styles.resetButton}
-              onPress={handleReset}
-            >
+            <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
               <Text style={styles.resetButtonText}>Reset</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.applyButton}
-              onPress={handleApply}
-            >
+            <TouchableOpacity style={styles.applyButton} onPress={handleApply}>
               <Text style={styles.applyButtonText}>
-                Apply {getActiveFilterCount() > 0 && `(${getActiveFilterCount()})`}
+                Apply{" "}
+                {getActiveFilterCount() > 0 && `(${getActiveFilterCount()})`}
               </Text>
             </TouchableOpacity>
           </View>
@@ -266,4 +277,3 @@ export const FilterModal: React.FC<FilterModalProps> = ({
     </Modal>
   );
 };
-

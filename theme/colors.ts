@@ -54,4 +54,3 @@ export const COLORS = {
   cardBackground: colors.background.card,
   analyticsBackground: colors.background.analytics,
 };
-

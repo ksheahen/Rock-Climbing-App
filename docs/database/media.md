@@ -1,41 +1,43 @@
 # Table: media
 
 **Purpose:**  
-Stores uploaded media (images or videos) associated with climbs.  
+Stores uploaded media (images or videos) associated with climbs.
 
 ---
 
 ### Columns
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `media_id` | UUID | Primary Key | Unique identifier for media file |
-| `file_url` | TEXT | NOT NULL | URL to file in Supabase Storage |
-| `type` | TEXT | NOT NULL | Type of media (`image` or `video`) |
-| `uploaded_at` | TIMESTAMP | DEFAULT now() | Timestamp of upload |
+| Column        | Type      | Constraints   | Description                        |
+| ------------- | --------- | ------------- | ---------------------------------- |
+| `media_id`    | UUID      | Primary Key   | Unique identifier for media file   |
+| `file_url`    | TEXT      | NOT NULL      | URL to file in Supabase Storage    |
+| `type`        | TEXT      | NOT NULL      | Type of media (`image` or `video`) |
+| `uploaded_at` | TIMESTAMP | DEFAULT now() | Timestamp of upload                |
 
 ---
 
 ### Relationships
 
 #### References to Other Tables
-| Column | References | Relationship | Description |
-|--------|------------|--------------|-------------|
-| *(none)* | – | – | Media doesn't reference other tables |
+
+| Column   | References | Relationship | Description                          |
+| -------- | ---------- | ------------ | ------------------------------------ |
+| _(none)_ | –          | –            | Media doesn't reference other tables |
 
 #### Referenced By Other Tables
-| Table | Column | Relationship | Description |
-|-------|--------|--------------|-------------|
+
+| Table   | Column     | Relationship       | Description                                 |
+| ------- | ---------- | ------------------ | ------------------------------------------- |
 | `climb` | `media_id` | One-to-One (`1:1`) | Optional link between a climb and its media |
 
 ---
 
 ### Row-Level Security (RLS)
 
-| Policy | Applies To | Description |
-|--------|------------|-------------|
-| `select_all_media` | SELECT | Allow users to view media linked to climbs they can access |
-| `insert_media` | INSERT | Allow authenticated users to upload new media |
+| Policy             | Applies To | Description                                                |
+| ------------------ | ---------- | ---------------------------------------------------------- |
+| `select_all_media` | SELECT     | Allow users to view media linked to climbs they can access |
+| `insert_media`     | INSERT     | Allow authenticated users to upload new media              |
 
 **Condition:**  
 Media access is implicitly governed through climb/session ownership.

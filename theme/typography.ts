@@ -17,4 +17,3 @@ export const typography = {
 
 // Legacy export for backward compatibility
 export const FONT_SIZES = typography.sizes;
-

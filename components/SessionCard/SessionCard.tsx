@@ -47,4 +47,3 @@ export const SessionCard: React.FC<SessionCardProps> = ({
     </TouchableOpacity>
   );
 };
-

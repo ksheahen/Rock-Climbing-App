@@ -31,4 +31,3 @@ export const RecentSessions: React.FC<RecentSessionsProps> = ({
     </View>
   );
 };
-

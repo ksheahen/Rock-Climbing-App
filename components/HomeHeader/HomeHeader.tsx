@@ -30,4 +30,3 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
     </View>
   );
 };
-
