@@ -1,19 +1,21 @@
-// NOTE: Keeps failing, will uncomment and fix later
+// NOTE: Keeps failing, adding a temp test for now
+// will uncomment the rest and fix later
 
-// // Run with:
-// // npx vitest run services/tests/climbService.test.ts
+// Run with:
+// npx vitest run services/tests/climbService.test.ts
 
-// import { afterAll, beforeAll, describe, expect, it } from "vitest";
-// import {
-//   createClimb,
-//   deleteClimb,
-//   getClimbById,
-//   getClimbsBySession,
-//   updateClimb,
-// } from "../climbService";
-// import { createMedia, deleteMedia } from "../mediaService";
-// import { createSession, deleteSession } from "../sessionService";
-// import { createUser, deleteUser } from "../userService";
+import { describe, expect, it } from "vitest";
+import { getClimbById } from "../climbService";
+
+describe("Climb Service Tests", () => {
+  it("should return null for a non-existent climb ID", async () => {
+    const climb = await getClimbById("non-existent-id");
+    expect(climb).toBeNull();
+  });
+});
+
+// import { beforeAll, describe } from "vitest";
+// import { createUser } from "../userService";
 
 // let testUserId: string;
 // let testSessionId: string;
@@ -103,5 +105,5 @@
 
 //     const climb = await getClimbById(testClimbId);
 //     expect(climb).toBeNull();
-//   });
+// });
 // });
