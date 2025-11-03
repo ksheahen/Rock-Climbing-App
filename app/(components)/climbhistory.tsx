@@ -3,7 +3,7 @@ import Icon from "react-native-remix-icon";
 import styles from "../styles/climbhistory";
 
 export interface Climb {
-  date: string; 
+  date: string;
   displayDate?: string;
   time: string;
   grade: string;
@@ -37,12 +37,11 @@ function ClimbHistoryComponent({ climbs }: Props) {
           </View>
         </View>
       ))}
-      {climbs.length === 0 && <Text style={{ marginTop: 10 }}>No climbs for this timeframe.</Text>}
+      {climbs.length === 0 && (
+        <Text style={{ marginTop: 10 }}>No climbs for this timeframe.</Text>
+      )}
     </View>
   );
 }
 
 export default ClimbHistoryComponent;
-
-
-

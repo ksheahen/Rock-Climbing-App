@@ -22,31 +22,47 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const logo = require("../assets/icon.png");
   const btnText = "Signup";
   const router = useRouter();
 
   async function signUpWithEmail() {
+    if (!email) {
+      setError("Email is required");
+      return;
+    }
+
+    if (!password) {
+      setError("Password is required");
+      return;
+    }
+
     if (password !== confirmPassword) {
-      Alert.alert("Passwords do not match.");
+      Alert.alert("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
 
     setLoading(true);
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({
-      email: email,
-      password: password,
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
     });
 
-    // TODO: 'User already registered' error message
-    if (error) Alert.alert(error.message);
-    if (!session)
+    if (error) {
+      setError(error.message);
+    } else if (!data?.session) {
       Alert.alert("Please check your inbox for email verification!");
+    } else {
+      setError("Unexpected error occurred during signup");
+    }
+
+    if (!error) {
+      router.navigate("/login");
+    }
     setLoading(false);
-    router.navigate("/login");
   }
 
   return (
@@ -67,7 +83,7 @@ export default function Signup() {
           setPassword={setConfirmPassword}
           displayText="Confirm Password"
         />
-
+        {error && <Text>{error}</Text>}
         <View style={styles.forgotPasswordContainer}>
           <Text></Text>
         </View>

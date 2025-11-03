@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Alert, View } from "react-native";
 import { useSession } from "../context/SessionContext";
 import { getUserById } from "../../services/userService";
@@ -6,7 +6,6 @@ import { getSessionsByUser } from "../../services/sessionService";
 import { getClimbsBySession } from "../../services/climbService";
 import { supabase } from "../../services/supabaseClient";
 import { useFocusEffect } from "expo-router";
-import { useCallback } from "react";
 
 import ButtonComponent from "../(components)/button";
 import ClimbHistoryComponent, { Climb } from "../(components)/climbhistory";
@@ -21,7 +20,9 @@ function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [climbs, setClimbs] = useState<Climb[]>([]);
-  const [timeframe, setTimeframe] = useState<"day" | "week" | "month" | "all">("all");
+  const [timeframe, setTimeframe] = useState<"day" | "week" | "month" | "all">(
+    "all",
+  );
   const session = useSession();
   useEffect(() => {
     if (!session?.user) return;
@@ -32,7 +33,7 @@ function ProfilePage() {
     useCallback(() => {
       if (!session?.user) return;
       fetchUserAndClimbs();
-    }, [session, timeframe])
+    }, [session, timeframe]),
   );
 
   async function fetchUserAndClimbs() {
@@ -49,21 +50,24 @@ function ProfilePage() {
       for (const s of userSessions) {
         const sessionClimbs = await getClimbsBySession(s.session_id);
         const formattedClimbs = sessionClimbs.map((c: any) => {
-        const dateObj = new Date(c.datetime);
-        return {
-          date: dateObj.toISOString(),
-          time: dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-          grade: c.difficulty,
-          stars: c.rating,
-          sub: c.attempts === 1 ? "Flash" : `${c.attempts} Tries`,
-        };
-      });
+          const dateObj = new Date(c.datetime);
+          return {
+            date: dateObj.toISOString(),
+            time: dateObj.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            grade: c.difficulty,
+            stars: c.rating,
+            sub: c.attempts === 1 ? "Flash" : `${c.attempts} Tries`,
+          };
+        });
         allClimbs.push(...formattedClimbs);
       }
 
       const filteredClimbs = filterClimbsByTimeframe(allClimbs, timeframe);
 
-      const displayClimbs = filteredClimbs.map(c => ({
+      const displayClimbs = filteredClimbs.map((c) => ({
         ...c,
         displayDate: new Date(c.date).toLocaleDateString(undefined, {
           year: "numeric",
@@ -72,7 +76,6 @@ function ProfilePage() {
         }),
       }));
       setClimbs(displayClimbs);
-
     } catch (error) {
       if (error instanceof Error) Alert.alert(error.message);
     } finally {
@@ -83,7 +86,7 @@ function ProfilePage() {
   function filterClimbsByTimeframe(climbs: Climb[], tf: typeof timeframe) {
     const now = new Date();
 
-    return climbs.filter(c => {
+    return climbs.filter((c) => {
       const climbDate = new Date(c.date);
       switch (tf) {
         case "day":
@@ -113,18 +116,19 @@ function ProfilePage() {
       <View style={styles.mainContent}>
         {user && <ProfileInfoComponent user={user} />}
         <LineComponent />
-        <TimeframeFilterComponent timeframe={timeframe} setTimeframe={setTimeframe} />
+        <TimeframeFilterComponent
+          timeframe={timeframe}
+          setTimeframe={setTimeframe}
+        />
         <LineComponent />
-        <ClimbHistoryComponent climbs={climbs}/>
-        <ButtonComponent title="Sign Out" onPress={() => supabase.auth.signOut()} />
+        <ClimbHistoryComponent climbs={climbs} />
+        <ButtonComponent
+          title="Sign Out"
+          onPress={() => supabase.auth.signOut()}
+        />
       </View>
     </View>
   );
 }
 
 export default ProfilePage;
-
-
-
-
-

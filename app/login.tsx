@@ -21,19 +21,33 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const logo = require("../assets/icon.png");
   const login = "Login";
   const router = useRouter();
 
   // Sign In with Email
   async function signInWithEmail() {
+    if (!email) {
+      setError("Email is required");
+      return;
+    }
+    if (!password) {
+      setError("Password is required");
+      return;
+    }
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
 
-    if (error) Alert.alert(error.message);
+    if (error) {
+      Alert.alert(error.message);
+      setError(error.message);
+    } else {
+      router.navigate("/");
+    }
     setLoading(false);
   }
 
@@ -48,6 +62,7 @@ export default function Login() {
           setPassword={setPassword}
           displayText="Password"
         />
+        {error && <Text>{error}</Text>}
         <View style={styles.forgotPasswordContainer}>
           <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
         </View>

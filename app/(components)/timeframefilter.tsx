@@ -18,7 +18,11 @@ function TimeframeFilterComponent({ timeframe, setTimeframe }: Props) {
           ]}
           onPress={() => setTimeframe(tf as any)}
         >
-          <Text style={styles.text}>{tf === "all" ? "All Time" : tf.charAt(0).toUpperCase() + tf.slice(1)}</Text>
+          <Text style={styles.text}>
+            {tf === "all"
+              ? "All Time"
+              : tf.charAt(0).toUpperCase() + tf.slice(1)}
+          </Text>
         </Pressable>
       ))}
     </View>
@@ -26,5 +30,3 @@ function TimeframeFilterComponent({ timeframe, setTimeframe }: Props) {
 }
 
 export default TimeframeFilterComponent;
-
-

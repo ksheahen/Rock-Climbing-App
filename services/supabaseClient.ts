@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === "test") {
 // Create Supabase client
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
-    storage: AsyncStorage,
+    storage: process.env.NODE_ENV === "test" ? undefined : AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,

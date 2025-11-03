@@ -17,7 +17,9 @@ export const getClimbById = async (climbId: string): Promise<Climb | null> => {
 };
 
 // Fetch all climbs for a specific session
-export const getClimbsBySession = async (sessionId: string): Promise<Climb[]> => {
+export const getClimbsBySession = async (
+  sessionId: string,
+): Promise<Climb[]> => {
   const { data, error } = await table("climb")
     .select("*")
     .eq("session_id", sessionId)
@@ -32,7 +34,9 @@ export const getClimbsBySession = async (sessionId: string): Promise<Climb[]> =>
 };
 
 // Create a new climb
-export const createClimb = async (newClimb: ClimbInsert): Promise<Climb | null> => {
+export const createClimb = async (
+  newClimb: ClimbInsert,
+): Promise<Climb | null> => {
   const { data, error } = await table("climb")
     .insert(newClimb)
     .select()
@@ -51,7 +55,10 @@ export const createClimb = async (newClimb: ClimbInsert): Promise<Climb | null> 
 };
 
 // Update a climb
-export const updateClimb = async (climbId: string, updates: ClimbUpdate): Promise<Climb | null> => {
+export const updateClimb = async (
+  climbId: string,
+  updates: ClimbUpdate,
+): Promise<Climb | null> => {
   const { data, error } = await table("climb")
     .update(updates)
     .eq("climb_id", climbId)
@@ -77,4 +84,3 @@ export const deleteClimb = async (climbId: string): Promise<boolean> => {
 
   return true;
 };
-

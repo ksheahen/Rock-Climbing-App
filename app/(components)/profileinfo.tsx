@@ -27,7 +27,3 @@ function ProfileInfoComponent({ user }: ProfileInfoProps) {
 }
 
 export default ProfileInfoComponent;
-
-
-
-
