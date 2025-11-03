@@ -17,8 +17,6 @@ jobs:
         run: npm install
       - name: Running Server Side Tests...
         run: npm run test:vitest
-      - name: Running Client Side Tests...
-        run: npm run test:jest
   
   # Client Side Testing
   testing-client:
