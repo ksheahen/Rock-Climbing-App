@@ -1,13 +1,16 @@
 import { router } from "expo-router";
 import React from "react";
 import { ScrollView } from "react-native";
-import { AnalyticsPreview } from "../(components)/analyticspreview";
-import { DayData, DaySelector } from "../(components)/dayselector";
-import { HomeHeader } from "../(components)/homeheader";
-import { PointsDisplay } from "../(components)/pointsdisplay";
-import { RecentSessions } from "../(components)/recentsessions";
-import { SessionData } from "../(components)/sessioncard";
-import { styles } from "../styles/index";
+import {
+  AnalyticsPreview,
+  DayData,
+  DaySelector,
+  HomeHeader,
+  PointsDisplay,
+  RecentSessions,
+  SessionData,
+} from "../../components";
+import { styles } from "./index.styles";
 
 const index = () => {
   const days: DayData[] = [

@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import Icon from "react-native-remix-icon";
-import { COLORS } from "../styles/global-styles";
+import { COLORS } from "../../theme";
 
 // the navbar at the bottom of the screen
 function TabLayout() {

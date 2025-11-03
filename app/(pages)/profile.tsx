@@ -1,19 +1,21 @@
 import { View } from "react-native";
-import ClimbHistoryComponent from "../(components)/climbhistory";
-import LineComponent from "../(components)/line";
-import ProfileInfoComponent from "../(components)/profileinfo";
-import TimeframeFilterComponent from "../(components)/timeframefilter";
-import styles from "../styles/profile";
+import {
+  ClimbHistory,
+  Line,
+  ProfileInfo,
+  TimeframeFilter,
+} from "../../components";
+import { styles } from "./profile.styles";
 
 function ProfilePage() {
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
-        <ProfileInfoComponent />
-        <LineComponent />
-        <TimeframeFilterComponent />
-        <LineComponent />
-        <ClimbHistoryComponent />
+        <ProfileInfo />
+        <Line />
+        <TimeframeFilter />
+        <Line />
+        <ClimbHistory />
       </View>
     </View>
   );

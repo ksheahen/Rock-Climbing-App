@@ -1,34 +1,36 @@
 import { View } from "react-native";
-import AttemptComponent from "../(components)/attempt";
-import CategoryComponent from "../(components)/category";
-import CompleteComponent from "../(components)/complete";
-import DateTimeComponent from "../(components)/datetime";
-import DescriptionComponent from "../(components)/description";
-import DifficultyComponent from "../(components)/difficulty";
-import LineComponent from "../(components)/line";
-import RatingComponent from "../(components)/rating";
-import TypeComponent from "../(components)/type";
-import styles from "../styles/individual-climb-page";
+import {
+  Attempt,
+  Category,
+  Complete,
+  DateTime,
+  Description,
+  Difficulty,
+  Line,
+  Rating,
+  Type,
+} from "../../components";
+import { styles } from "./individual-climb-page.styles";
 
 function IndividualClimbPage() {
   return (
     <View style={styles.container}>
       <View style={styles.media}></View>
-      <CategoryComponent />
-      <LineComponent />
-      <TypeComponent />
-      <LineComponent />
-      <CompleteComponent />
-      <LineComponent />
-      <AttemptComponent />
-      <LineComponent />
-      <DifficultyComponent />
-      <LineComponent />
-      <RatingComponent />
-      <LineComponent />
-      <DateTimeComponent />
-      <LineComponent />
-      <DescriptionComponent />
+      <Category />
+      <Line />
+      <Type />
+      <Line />
+      <Complete />
+      <Line />
+      <Attempt />
+      <Line />
+      <Difficulty />
+      <Line />
+      <Rating />
+      <Line />
+      <DateTime />
+      <Line />
+      <Description />
     </View>
   );
 }

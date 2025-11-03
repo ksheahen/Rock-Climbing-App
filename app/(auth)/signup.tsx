@@ -2,10 +2,8 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ButtonComponent from "../(components)/button";
-import EmailComponent from "../(components)/email";
-import PasswordComponent from "../(components)/password";
-import styles from "../styles/signup";
+import { Button, Email, Password } from "../../components";
+import { styles } from "./signup.styles";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -22,15 +20,15 @@ const Signup = () => {
         <Image source={logo} alt="logo" style={styles.logo} />
 
         {/* Email Container */}
-        <EmailComponent email={email} setEmail={setEmail} />
+        <Email email={email} setEmail={setEmail} />
 
         {/* Password Container - add eye symbol for revealing pwd*/}
-        <PasswordComponent
+        <Password
           password={password}
           setPassword={setPassword}
           displayText="Create Password"
         />
-        <PasswordComponent
+        <Password
           password={password}
           setPassword={setPassword}
           displayText="Confirm Password"
@@ -42,7 +40,7 @@ const Signup = () => {
 
         {/* Button Component */}
         {/* TODO: Update what button does onPress */}
-        <ButtonComponent title={btnText} onPress={() => router.navigate("/")} />
+        <Button title={btnText} onPress={() => router.navigate("/")} />
 
         <Text>
           Already have an account? Login{" "}
