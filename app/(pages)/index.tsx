@@ -14,7 +14,7 @@ import {
 } from "../../components";
 import { styles } from "./index.styles";
 
-const index = () => {
+const Index = () => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({
     grades: [],
@@ -31,13 +31,6 @@ const index = () => {
     { day: "W", date: "24", status: "default" },
     { day: "T", date: "25", status: "default" },
     { day: "F", date: "26", status: "default" },
-  ];
-
-  // All sessions data
-  const allSessions: SessionData[] = [
-    { grade: "V10", tries: "3 Tries", stars: 2, date: "9/22/25" },
-    { grade: "V8", tries: "10+ Tries", stars: 3, date: "9/22/25" },
-    { grade: "V7", tries: "5 Tries", stars: 2, date: "9/21/25" },
   ];
 
   // Helper function to match tries filter
@@ -60,6 +53,13 @@ const index = () => {
 
   // Filtered sessions based on current filters
   const filteredSessions = useMemo(() => {
+    // All sessions data
+    const allSessions: SessionData[] = [
+      { grade: "V10", tries: "3 Tries", stars: 2, date: "9/22/25" },
+      { grade: "V8", tries: "10+ Tries", stars: 3, date: "9/22/25" },
+      { grade: "V7", tries: "5 Tries", stars: 2, date: "9/21/25" },
+    ];
+
     let filtered = [...allSessions];
 
     // Filter by grade
@@ -90,7 +90,7 @@ const index = () => {
     // In a real app, you'd compare actual dates here
 
     return filtered;
-  }, [filters, allSessions]);
+  }, [filters]);
 
   const handleFilterPress = () => {
     setFilterModalVisible(true);
@@ -137,4 +137,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

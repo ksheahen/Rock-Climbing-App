@@ -10,4 +10,3 @@ export const styles = StyleSheet.create({
     marginTop: PADDING.top_page_padding,
   },
 });
-
