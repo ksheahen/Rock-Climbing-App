@@ -2,7 +2,7 @@ import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./ProfileInfo.styles";
 
-export const ProfileInfo = () => {
+function ProfileInfo() {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
@@ -18,4 +18,6 @@ export const ProfileInfo = () => {
       </View>
     </View>
   );
-};
+}
+
+export default ProfileInfo;

@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./Media.styles";
 
-export const Media = () => {
+function Media() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Media</Text>
@@ -11,4 +11,6 @@ export const Media = () => {
       </View>
     </View>
   );
-};
+}
+
+export default Media;

@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native";
 import { FONT_SIZES, PADDING } from "../../theme";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    paddingLeft: PADDING.page_padding,
-    paddingRight: PADDING.page_padding,
+    // paddingLeft: PADDING.page_padding,
+    // paddingRight: PADDING.page_padding,
   },
   title: {
     fontSize: FONT_SIZES.small,
@@ -25,3 +25,5 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.small,
   },
 });
+
+export default styles;

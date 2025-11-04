@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 import { styles } from "./TimeframeFilter.styles";
 
-export const TimeframeFilter = () => {
+function TimeframeFilter() {
   return (
     <View style={styles.container}>
       <Pressable style={styles.button}>
@@ -18,4 +18,6 @@ export const TimeframeFilter = () => {
       </Pressable>
     </View>
   );
-};
+}
+
+export default TimeframeFilter;

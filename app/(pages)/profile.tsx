@@ -1,11 +1,9 @@
+import { ClimbHistory } from "@/components";
+import Line from "@/components/Line/Line";
+import ProfileInfo from "@/components/ProfileInfo/ProfileInfo";
+import TimeframeFilter from "@/components/TimeframeFilter/TimeframeFilter";
 import { View } from "react-native";
-import {
-  ClimbHistory,
-  Line,
-  ProfileInfo,
-  TimeframeFilter,
-} from "../../components";
-import { styles } from "./profile.styles";
+import styles from "./profile.styles";
 
 function ProfilePage() {
   return (

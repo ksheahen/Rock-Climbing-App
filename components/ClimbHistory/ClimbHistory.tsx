@@ -1,41 +1,90 @@
-import { Pressable, Text, View } from "react-native";
+import LineComponent from "@/components/ClimbHistory/ClimbHistory";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+import { useCallback, useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
-import { styles } from "./ClimbHistory.styles";
+import styles from "./ClimbHistory.styles";
 
-export const ClimbHistory = () => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.date}>2025-08-18</Text>
-
-      <View style={styles.climbItem}>
-        <View style={styles.info}>
-          <Text style={styles.time}>6:55 PM</Text>
-          <View style={styles.gradeRow}>
-            <Icon name="check-line" size="18" />
-            <Text style={styles.grade}>7c+/V10</Text>
-            <Text style={styles.stars}>★★★</Text>
-          </View>
-          <Text style={styles.sub}>2 Tries</Text>
-        </View>
-        <Pressable style={styles.videoButton}>
-          <Text style={styles.videoText}>video{"\n"}preview</Text>
-        </Pressable>
-      </View>
-
-      <View style={styles.climbItem}>
-        <View style={styles.info}>
-          <Text style={styles.time}>5:50 PM</Text>
-          <View style={styles.gradeRow}>
-            <Icon name="check-line" size="18" />
-            <Text style={styles.grade}>7b/V8</Text>
-            <Text style={styles.stars}>★★☆☆☆</Text>
-          </View>
-          <Text style={styles.sub}>Flash</Text>
-        </View>
-        <Pressable style={styles.videoButton}>
-          <Text style={styles.videoText}>video{"\n"}preview</Text>
-        </Pressable>
-      </View>
-    </View>
-  );
+type Log = {
+  id: number;
+  category: string;
+  type: string;
+  grade: string;
+  attempt: string;
+  complete: string;
+  rating: string;
+  description: string;
+  media: string;
+  datetime: string;
 };
+
+//TODO : we are going to have to group climbs by date
+// we might have to move all of this logic to the page
+// so that filters work in the future
+
+function ClimbHistoryComponent() {
+  const db = useSQLiteContext();
+
+  const router = useRouter();
+  const handleRedirect = (id: number) => {
+    router.push(`/individual-climb-page?id=${id}`);
+  };
+
+  //LOAD -------------
+  const [climbs, setClimbs] = useState<Log[]>([]);
+
+  const loadClimbs = async () => {
+    // get all climbs in order desc
+    const results = (await db.getAllAsync(
+      `SELECT * FROM log_climb3 ORDER BY id DESC`,
+    )) as Log[];
+    setClimbs(results);
+
+    results.forEach((log, index) => {
+      console.log("----------------");
+      console.log(`Climb Id: ${log.id}`);
+      console.log(`Category: ${log.category}`);
+      console.log(`Type: ${log.type}`);
+      console.log(`Complete: ${log.complete}`);
+      console.log(`Attempt: ${log.attempt}`);
+      console.log(`Grade: ${log.grade}`);
+      console.log(`Rating: ${log.rating}`);
+      console.log(`DateTime: ${log.datetime}`);
+      console.log(`Description: ${log.description}`);
+      console.log(`Media: ${log.media}`);
+      console.log("----------------");
+    });
+  };
+
+  // Trigger loadClimbs whenever the screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      loadClimbs();
+    }, []),
+  );
+
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.date}>2025-08-18 *FIXME</Text>
+      <LineComponent />
+      {climbs.map((climb) => (
+        <View key={climb.id} style={styles.mini_container}>
+          <TouchableOpacity onPress={() => handleRedirect(climb.id)}>
+            <Text style={styles.time}>6:55 PM *FIXME</Text>
+            <View style={styles.gradeRow}>
+              <Icon name="check-line" size="18" />
+              <Text style={styles.grade}>{climb.grade}</Text>
+              <Text style={styles.stars}>{climb.rating} Stars *FIXME</Text>
+            </View>
+            <View style={styles.tries}>
+              <Text>{climb.attempt} Tries</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      ))}
+    </ScrollView>
+  );
+}
+
+export default ClimbHistoryComponent;

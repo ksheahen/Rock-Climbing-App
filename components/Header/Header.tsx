@@ -1,19 +1,19 @@
 import { Pressable, Text, View } from "react-native";
 import { styles } from "./Header.styles";
 
-export interface HeaderProps {
+interface HeaderProps {
   leftText: string;
   rightText: string;
   onLeftPress: () => void;
   onRightPress: () => void;
 }
 
-export const Header = ({
+function Header({
   leftText,
   rightText,
   onLeftPress,
   onRightPress,
-}: HeaderProps) => {
+}: HeaderProps) {
   return (
     <View style={styles.container}>
       <Pressable onPress={onLeftPress} style={styles.button}>
@@ -24,4 +24,6 @@ export const Header = ({
       </Pressable>
     </View>
   );
-};
+}
+
+export default Header;

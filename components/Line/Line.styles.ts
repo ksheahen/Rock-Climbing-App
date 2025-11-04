@@ -1,10 +1,9 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, PADDING } from "../../theme";
+import { BORDERRADIUS, COLORS } from "../../theme";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: "100%",
-    padding: PADDING.page_padding,
   },
   line: {
     borderColor: COLORS.background3,
@@ -13,3 +12,5 @@ export const styles = StyleSheet.create({
     borderRadius: BORDERRADIUS.default,
   },
 });
+
+export default styles;

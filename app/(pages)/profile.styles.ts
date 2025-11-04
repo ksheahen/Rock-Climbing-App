@@ -1,12 +1,24 @@
 import { StyleSheet } from "react-native";
-import { COLORS, PADDING } from "../../theme";
+import { COLORS, GLOBAL, PADDING } from "../../theme";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1, // fills the screen
+    width: "100%",
+    height: "100%",
     backgroundColor: COLORS.background1,
+    paddingLeft: PADDING.page_padding,
+    paddingRight: PADDING.page_padding,
+    display: "flex",
+    flexDirection: "column",
+    paddingTop: PADDING.page_padding * 4,
   },
   mainContent: {
-    marginTop: PADDING.top_page_padding,
+    flex: 1, // allows the main content area to expand
+    display: "flex",
+    flexDirection: "column",
+    gap: GLOBAL.component_spacing_medium,
   },
 });
+
+export default styles;

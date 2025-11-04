@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
-import { styles } from "./DateTime.styles";
+import styles from "./DateTime.styles";
 
-export const DateTime = () => {
+function DateTime() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Date/Time</Text>
@@ -10,4 +10,6 @@ export const DateTime = () => {
       </View>
     </View>
   );
-};
+}
+
+export default DateTime;

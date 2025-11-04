@@ -1,26 +1,33 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZES, PADDING } from "../../theme";
+import { COLORS, FONT_SIZES, GLOBAL } from "../../theme";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background1,
+    width: "100%",
+    paddingLeft: GLOBAL.page_leftright_margin,
+    paddingRight: GLOBAL.page_leftright_margin,
+    paddingBottom: GLOBAL.page_bottom_margin,
   },
   scroll: {
     flex: 1,
   },
   scrollContent: {
-    paddingTop: PADDING.page_padding / 2,
-    paddingBottom: 100,
-    gap: PADDING.page_padding,
+    paddingBottom: 80,
+    backgroundColor: COLORS.background1,
+    display: "flex",
+    gap: GLOBAL.component_spacing_medium,
   },
   titleContainer: {
-    width: "100%",
-    paddingHorizontal: PADDING.page_padding,
-    paddingVertical: PADDING.page_padding / 2,
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 8,
   },
   title: {
     fontSize: FONT_SIZES.large,
-    fontWeight: "bold",
+    fontWeight: "300",
   },
 });
+
+export default styles;

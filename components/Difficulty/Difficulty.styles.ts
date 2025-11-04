@@ -1,24 +1,29 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING } from "../../theme";
+import { COLORS, FONT_SIZES, GLOBAL, PADDING } from "../../theme";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    paddingLeft: PADDING.page_padding,
-    paddingRight: PADDING.page_padding,
   },
   title: {
     fontSize: FONT_SIZES.small,
     paddingTop: 5, //offset for the dropdown
+  },
+  picker_container: {
+    width: "100%",
+  },
+  picker: {
+    color: COLORS.text1,
+    fontSize: FONT_SIZES.small,
   },
   dropdown_container: {
     display: "flex",
     flexDirection: "row",
     marginLeft: "auto",
     backgroundColor: COLORS.background3,
-    borderRadius: BORDERRADIUS.default,
+    borderRadius: GLOBAL.border_radius,
     alignItems: "center", //makes container only as tall as content
     alignSelf: "flex-start",
     padding: PADDING.dropdown_padding,
@@ -28,3 +33,5 @@ export const styles = StyleSheet.create({
   },
   icon_container: {},
 });
+
+export default styles;
