@@ -12,7 +12,7 @@ import {
   RecentSessions,
   SessionData,
 } from "../../components";
-import { styles } from "./index.styles";
+import styles from "../styles/index.styles";
 
 const Index = () => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);

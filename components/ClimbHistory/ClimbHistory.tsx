@@ -1,9 +1,9 @@
-import LineComponent from "@/components/ClimbHistory/ClimbHistory";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
+import Line from "../Line/Line";
 import styles from "./ClimbHistory.styles";
 
 type Log = {
@@ -23,7 +23,7 @@ type Log = {
 // we might have to move all of this logic to the page
 // so that filters work in the future
 
-function ClimbHistoryComponent() {
+function ClimbHistory() {
   const db = useSQLiteContext();
 
   const router = useRouter();
@@ -67,7 +67,7 @@ function ClimbHistoryComponent() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.date}>2025-08-18 *FIXME</Text>
-      <LineComponent />
+      <Line />
       {climbs.map((climb) => (
         <View key={climb.id} style={styles.mini_container}>
           <TouchableOpacity onPress={() => handleRedirect(climb.id)}>
@@ -87,4 +87,4 @@ function ClimbHistoryComponent() {
   );
 }
 
-export default ClimbHistoryComponent;
+export default ClimbHistory;

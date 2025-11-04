@@ -14,7 +14,7 @@ import { useSearchParams } from "expo-router/build/hooks";
 import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
 import { ScrollView, View } from "react-native";
-import styles from "./individual-climb-page.styles";
+import styles from "../styles/individual-climb-page.styles";
 
 // TODO: Make it so that this page
 // can also update the values in

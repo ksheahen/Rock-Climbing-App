@@ -12,7 +12,7 @@ import Type from "@/components/Type/Type";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import styles from "./log.styles";
+import styles from "../styles/log.styles";
 
 function LogAscent() {
   const db = useSQLiteContext();
