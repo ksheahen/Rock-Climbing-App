@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING } from "../../theme";
+import { BORDERRADIUS, PADDING, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,13 +10,13 @@ export const styles = StyleSheet.create({
     paddingVertical: PADDING.page_padding / 2,
   },
   button: {
-    backgroundColor: COLORS.background3,
-    paddingVertical: PADDING.dropdown_padding / 2,
-    paddingHorizontal: PADDING.dropdown_padding,
+    backgroundColor: global.colors.background_2,
+    paddingVertical: global.padding.small / 2,
+    paddingHorizontal: global.padding.small,
     borderRadius: BORDERRADIUS.default,
   },
   text: {
-    fontSize: FONT_SIZES.small,
-    color: COLORS.text1,
+    fontSize: global.font_size.phone_medium,
+    color: global.colors.text_1,
   },
 });

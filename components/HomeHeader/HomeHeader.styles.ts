@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES } from "../../theme";
+import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   header: {
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   logo: {
     fontSize: FONT_SIZES.regular,
     fontWeight: "600",
-    color: COLORS.text1,
+    color: global.colors.text_1,
     fontFamily: "Roboto",
   },
   headerRight: {

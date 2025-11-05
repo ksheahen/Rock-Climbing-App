@@ -93,7 +93,7 @@ function IndividualClimbPage() {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <View style={styles.leftright_container}>
         <View style={styles.left}>
           <BackButton />
@@ -102,40 +102,46 @@ function IndividualClimbPage() {
           <SettingsButton />
         </View>
       </View>
-      <View style={styles.media}></View>
-      <Category
-        selectedProp={selectedCategory}
-        onSelectedChange={setSelectedCategory}
-      />
-      <Line />
-      <Type selectedProp={selectedType} onSelectedChange={setSelectedType} />
-      <Line />
-      <Complete
-        selectedProp={selectedComplete}
-        onSelectedChange={setSelectedComplete}
-      />
-      <Line />
-      <Attempt
-        selectedProp={selectedAttempt}
-        onSelectedChange={setSelectedAttempt}
-      />
-      <Line />
-      <Difficulty
-        selectedProp={selectedGrade}
-        onSelectedChange={setSelectedGrade}
-      />
-      <Line />
-      <Rating
-        selectedProp={selectedRating}
-        onSelectedChange={setSelectedRating}
-      />
-      <Line />
-      {/* TODO */}
-      <DateTime />
-      <Line />
-      {/* TODO */}
-      <Description />
-    </ScrollView>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scroll_container}
+      >
+        <View style={styles.media}></View>
+        <Category
+          selectedProp={selectedCategory}
+          onSelectedChange={setSelectedCategory}
+        />
+        <Line />
+        <Type selectedProp={selectedType} onSelectedChange={setSelectedType} />
+        <Line />
+        <Complete
+          selectedProp={selectedComplete}
+          onSelectedChange={setSelectedComplete}
+        />
+        <Line />
+        <Attempt
+          selectedProp={selectedAttempt}
+          onSelectedChange={setSelectedAttempt}
+        />
+        <Line />
+        <Difficulty
+          selectedProp={selectedGrade}
+          onSelectedChange={setSelectedGrade}
+        />
+        <Line />
+        <Rating
+          selectedProp={selectedRating}
+          onSelectedChange={setSelectedRating}
+        />
+        <Line />
+        {/* TODO */}
+        <DateTime />
+        <Line />
+        {/* TODO */}
+        <Description />
+      </ScrollView>
+    </View>
   );
 }
 

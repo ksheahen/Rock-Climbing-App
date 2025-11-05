@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING } from "../../theme";
+import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   container: {
@@ -17,17 +17,17 @@ export const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50,
-    backgroundColor: COLORS.background3,
+    backgroundColor: global.colors.background_2,
   },
   editButton: {
-    backgroundColor: COLORS.background3,
-    paddingVertical: PADDING.dropdown_padding / 2,
-    paddingHorizontal: PADDING.dropdown_padding,
+    backgroundColor: global.colors.background_2,
+    paddingVertical: global.padding.small / 2,
+    paddingHorizontal: global.padding.small,
     borderRadius: BORDERRADIUS.default,
   },
   editButtonText: {
-    fontSize: FONT_SIZES.small,
-    color: COLORS.text1,
+    fontSize: global.font_size.phone_medium,
+    color: global.colors.text_1,
   },
   name: {
     fontSize: FONT_SIZES.medium,
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   handle: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
     marginLeft: 5,
     color: COLORS.text2,
   },

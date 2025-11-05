@@ -1,18 +1,18 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZES } from "../../theme";
+import { COLORS, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   button: {
     backgroundColor: COLORS.blue,
     padding: 12,
-    borderRadius: 10,
+    borderRadius: global.border.border_radius,
     width: "100%",
     alignItems: "center",
     marginVertical: 10,
   },
   buttonText: {
-    color: COLORS.text1,
-    fontSize: FONT_SIZES.small,
+    color: global.colors.text_1,
+    fontSize: global.font_size.phone_medium,
     fontWeight: "bold",
   },
 });

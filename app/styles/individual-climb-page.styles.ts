@@ -1,21 +1,25 @@
 import { StyleSheet } from "react-native";
-import { COLORS, GLOBAL } from "../../theme";
+import { global } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.background1,
+    backgroundColor: global.colors.background_1,
     display: "flex",
     width: "100%",
-    paddingLeft: GLOBAL.page_leftright_margin,
-    paddingRight: GLOBAL.page_leftright_margin,
-    paddingTop: GLOBAL.page_top_margin,
-    paddingBottom: GLOBAL.page_bottom_margin,
-    gap: GLOBAL.component_spacing_medium,
+    paddingLeft: global.margin.page_border,
+    paddingRight: global.margin.page_border,
+    paddingTop: global.margin.page_top,
+    paddingBottom: global.margin.page_top,
+  },
+  scroll_container: {
+    display: "flex",
+    gap: global.gap.medium,
   },
   leftright_container: {
     display: "flex",
     flexDirection: "row",
     width: "100%",
+    paddingBottom: global.padding.medium,
   },
   left: {},
   right: {
@@ -24,18 +28,10 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
   },
   media: {
-    marginTop: GLOBAL.component_spacing_large,
-    borderRadius: GLOBAL.border_radius,
+    borderRadius: global.border.border_radius,
     width: "100%",
     height: 400, // placeholder until dynamic media
-    backgroundColor: COLORS.background3,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
+    backgroundColor: global.colors.background_2,
   },
 });
 

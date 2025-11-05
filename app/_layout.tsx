@@ -4,6 +4,7 @@
 // we access this database using the sqlite db hook.
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
+import { StatusBar } from "react-native";
 
 function RootLayout() {
   return (
@@ -27,6 +28,8 @@ function RootLayout() {
         `); // Write Ahead Logging, allows concurrency
       }}
     >
+      {/* this makes apple's status bar black */}
+      <StatusBar barStyle="dark-content" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(pages)" options={{ headerShown: false }} />
       </Stack>

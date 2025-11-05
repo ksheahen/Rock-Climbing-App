@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZES, GLOBAL } from "../../theme";
+import { COLORS, GLOBAL, global } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
@@ -9,12 +9,12 @@ const styles = StyleSheet.create({
     marginBottom: GLOBAL.component_spacing_medium,
   },
   date: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
     color: COLORS.text2,
     marginBottom: GLOBAL.component_spacing_medium,
   },
   time: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
     marginTop: GLOBAL.component_spacing_medium,
     marginBottom: GLOBAL.component_spacing_small,
   },

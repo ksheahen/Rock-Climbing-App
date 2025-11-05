@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES } from "../../theme";
+import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   sessionCard: {
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   sessionGrade: {
     fontSize: FONT_SIZES.large,
     fontWeight: "bold",
-    color: COLORS.text1,
+    color: global.colors.text_1,
     fontFamily: "Roboto",
   },
   sessionTries: {
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     gap: 2,
   },
   sessionDate: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
     color: COLORS.textGray,
     fontFamily: "Roboto",
   },

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING } from "../../theme";
+import { BORDERRADIUS, COLORS, PADDING, global } from "../../theme";
 
 const TILE = 90;
 
@@ -14,12 +14,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   title: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
   },
   mediaBox: {
     height: 182,
     width: 182,
-    backgroundColor: COLORS.background3,
+    backgroundColor: global.colors.background_2,
     borderRadius: BORDERRADIUS.default,
     borderWidth: 1,
     borderColor: COLORS.border,

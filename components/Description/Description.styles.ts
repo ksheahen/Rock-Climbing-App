@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { FONT_SIZES, PADDING } from "../../theme";
+import { global } from "../../theme";
 
 export const styles = StyleSheet.create({
   container: {
@@ -8,8 +8,8 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
   title: {
-    fontSize: FONT_SIZES.small,
-    paddingTop: 5, //offset for the dropdown
+    fontSize: global.font_size.phone_medium,
+    paddingTop: global.padding.medium, //offset for the dropdown
   },
   description_container: {
     display: "flex",
@@ -17,9 +17,9 @@ export const styles = StyleSheet.create({
     marginLeft: "auto",
     alignItems: "center", //makes container only as tall as content
     alignSelf: "flex-start",
-    padding: PADDING.dropdown_padding,
+    padding: global.padding.small,
   },
   description: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
   },
 });

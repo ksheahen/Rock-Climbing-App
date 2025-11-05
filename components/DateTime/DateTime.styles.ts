@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES } from "../../theme";
+import { BORDERRADIUS, COLORS, global } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
   },
 
   // single chip on the right
@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
     borderRadius: BORDERRADIUS.default,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    backgroundColor: COLORS.background3,
+    backgroundColor: global.colors.background_2,
     maxWidth: 240,
   },
   pillCompactText: {
-    fontSize: FONT_SIZES.small ?? 12,
+    fontSize: global.font_size.phone_medium ?? 12,
     maxWidth: 200,
   },
 
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   modalTitle: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
@@ -60,10 +60,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   timeRowActive: {
-    backgroundColor: COLORS.background3,
+    backgroundColor: global.colors.background_2,
   },
   timeRowText: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
   },
   timeRowTextActive: {
     fontWeight: "600",
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   modalActionText: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
   },
 });
 

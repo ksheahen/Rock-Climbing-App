@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZES, GLOBAL, PADDING } from "../../theme";
+import { global } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
@@ -8,28 +8,28 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   title: {
-    fontSize: FONT_SIZES.small,
-    paddingTop: 5, //offset for the dropdown
+    fontSize: global.font_size.phone_medium,
+    paddingTop: global.padding.medium, //offset for the dropdown
   },
   picker_container: {
     width: "100%",
   },
   picker: {
-    color: COLORS.text1,
-    fontSize: FONT_SIZES.small,
+    color: global.colors.text_1,
+    fontSize: global.font_size.phone_medium,
   },
   dropdown_container: {
     display: "flex",
     flexDirection: "row",
     marginLeft: "auto",
-    backgroundColor: COLORS.background3,
-    borderRadius: GLOBAL.border_radius,
+    backgroundColor: global.colors.background_2,
+    borderRadius: global.border.border_radius,
     alignItems: "center", //makes container only as tall as content
     alignSelf: "flex-start",
-    padding: PADDING.dropdown_padding,
+    padding: global.padding.small,
   },
   dropdown: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
   },
   icon_container: {},
 });

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZES, GLOBAL } from "../../theme";
+import { GLOBAL, global } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontSize: FONT_SIZES.small,
-    color: COLORS.text1,
+    fontSize: global.font_size.phone_medium,
+    color: global.colors.text_1,
   },
 });
 

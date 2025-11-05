@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES } from "../../theme";
+import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   daySelector: {
@@ -27,16 +27,16 @@ export const styles = StyleSheet.create({
   daySelected: {
     backgroundColor: COLORS.white,
     borderWidth: 2,
-    borderColor: COLORS.text1,
+    borderColor: global.colors.text_1,
   },
   dayText: {
-    fontSize: FONT_SIZES.small,
+    fontSize: global.font_size.phone_medium,
     fontWeight: "600",
     color: COLORS.white,
     fontFamily: "Roboto",
   },
   dayTextSelected: {
-    color: COLORS.text1,
+    color: global.colors.text_1,
   },
   dateText: {
     fontSize: FONT_SIZES.tiny,
@@ -45,6 +45,6 @@ export const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   dateTextSelected: {
-    color: COLORS.text1,
+    color: global.colors.text_1,
   },
 });

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZES } from "../../theme";
+import { COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   pointsSection: {
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   pointsTitle: {
     fontSize: FONT_SIZES.xlarge,
     fontWeight: "bold",
-    color: COLORS.text1,
+    color: global.colors.text_1,
     fontFamily: "Roboto",
   },
   pointsSubtitle: {
