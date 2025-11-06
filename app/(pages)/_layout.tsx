@@ -72,6 +72,18 @@ function TabLayout() {
       />
 
       <Tabs.Screen
+        name="edit-profile"
+        options={{
+          href: null,
+          title: "Edit profile page",
+          tabBarShowLabel: false,
+          tabBarIcon: () => (
+            <Icon name="circle-line" size={30} color={global.colors.text_1} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
         name="individual-climb-page"
         options={{
           href: null,

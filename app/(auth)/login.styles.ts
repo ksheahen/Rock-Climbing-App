@@ -1,5 +1,5 @@
+import { COLORS } from "@/theme";
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../theme";
 
 // TODO: Styling looks a little weird on Android for the email and pwd inputs
 const styles = StyleSheet.create({
@@ -10,6 +10,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingBottom: 120,
     backgroundColor: COLORS.background1,
+  },
+  // TODO: Probably should move email and pwd containers to their own style sheets
+  emailContainer: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+    paddingTop: 20,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+    paddingTop: 20,
+  },
+  input: {
+    flex: 1,
+    paddingLeft: 10,
   },
   logo: {
     height: 150,

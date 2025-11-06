@@ -1,16 +1,24 @@
+import { useRouter } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import styles from "./BackButton.styles";
 
 function BackButton() {
+  const router = useRouter();
+  const handleRedirect = () => {
+    router.push(`/profile`);
+  };
+
   return (
-    <View style={styles.container}>
-      <Icon name="arrow-left-line" size="24"></Icon>
-      <View style={styles.text_container}>
-        <Text style={styles.text}>Back</Text>
+    <TouchableOpacity onPress={() => handleRedirect()}>
+      <View style={styles.container}>
+        <Icon name="arrow-left-line" size="24"></Icon>
+        <View style={styles.text_container}>
+          <Text style={styles.text}>Back</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

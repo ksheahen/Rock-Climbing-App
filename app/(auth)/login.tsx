@@ -1,43 +1,74 @@
+import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Image, StatusBar, Text, View } from "react-native";
+import { Alert, AppState, Image, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, Email, Password } from "../../components";
-import { styles } from "./login.styles";
+import styles from "./login.styles";
 
-const Login = () => {
+// Refreshes session automtically if the app is in the foreground
+AppState.addEventListener("change", (state) => {
+  if (state === "active") {
+    supabase.auth.startAutoRefresh();
+  } else {
+    supabase.auth.stopAutoRefresh();
+  }
+});
+
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // TODO: Find something else and/or create our own logo
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const logo = require("../../assets/icon.png");
   const login = "Login";
   const router = useRouter();
+
+  // Sign In with Email
+  async function signInWithEmail() {
+    if (!email) {
+      setError("Email is required");
+      return;
+    }
+    if (!password) {
+      setError("Password is required");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) {
+      Alert.alert(error.message);
+      setError(error.message);
+    } else {
+      router.navigate("/");
+    }
+    setLoading(false);
+  }
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
-        {/* App Logo */}
         <Image source={logo} alt="logo" style={styles.logo} />
-
-        {/* Email Container */}
         <Email email={email} setEmail={setEmail} />
-
-        {/* Password Container - add eye symbol for revealing pwd*/}
         <Password
           password={password}
           setPassword={setPassword}
           displayText="Password"
         />
-
-        {/* Forgot Password */}
+        {error && <Text>{error}</Text>}
         <View style={styles.forgotPasswordContainer}>
           <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
         </View>
-
-        {/* Button Component */}
-        {/* TODO: Update what button does onPress */}
-        <Button title={login} onPress={() => router.navigate("/")} />
-
+        <Button
+          title={login}
+          disabled={loading}
+          onPress={() => signInWithEmail()}
+        />
         <Text>
           Don&apos;t have an account? Signup{" "}
           <Text
@@ -50,6 +81,4 @@ const Login = () => {
       </SafeAreaView>
     </>
   );
-};
-
-export default Login;
+}
