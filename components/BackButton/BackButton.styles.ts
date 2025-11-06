@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
-import { GLOBAL, global } from "../../theme";
+import { global } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "row",
-    gap: GLOBAL.component_spacing_small,
+    gap: global.gap.small,
   },
   text_container: {
     display: "flex",

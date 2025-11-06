@@ -3,9 +3,9 @@ import { global } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: global.colors.background_1,
     display: "flex",
     width: "100%",
+    backgroundColor: global.colors.background_1,
     paddingLeft: global.margin.page_border,
     paddingRight: global.margin.page_border,
     paddingTop: global.margin.page_top,

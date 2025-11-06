@@ -40,18 +40,18 @@ const styles = StyleSheet.create({
   modalCard: {
     width: "86%",
     maxHeight: "80%",
-    backgroundColor: COLORS.background2 ?? "#fff",
-    borderRadius: BORDERRADIUS.default,
     borderWidth: 1,
-    borderColor: COLORS.border,
     overflow: "hidden",
+    backgroundColor: global.colors.background_1 ?? "#fff",
+    borderColor: global.border.border_color,
+    borderRadius: global.border.border_radius,
   },
   modalTitle: {
     fontSize: global.font_size.phone_medium,
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: global.border.border_color,
   },
 
   timeRow: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 
   modalActions: {
     borderTopWidth: 1,
-    borderTopColor: COLORS.border,
+    borderTopColor: global.border.border_color,
     paddingHorizontal: 16,
     paddingVertical: 10,
     alignItems: "flex-end",

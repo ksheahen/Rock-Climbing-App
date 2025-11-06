@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     marginLeft: "auto",
-    backgroundColor: global.colors.background_2,
-    borderRadius: global.border.border_radius,
     alignItems: "center", //makes container only as tall as content
     alignSelf: "flex-start",
+    backgroundColor: global.colors.background_2,
+    borderRadius: global.border.border_radius,
     padding: global.padding.small,
   },
   dropdown: {
