@@ -9,7 +9,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint app services types",
-    "test": "vitest"
+    "test:vitest": "vitest --config vitest.config.ts",
+    "test:jest": "jest --config jest.config.cjs",
+    "test": "npm run test:jest && npm run test:vitest"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

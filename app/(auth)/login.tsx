@@ -1,9 +1,11 @@
+import Button from "@/components/Button/Button";
+import Email from "@/components/Email/Email";
+import { Password } from "@/components/Password/Password";
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Alert, AppState, Image, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, Email, Password } from "../../components";
 import styles from "./login.styles";
 
 // Refreshes session automtically if the app is in the foreground
