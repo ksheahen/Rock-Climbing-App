@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Alert, AppState, Image, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import styles from "./signup.styles";
+import styles from "../styles/signup.styles";
 
 // Refreshes session automatically if the app is in the foreground
 AppState.addEventListener("change", (state) => {
