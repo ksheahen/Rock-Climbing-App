@@ -16,3 +16,30 @@ const SessionProvider = ({
 );
 
 export default SessionProvider;
+
+// State Mangement Code:
+// _layout:
+// <SessionProvider session={session}>
+//   <Stack screenOptions={{ headerShown: false }}>
+//     <Stack.Protected guard={!!session}>
+//       <Stack.Screen name="(pages)" />
+//     </Stack.Protected>
+
+//     <Stack.Protected guard={!session}>
+//       <Stack.Screen name="login" />
+//       <Stack.Screen name="signup" />
+//     </Stack.Protected>
+//   </Stack>
+// </SessionProvider>
+
+//   const [session, setSession] = useState<Session | null>(null);
+
+// useEffect(() => {
+//   supabase.auth.getSession().then(({ data: { session } }) => {
+//     setSession(session);
+//   });
+
+//   supabase.auth.onAuthStateChange((_event, session) => {
+//     setSession(session);
+//   });
+// }, []);
