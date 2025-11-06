@@ -1,12 +1,12 @@
 import { useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Pressable,
-    Text,
-    TextInput,
-    View,
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 import { getUserById, updateUser } from "../../services/userService";
 import type { User } from "../../types/User";

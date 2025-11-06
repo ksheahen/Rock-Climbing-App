@@ -9,6 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint app services types",
+    "lint:all": "eslint \"app/**\" \"services/**\" \"components/**\" \"types/**\" --ext .js,.jsx,.ts,.tsx --fix",
     "test:vitest": "vitest --config vitest.config.ts",
     "test:jest": "jest --config jest.config.cjs",
     "test": "npm run test:jest && npm run test:vitest"
