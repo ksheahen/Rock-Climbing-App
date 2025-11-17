@@ -15,128 +15,131 @@ import { ScrollView, Text, View } from "react-native";
 import styles from "../styles/log.styles";
 
 function LogAscent() {
-  const db = useSQLiteContext();
-  // local storage
-  const [selectedCategory, setSelectedCategory] = useState("Indoor");
-  const [selectedType, setSelectedType] = useState("Boulder");
-  const [selectedComplete, setSelectedComplete] = useState("Yes");
-  const [selectedAttempt, setSelectedAttempt] = useState("1");
-  const [selectedGrade, setSelectedGrade] = useState("4a/V0");
-  const [selectedRating, setSelectedRating] = useState(0);
-  const [selectedDateTime, setSelectedDateTime] = useState("");
-  const [selectedDescription, setSelectedDescription] = useState("");
-  const [selectedMedia, setSelectedMedia] = useState("");
+	const db = useSQLiteContext();
+	// local storage
+	const [selectedCategory, setSelectedCategory] = useState("Indoor");
+	const [selectedType, setSelectedType] = useState("Boulder");
+	const [selectedComplete, setSelectedComplete] = useState("Yes");
+	const [selectedAttempt, setSelectedAttempt] = useState("1");
+	const [selectedGrade, setSelectedGrade] = useState("4a/V0");
+	const [selectedRating, setSelectedRating] = useState(0);
+	const [selectedDateTime, setSelectedDateTime] = useState("");
+	const [selectedDescription, setSelectedDescription] = useState("");
+	const [selectedMedia, setSelectedMedia] = useState("");
 
-  console.log("----------------------------");
-  console.log("Local Storage 'category'  -", selectedCategory);
-  console.log("Local Storage 'type'      -", selectedType);
-  console.log("Local Storage 'complete'  -", selectedComplete);
-  console.log("Local Storage 'attempt'   -", selectedAttempt);
-  console.log("Local Storage 'grade'     -", selectedGrade);
-  console.log("Local Storage 'rating'    -", selectedRating);
-  console.log("Local Storage 'datetime'  -", selectedDateTime);
-  console.log("Local Storage 'desc'      -", selectedDescription);
-  console.log("Local Storage 'media'     -", selectedMedia);
-  console.log("----------------------------");
+	console.log("----------------------------");
+	console.log("Local Storage 'category'  -", selectedCategory);
+	console.log("Local Storage 'type'      -", selectedType);
+	console.log("Local Storage 'complete'  -", selectedComplete);
+	console.log("Local Storage 'attempt'   -", selectedAttempt);
+	console.log("Local Storage 'grade'     -", selectedGrade);
+	console.log("Local Storage 'rating'    -", selectedRating);
+	console.log("Local Storage 'datetime'  -", selectedDateTime);
+	console.log("Local Storage 'desc'      -", selectedDescription);
+	console.log("Local Storage 'media'     -", selectedMedia);
+	console.log("----------------------------");
 
-  // SEND -------------
-  const handleSubmit = async () => {
-    const climb = {
-      category: selectedCategory,
-      type: selectedType,
-      complete: selectedComplete,
-      attempt: selectedAttempt,
-      grade: selectedGrade,
-      rating: selectedRating,
-      datetime: selectedDateTime,
-      description: selectedDescription,
-      media: selectedMedia,
-    };
-    // check
-    console.log("DB Storage 'category'   -", climb.category);
-    console.log("DB Storage 'type'       - ", climb.type);
-    console.log("DB Storage 'complete'   - ", climb.complete);
-    console.log("DB Storage 'attempt'    - ", climb.attempt);
-    console.log("DB Storage 'grade'      - ", climb.grade);
-    console.log("DB Storage 'rating'     - ", climb.rating);
-    console.log("DB Storage 'datetime'   - ", climb.datetime);
-    console.log("DB Storage 'desc'       - ", climb.description);
-    console.log("DB Storage 'media'      - ", climb.media);
+	// SEND -------------
+	const handleSubmit = async () => {
+		const climb = {
+			category: selectedCategory,
+			type: selectedType,
+			complete: selectedComplete,
+			attempt: selectedAttempt,
+			grade: selectedGrade,
+			rating: selectedRating,
+			datetime: selectedDateTime,
+			description: selectedDescription,
+			media: selectedMedia,
+		};
+		// check
+		console.log("DB Storage 'category'   -", climb.category);
+		console.log("DB Storage 'type'       - ", climb.type);
+		console.log("DB Storage 'complete'   - ", climb.complete);
+		console.log("DB Storage 'attempt'    - ", climb.attempt);
+		console.log("DB Storage 'grade'      - ", climb.grade);
+		console.log("DB Storage 'rating'     - ", climb.rating);
+		console.log("DB Storage 'datetime'   - ", climb.datetime);
+		console.log("DB Storage 'desc'       - ", climb.description);
+		console.log("DB Storage 'media'      - ", climb.media);
 
-    // send to db
-    await db.runAsync(
-      `INSERT INTO log_climb3 (category, type, complete, attempt, grade, rating, datetime, description, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        climb.category,
-        climb.type,
-        climb.complete,
-        climb.attempt,
-        climb.grade,
-        climb.rating,
-        climb.datetime,
-        climb.description,
-        climb.media,
-      ],
-    );
+		// send to db
+		await db.runAsync(
+			`INSERT INTO log_climb3 (category, type, complete, attempt, grade, rating, datetime, description, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			[
+				climb.category,
+				climb.type,
+				climb.complete,
+				climb.attempt,
+				climb.grade,
+				climb.rating,
+				climb.datetime,
+				climb.description,
+				climb.media,
+			],
+		);
 
-    console.log("Sent log data to db...");
-  };
+		console.log("Sent log data to db...");
+	};
 
-  return (
-    <View style={styles.container}>
-      {/* Header */}
-      <Header
-        leftText="Cancel"
-        rightText="Save"
-        onLeftPress={() => console.log("Cancel pressed")}
-        onRightPress={handleSubmit}
-      />
+	const editToggle = false;
 
-      {/* Scrollable Inputs */}
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Log Ascent</Text>
-        </View>
+	return (
+		<View style={styles.container}>
+			{/* Header */}
+			<Header
+				leftText="Cancel"
+				rightText="Save"
+				onLeftPress={() => console.log("Cancel pressed")}
+				onRightPress={handleSubmit}
+			/>
 
-        <Category
-          selectedProp={selectedCategory}
-          onSelectedChange={setSelectedCategory}
-        />
-        <Line />
-        <Type selectedProp={selectedType} onSelectedChange={setSelectedType} />
-        <Line />
-        <Complete
-          selectedProp={selectedComplete}
-          onSelectedChange={setSelectedComplete}
-        />
-        <Line />
-        <Attempt
-          selectedProp={selectedAttempt}
-          onSelectedChange={setSelectedAttempt}
-        />
-        <Line />
-        <Difficulty
-          selectedProp={selectedGrade}
-          onSelectedChange={setSelectedGrade}
-        />
-        <Line />
-        <Rating
-          selectedProp={selectedRating}
-          onSelectedChange={setSelectedRating}
-        />
-        <Line />
-        <DateTime />
-        <Line />
-        <Description />
-        <Line />
-        <Media />
-      </ScrollView>
-    </View>
-  );
+			{/* Scrollable Inputs */}
+			<ScrollView
+				style={styles.scroll}
+				contentContainerStyle={styles.scrollContent}
+				showsVerticalScrollIndicator={false}
+			>
+				<View style={styles.titleContainer}>
+					<Text style={styles.title}>Log Ascent</Text>
+				</View>
+
+				<Category
+					selectedProp={selectedCategory}
+					onSelectedChange={setSelectedCategory}
+					editToggle={editToggle}
+				/>
+				<Line />
+				<Type selectedProp={selectedType} onSelectedChange={setSelectedType} />
+				<Line />
+				<Complete
+					selectedProp={selectedComplete}
+					onSelectedChange={setSelectedComplete}
+				/>
+				<Line />
+				<Attempt
+					selectedProp={selectedAttempt}
+					onSelectedChange={setSelectedAttempt}
+				/>
+				<Line />
+				<Difficulty
+					selectedProp={selectedGrade}
+					onSelectedChange={setSelectedGrade}
+				/>
+				<Line />
+				<Rating
+					selectedProp={selectedRating}
+					onSelectedChange={setSelectedRating}
+				/>
+				<Line />
+				<DateTime />
+				<Line />
+				<Description />
+				<Line />
+				<Media />
+			</ScrollView>
+		</View>
+	);
 }
 
 export default LogAscent;
