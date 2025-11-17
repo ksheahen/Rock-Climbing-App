@@ -33,15 +33,13 @@ function Category({
 		}
 	}, [selectedCategory, onSelectedChange]);
 
-	console.log("edit toggle", editToggle);
-
 	return (
 		<View>
 			<View style={styles.container}>
 				<Text style={styles.title}>Category</Text>
 
 				{/* when editToggle = true, show everthing */}
-				{/* when editToggle = false, show only {selectedCategory} */}
+				{/* when editToggle = false, show only view mode */}
 				{editToggle ? (
 					<Pressable
 						style={styles.dropdown_container} // we use pressable instead of a view to use onPress param
@@ -60,7 +58,7 @@ function Category({
 
 			</View>
 			{/* conditionally render the picker */}
-			{isPickerVisible && (
+			{editToggle && isPickerVisible && (
 				<View style={styles.picker_container}>
 					<Picker
 						selectedValue={selectedCategory}

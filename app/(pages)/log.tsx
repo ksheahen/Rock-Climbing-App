@@ -26,6 +26,7 @@ function LogAscent() {
 	const [selectedDateTime, setSelectedDateTime] = useState("");
 	const [selectedDescription, setSelectedDescription] = useState("");
 	const [selectedMedia, setSelectedMedia] = useState("");
+	const editToggle = true;
 
 	console.log("----------------------------");
 	console.log("Local Storage 'category'  -", selectedCategory);
@@ -82,8 +83,6 @@ function LogAscent() {
 		console.log("Sent log data to db...");
 	};
 
-	const editToggle = false;
-
 	return (
 		<View style={styles.container}>
 			{/* Header */}
@@ -110,29 +109,33 @@ function LogAscent() {
 					editToggle={editToggle}
 				/>
 				<Line />
-				<Type selectedProp={selectedType} onSelectedChange={setSelectedType} />
+				<Type selectedProp={selectedType} onSelectedChange={setSelectedType} editToggle={editToggle} />
 				<Line />
 				<Complete
 					selectedProp={selectedComplete}
 					onSelectedChange={setSelectedComplete}
+					editToggle={editToggle}
 				/>
 				<Line />
 				<Attempt
 					selectedProp={selectedAttempt}
 					onSelectedChange={setSelectedAttempt}
+					editToggle={editToggle}
 				/>
 				<Line />
 				<Difficulty
 					selectedProp={selectedGrade}
 					onSelectedChange={setSelectedGrade}
+					editToggle={editToggle}
 				/>
 				<Line />
 				<Rating
 					selectedProp={selectedRating}
 					onSelectedChange={setSelectedRating}
+					editToggle={editToggle}
 				/>
 				<Line />
-				<DateTime />
+				<DateTime editToggle={editToggle} />
 				<Line />
 				<Description />
 				<Line />
