@@ -6,7 +6,7 @@ import styles from "./Attempt.styles";
 
 interface AttemptComponentProps {
 	selectedProp: string;
-	onSelectedChange?: (category: string) => void;
+	onSelectedChange?: (value: string) => void;
 	editToggle: boolean;
 }
 

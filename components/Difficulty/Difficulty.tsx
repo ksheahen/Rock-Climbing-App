@@ -6,7 +6,7 @@ import styles from "./Difficulty.styles";
 
 interface GradeComponentProps {
 	selectedProp: string;
-	onSelectedChange?: (category: string) => void;
+	onSelectedChange?: (value: string) => void;
 	editToggle: boolean;
 }
 

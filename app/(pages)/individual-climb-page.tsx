@@ -94,7 +94,7 @@ function IndividualClimbPage() {
 		}, [paramsid]),
 	);
 
-	console.log("modalVisible: ", modalVisible);
+	console.log("Parent modalVisible: ", modalVisible);
 
 	return (
 		<View style={styles.container}>
@@ -103,7 +103,7 @@ function IndividualClimbPage() {
 					<BackButton />
 				</View>
 				<View style={styles.right}>
-					<SettingsButton />
+					<SettingsButton modalVisibleProp={modalVisible} onSelectedChange={setModalVisible} />
 				</View>
 			</View>
 			<ScrollView

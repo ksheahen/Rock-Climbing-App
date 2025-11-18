@@ -7,7 +7,7 @@ import styles from "./Category.styles";
 // type checking
 interface CategoryComponentProps {
 	selectedProp: string;
-	onSelectedChange?: (category: string) => void;
+	onSelectedChange?: (value: string) => void;
 	editToggle: boolean;
 }
 
@@ -17,7 +17,7 @@ function Category({
 	editToggle,
 }: CategoryComponentProps) {
 	const [selectedCategory, setSelectedCategory] = useState(
-		selectedProp || "Indoor",
+		selectedProp,
 	);
 	const [isPickerVisible, setIsPickerVisible] = useState(false);
 

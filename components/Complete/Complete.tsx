@@ -6,7 +6,7 @@ import styles from "./Complete.styles";
 
 interface CompleteComponentProps {
 	selectedProp: string;
-	onSelectedChange?: (category: string) => void;
+	onSelectedChange?: (value: string) => void;
 	editToggle: boolean;
 }
 
