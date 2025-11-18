@@ -15,6 +15,11 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
 import { ScrollView, View } from "react-native";
 import styles from "../styles/individual-climb-page.styles";
+import { Link } from "expo-router";
+import { Modal } from "react-native";
+import { Text } from "react-native";
+import { Pressable } from "react-native";
+import Icon from "react-native-remix-icon";
 
 // TODO: Make it so that this page
 // can also update the values in
@@ -150,6 +155,16 @@ function IndividualClimbPage() {
 				{/* TODO */}
 				<Description />
 			</ScrollView>
+
+
+			{/* modal is visible only modalVisible = true */}
+			<Modal visible={modalVisible} animationType="slide" transparent={true}>
+				{/* overlay */}
+				<Pressable style={styles.modal_outter_container} onPress={() => setModalVisible(false)}></Pressable>
+				{/* modal */}
+				<View style={styles.modal_inner_container}></View>
+			</Modal>
+
 		</View>
 	);
 }

@@ -1,4 +1,4 @@
-import { Pressable } from "react-native";
+import { Modal, Pressable, View, Text } from "react-native";
 import Icon from "react-native-remix-icon";
 import styles from "./SettingsButton.styles";
 import { useEffect, useState } from "react";
@@ -25,9 +25,11 @@ function SettingsButton({ modalVisibleProp, onSelectedChange }: SettingsButtonPr
 	}, [modalVisible, onSelectedChange]);
 
 	return (
-		<Pressable style={styles.container} onPress={() => setModalVisible(!modalVisible)}>
-			<Icon name="settings-3-line" size="24"></Icon>
-		</Pressable>
+		<View>
+			<Pressable style={styles.container} onPress={() => setModalVisible(!modalVisible)}>
+				<Icon name="settings-3-line" size="24"></Icon>
+			</Pressable>
+		</View>
 	);
 }
 
