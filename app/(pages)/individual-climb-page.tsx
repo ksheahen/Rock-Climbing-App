@@ -35,6 +35,7 @@ function IndividualClimbPage() {
 	const [selectedDescription, setSelectedDescription] = useState("");
 	const [selectedMedia, setSelectedMedia] = useState("");
 	const editToggle = false;
+	const [modalVisible, setModalVisible] = useState(false);
 
 	console.log("----------------------------");
 	console.log("Local Storage 'category'  -", selectedCategory);
@@ -93,6 +94,8 @@ function IndividualClimbPage() {
 		}, [paramsid]),
 	);
 
+	console.log("modalVisible: ", modalVisible);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.leftright_container}>
@@ -112,32 +115,37 @@ function IndividualClimbPage() {
 				<Category
 					selectedProp={selectedCategory}
 					onSelectedChange={setSelectedCategory}
+					editToggle={editToggle}
 				/>
 				<Line />
-				<Type selectedProp={selectedType} onSelectedChange={setSelectedType} />
+				<Type selectedProp={selectedType} onSelectedChange={setSelectedType} editToggle={editToggle} />
 				<Line />
 				<Complete
 					selectedProp={selectedComplete}
 					onSelectedChange={setSelectedComplete}
+					editToggle={editToggle}
 				/>
 				<Line />
 				<Attempt
 					selectedProp={selectedAttempt}
 					onSelectedChange={setSelectedAttempt}
+					editToggle={editToggle}
 				/>
 				<Line />
 				<Difficulty
 					selectedProp={selectedGrade}
 					onSelectedChange={setSelectedGrade}
+					editToggle={editToggle}
 				/>
 				<Line />
 				<Rating
 					selectedProp={selectedRating}
 					onSelectedChange={setSelectedRating}
+					editToggle={editToggle}
 				/>
 				<Line />
 				{/* TODO */}
-				<DateTime />
+				<DateTime editToggle={editToggle} />
 				<Line />
 				{/* TODO */}
 				<Description />
