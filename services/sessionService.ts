@@ -79,3 +79,41 @@ export const deleteSession = async (sessionId: string): Promise<boolean> => {
 
   return true;
 };
+
+// Fetch recent sessions with climbs for a user
+export const getRecentSessionsWithClimbs = async (
+  userId: string,
+  limit: number = 10,
+): Promise<SessionWithClimbs[]> => {
+  const { data, error } = await table("session")
+    .select(
+      `
+      *,
+      climb (*)
+    `,
+    )
+    .eq("user_id", userId)
+    .order("date", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Error fetching sessions with climbs:", error);
+    return [];
+  }
+
+  return data as SessionWithClimbs[];
+};
+
+// Type for session with climbs included
+export interface SessionWithClimbs extends Session {
+  climb: Array<{
+    climb_id: string;
+    session_id: string;
+    type: string;
+    grade: string;
+    attempts: number;
+    rating?: number | null;
+    comments?: string | null;
+    media_id?: string | null;
+  }>;
+}

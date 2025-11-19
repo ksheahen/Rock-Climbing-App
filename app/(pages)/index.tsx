@@ -1,6 +1,7 @@
-import { router } from "expo-router";
-import React, { useMemo, useState } from "react";
-import { ScrollView } from "react-native";
+import { router, useFocusEffect } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+import React, { useCallback, useMemo, useState } from "react";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import {
   AnalyticsPreview,
   DayData,
@@ -14,7 +15,22 @@ import {
 } from "../../components";
 import styles from "../styles/index.styles";
 
+// Local climb log interface matching SQLite schema
+interface ClimbLog {
+  id: number;
+  category: string;
+  type: string;
+  complete: string;
+  attempt: string;
+  grade: string;
+  rating: number;
+  datetime: string;
+  description: string;
+  media: string;
+}
+
 const Index = () => {
+  const db = useSQLiteContext();
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({
     grades: [],
@@ -22,6 +38,70 @@ const Index = () => {
     stars: [],
     dateRange: "all",
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [climbLogs, setClimbLogs] = useState<ClimbLog[]>([]);
+
+  // Fetch climb logs from SQLite - runs every time the page comes into focus
+  const fetchClimbLogs = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Query all climbs from SQLite, ordered by id descending (most recent first)
+      const result = await db.getAllAsync<ClimbLog>(
+        `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`
+      );
+
+      setClimbLogs(result);
+    } catch (err: any) {
+      const errorMessage = err?.message || "Failed to load climb logs";
+      console.error("Error fetching climb logs:", err);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  }, [db]);
+
+  // Refresh logs whenever the screen comes into focus (e.g., after logging a climb)
+  useFocusEffect(
+    useCallback(() => {
+      fetchClimbLogs();
+    }, [fetchClimbLogs])
+  );
+
+  // Convert SQLite climb logs to SessionData format for UI
+  const allSessionsData: SessionData[] = useMemo(() => {
+    return climbLogs.map((log) => {
+      // Format date
+      let formattedDate = "N/A";
+      if (log.datetime) {
+        try {
+          const date = new Date(log.datetime);
+          if (!isNaN(date.getTime())) {
+            formattedDate = date.toLocaleDateString("en-US", {
+              month: "numeric",
+              day: "numeric",
+              year: "2-digit",
+            });
+          }
+        } catch {
+          formattedDate = "N/A";
+        }
+      }
+
+      // Format attempts
+      const attemptNum = parseInt(log.attempt) || 1;
+      const tries = `${attemptNum} ${attemptNum === 1 ? "Try" : "Tries"}`;
+
+      return {
+        grade: log.grade,
+        tries: tries,
+        stars: log.rating || 0,
+        date: formattedDate,
+      };
+    });
+  }, [climbLogs]);
 
   const days: DayData[] = [
     { day: "S", date: "20", status: "red" },
@@ -53,14 +133,7 @@ const Index = () => {
 
   // Filtered sessions based on current filters
   const filteredSessions = useMemo(() => {
-    // All sessions data
-    const allSessions: SessionData[] = [
-      { grade: "V10", tries: "3 Tries", stars: 2, date: "9/22/25" },
-      { grade: "V8", tries: "10+ Tries", stars: 3, date: "9/22/25" },
-      { grade: "V7", tries: "5 Tries", stars: 2, date: "9/21/25" },
-    ];
-
-    let filtered = [...allSessions];
+    let filtered = [...allSessionsData];
 
     // Filter by grade
     if (filters.grades.length > 0) {
@@ -85,12 +158,8 @@ const Index = () => {
       );
     }
 
-    // Note: Date range filtering would require actual date objects
-    // For now, we're using the mock date strings
-    // In a real app, you'd compare actual dates here
-
     return filtered;
-  }, [filters]);
+  }, [allSessionsData, filters]);
 
   const handleFilterPress = () => {
     setFilterModalVisible(true);
@@ -102,17 +171,50 @@ const Index = () => {
 
   const handleDayPress = (index: number) => {
     // TODO: Implement day selection functionality
-    console.log("Day pressed:", index);
   };
 
   const handleSessionPress = (index: number) => {
-    // TODO: Navigate to session detail page
-    console.log("Session pressed:", index);
+    // Navigate to individual climb page
+    const climbId = climbLogs[index]?.id;
+    if (climbId) {
+      router.push(`/individual-climb-page?id=${climbId}`);
+    }
   };
 
   const handleAnalyticsPress = () => {
     router.push("/analytics");
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text style={{ marginTop: 10, color: "#8E8E93" }}>Loading logs...</Text>
+      </View>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center", padding: 20 },
+        ]}
+      >
+        <Text style={{ color: "#FF3B30", fontSize: 16, textAlign: "center" }}>
+          {error}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <>
@@ -120,10 +222,21 @@ const Index = () => {
         <HomeHeader streakCount={2} onFilterPress={handleFilterPress} />
         <PointsDisplay points={104} subtitle="This week" />
         <DaySelector days={days} onDayPress={handleDayPress} />
-        <RecentSessions
-          sessions={filteredSessions}
-          onSessionPress={handleSessionPress}
-        />
+        {filteredSessions.length === 0 ? (
+          <View style={{ padding: 20, alignItems: "center" }}>
+            <Text
+              style={{ color: "#8E8E93", fontSize: 16, textAlign: "center" }}
+            >
+              No climb logs yet.{"\n"}
+              Start logging your climbs!
+            </Text>
+          </View>
+        ) : (
+          <RecentSessions
+            sessions={filteredSessions}
+            onSessionPress={handleSessionPress}
+          />
+        )}
         <AnalyticsPreview onPress={handleAnalyticsPress} />
       </ScrollView>
 
