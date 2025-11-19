@@ -16,6 +16,11 @@ function Difficulty({ selectedProp, onSelectedChange, editToggle }: GradeCompone
 	);
 	const [isPickerVisible, setIsPickerVisible] = useState(false);
 
+	// Sync internal state with prop whenever the prop changes
+	useEffect(() => {
+		setSelectedDifficulty(selectedProp);
+	}, [selectedProp]);
+
 	// notify parent whenever the state changes
 	useEffect(() => {
 		if (onSelectedChange) {

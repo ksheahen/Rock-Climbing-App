@@ -58,6 +58,24 @@ const styles = StyleSheet.create({
 	modal_text: {
 		fontSize: global.font_size.phone_medium,
 	},
+	save_container: {
+		marginTop: global.margin.page_border,
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	save_button: {
+		backgroundColor: global.colors.background_2,
+		padding: global.padding.medium,
+		paddingLeft: 30,
+		paddingRight: 30,
+		height: "auto",
+		width: "auto",
+		borderRadius: global.border.border_radius,
+	},
+	save_text: {
+		fontSize: global.font_size.phone_medium,
+	},
 });
 
 export default styles;

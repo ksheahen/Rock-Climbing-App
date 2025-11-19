@@ -12,6 +12,7 @@ import Type from "@/components/Type/Type";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 import styles from "../styles/log.styles";
 
 function LogAscent() {
@@ -27,6 +28,7 @@ function LogAscent() {
 	const [selectedDescription, setSelectedDescription] = useState("");
 	const [selectedMedia, setSelectedMedia] = useState("");
 	const editToggle = true;
+	const router = useRouter();
 
 	console.log("----------------------------");
 	console.log("Local Storage 'category'  -", selectedCategory);

@@ -39,7 +39,7 @@ function IndividualClimbPage() {
 	const [selectedDateTime, setSelectedDateTime] = useState("");
 	const [selectedDescription, setSelectedDescription] = useState("");
 	const [selectedMedia, setSelectedMedia] = useState("");
-	const editToggle = false;
+	const [editToggle, setEditToggle] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
 
 	console.log("----------------------------");
@@ -92,18 +92,71 @@ function IndividualClimbPage() {
 		}
 	};
 
-	// Trigger loadClimbs whenever the screen is focused
+	// SEND -------------
+	const handleSubmit = async () => {
+		const climb = {
+			category: selectedCategory,
+			type: selectedType,
+			complete: selectedComplete,
+			attempt: selectedAttempt,
+			grade: selectedGrade,
+			rating: selectedRating,
+			datetime: selectedDateTime,
+			description: selectedDescription,
+			media: selectedMedia,
+		};
+		// check
+		console.log("DB Storage 'category'   -", climb.category);
+		console.log("DB Storage 'type'       - ", climb.type);
+		console.log("DB Storage 'complete'   - ", climb.complete);
+		console.log("DB Storage 'attempt'    - ", climb.attempt);
+		console.log("DB Storage 'grade'      - ", climb.grade);
+		console.log("DB Storage 'rating'     - ", climb.rating);
+		console.log("DB Storage 'datetime'   - ", climb.datetime);
+		console.log("DB Storage 'desc'       - ", climb.description);
+		console.log("DB Storage 'media'      - ", climb.media);
+
+		// update the db
+		await db.runAsync(
+			`UPDATE log_climb3 
+			SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?
+			WHERE id = ?`,
+			[
+				climb.category,
+				climb.type,
+				climb.complete,
+				climb.attempt,
+				climb.grade,
+				climb.rating,
+				climb.datetime,
+				climb.description,
+				climb.media,
+				paramsid,
+			]
+		);
+
+		console.log("Sent log data to db...");
+		setEditToggle(false);
+	};
+
+	// trigger loadClimbs whenever the screen is focused
 	useFocusEffect(
 		useCallback(() => {
+			// on focus, load climb data
 			loadClimbs();
+
+			// on unfocus, reset editToggle
+			return () => {
+				setEditToggle(false);
+			};
 		}, [paramsid]),
 	);
 
 	const editPress = async () => {
 		console.log("edit pressed");
 		setModalVisible(false);
+		setEditToggle(true);
 	};
-
 
 	const deletePress = async () => {
 		console.log("delete pressed");
@@ -163,8 +216,17 @@ function IndividualClimbPage() {
 				<Line />
 				{/* TODO */}
 				<Description />
+				{/* only render the button when in edit mode */}
+				{editToggle ? (
+					<View style={styles.save_container}>
+						<Pressable onPress={handleSubmit} style={styles.save_button}>
+							<Text style={styles.save_text}>Save</Text>
+						</Pressable>
+					</View>
+				) : (
+					<View></View>
+				)}
 			</ScrollView>
-
 
 			{/* modal is visible only modalVisible = true */}
 			<Modal visible={modalVisible} animationType="slide" transparent={true}>
