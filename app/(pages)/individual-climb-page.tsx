@@ -99,7 +99,16 @@ function IndividualClimbPage() {
 		}, [paramsid]),
 	);
 
-	console.log("Parent modalVisible: ", modalVisible);
+	const editPress = async () => {
+		console.log("edit pressed");
+		setModalVisible(false);
+	};
+
+
+	const deletePress = async () => {
+		console.log("delete pressed");
+		setModalVisible(false);
+	};
 
 	return (
 		<View style={styles.container}>
@@ -162,7 +171,14 @@ function IndividualClimbPage() {
 				{/* overlay */}
 				<Pressable style={styles.modal_outter_container} onPress={() => setModalVisible(false)}></Pressable>
 				{/* modal */}
-				<View style={styles.modal_inner_container}></View>
+				<View style={styles.modal_inner_container}>
+					<Pressable style={styles.modal_button} onPress={() => editPress()}>
+						<Text style={styles.modal_text}>Edit Climb</Text>
+					</Pressable>
+					<Pressable style={styles.modal_button} onPress={() => deletePress()}>
+						<Text style={styles.modal_text}>Delete Climb</Text>
+					</Pressable>
+				</View>
 			</Modal>
 
 		</View>

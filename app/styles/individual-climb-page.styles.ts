@@ -40,10 +40,23 @@ const styles = StyleSheet.create({
 	},
 	modal_inner_container: {
 		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-evenly",
 		width: "100%",
-		height: "20%",
+		height: 105,
+		gap: global.gap.medium,
+		padding: global.padding.large,
 		backgroundColor: global.colors.background_1,
-		// for some reason borderRadius doesnt work here
+	},
+	modal_button: {
+		backgroundColor: global.colors.background_2,
+		padding: global.padding.medium,
+		height: "auto",
+		borderRadius: global.border.border_radius,
+	},
+	modal_text: {
+		fontSize: global.font_size.phone_medium,
 	},
 });
 
