@@ -46,7 +46,12 @@ function ClimbHistory() {
         <View key={climb.id} style={styles.mini_container}>
           <TouchableOpacity onPress={() => handleRedirect(climb.id)}>
             <Text style={styles.time}>
-              {climb.datetime ? new Date(climb.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '6:55 PM'}
+              {climb.datetime
+                ? new Date(climb.datetime).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "6:55 PM"}
             </Text>
             <View style={styles.gradeRow}>
               <Icon name="check-line" size="18" />
@@ -54,7 +59,10 @@ function ClimbHistory() {
               <Text style={styles.stars}>{climb.rating || 0} Stars</Text>
             </View>
             <View style={styles.tries}>
-              <Text>{climb.attempt} {parseInt(climb.attempt) === 1 ? 'Try' : 'Tries'}</Text>
+              <Text>
+                {climb.attempt}{" "}
+                {parseInt(climb.attempt) === 1 ? "Try" : "Tries"}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

@@ -37,7 +37,7 @@ const Index = () => {
 
       // Query all climbs from log_climb3 table, ordered by id descending (most recent first)
       const result = await db.getAllAsync<LocalClimb>(
-        `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`
+        `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`,
       );
 
       setClimbs(result);
@@ -54,7 +54,7 @@ const Index = () => {
   useFocusEffect(
     useCallback(() => {
       fetchClimbs();
-    }, [fetchClimbs])
+    }, [fetchClimbs]),
   );
 
   // Convert climbs to SessionData format for UI
@@ -125,7 +125,7 @@ const Index = () => {
     // Filter by grade
     if (filters.grades.length > 0) {
       filtered = filtered.filter((session) =>
-        filters.grades.includes(session.grade)
+        filters.grades.includes(session.grade),
       );
     }
 
@@ -133,15 +133,15 @@ const Index = () => {
     if (filters.tries.length > 0) {
       filtered = filtered.filter((session) =>
         filters.tries.some((filterTries) =>
-          matchesTries(session.tries, filterTries)
-        )
+          matchesTries(session.tries, filterTries),
+        ),
       );
     }
 
     // Filter by stars
     if (filters.stars.length > 0) {
       filtered = filtered.filter((session) =>
-        filters.stars.includes(session.stars)
+        filters.stars.includes(session.stars),
       );
     }
 
@@ -175,11 +175,14 @@ const Index = () => {
   // Loading state
   if (loading) {
     return (
-      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
         <ActivityIndicator size="large" color="#007AFF" />
-        <Text style={{ marginTop: 10, color: "#8E8E93" }}>
-          Loading logs...
-        </Text>
+        <Text style={{ marginTop: 10, color: "#8E8E93" }}>Loading logs...</Text>
       </View>
     );
   }
@@ -187,7 +190,12 @@ const Index = () => {
   // Error state
   if (error) {
     return (
-      <View style={[styles.container, { justifyContent: "center", alignItems: "center", padding: 20 }]}>
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center", padding: 20 },
+        ]}
+      >
         <Text style={{ color: "#FF3B30", fontSize: 16, textAlign: "center" }}>
           {error}
         </Text>
@@ -203,7 +211,9 @@ const Index = () => {
         <DaySelector days={days} onDayPress={handleDayPress} />
         {filteredSessions.length === 0 ? (
           <View style={{ padding: 20, alignItems: "center" }}>
-            <Text style={{ color: "#8E8E93", fontSize: 16, textAlign: "center" }}>
+            <Text
+              style={{ color: "#8E8E93", fontSize: 16, textAlign: "center" }}
+            >
               No climb logs yet.{"\n"}
               Start logging your climbs!
             </Text>
