@@ -6,73 +6,70 @@ import styles from "./Category.styles";
 
 // type checking
 interface CategoryComponentProps {
-	selectedProp: string;
-	onSelectedChange?: (value: string) => void;
-	editToggle: boolean;
+  selectedProp: string;
+  onSelectedChange?: (value: string) => void;
+  editToggle: boolean;
 }
 
 function Category({
-	selectedProp, // sets the initial category
-	onSelectedChange, // callback function
-	editToggle,
+  selectedProp, // sets the initial category
+  onSelectedChange, // callback function
+  editToggle,
 }: CategoryComponentProps) {
-	const [selectedCategory, setSelectedCategory] = useState(
-		selectedProp,
-	);
-	const [isPickerVisible, setIsPickerVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(selectedProp);
+  const [isPickerVisible, setIsPickerVisible] = useState(false);
 
-	// Sync internal state with prop whenever the prop changes
-	useEffect(() => {
-		setSelectedCategory(selectedProp);
-	}, [selectedProp]);
+  // Sync internal state with prop whenever the prop changes
+  useEffect(() => {
+    setSelectedCategory(selectedProp);
+  }, [selectedProp]);
 
-	// Notify parent whenever the internal state changes
-	useEffect(() => {
-		if (onSelectedChange) {
-			onSelectedChange(selectedCategory);
-		}
-	}, [selectedCategory, onSelectedChange]);
+  // Notify parent whenever the internal state changes
+  useEffect(() => {
+    if (onSelectedChange) {
+      onSelectedChange(selectedCategory);
+    }
+  }, [selectedCategory, onSelectedChange]);
 
-	return (
-		<View>
-			<View style={styles.container}>
-				<Text style={styles.title}>Category</Text>
+  return (
+    <View>
+      <View style={styles.container}>
+        <Text style={styles.title}>Category</Text>
 
-				{/* when editToggle = true, show everthing */}
-				{/* when editToggle = false, show only view mode */}
-				{editToggle ? (
-					<Pressable
-						style={styles.dropdown_container} // we use pressable instead of a view to use onPress param
-						onPress={() => setIsPickerVisible(!isPickerVisible)}
-					>
-						<Text style={styles.dropdown}>{selectedCategory}</Text>
-						<View style={styles.icon_container}>
-							<Icon name="arrow-drop-down-line" size="24"></Icon>
-						</View>
-					</Pressable>
-				) : (
-					<View style={styles.dropdown_container}>
-						<Text style={styles.dropdown}>{selectedCategory}</Text>
-					</View>
-				)}
-
-			</View>
-			{/* conditionally render the picker */}
-			{editToggle && isPickerVisible && (
-				<View style={styles.picker_container}>
-					<Picker
-						selectedValue={selectedCategory}
-						onValueChange={(e) => setSelectedCategory(e)}
-						itemStyle={styles.picker}
-					>
-						<Picker.Item label="Indoor" value="Indoor" />
-						<Picker.Item label="Outdoor" value="Outdoor" />
-						<Picker.Item label="Board" value="Board" />
-					</Picker>
-				</View>
-			)}
-		</View>
-	);
+        {/* when editToggle = true, show everthing */}
+        {/* when editToggle = false, show only view mode */}
+        {editToggle ? (
+          <Pressable
+            style={styles.dropdown_container} // we use pressable instead of a view to use onPress param
+            onPress={() => setIsPickerVisible(!isPickerVisible)}
+          >
+            <Text style={styles.dropdown}>{selectedCategory}</Text>
+            <View style={styles.icon_container}>
+              <Icon name="arrow-drop-down-line" size="24"></Icon>
+            </View>
+          </Pressable>
+        ) : (
+          <View style={styles.dropdown_container}>
+            <Text style={styles.dropdown}>{selectedCategory}</Text>
+          </View>
+        )}
+      </View>
+      {/* conditionally render the picker */}
+      {editToggle && isPickerVisible && (
+        <View style={styles.picker_container}>
+          <Picker
+            selectedValue={selectedCategory}
+            onValueChange={(e) => setSelectedCategory(e)}
+            itemStyle={styles.picker}
+          >
+            <Picker.Item label="Indoor" value="Indoor" />
+            <Picker.Item label="Outdoor" value="Outdoor" />
+            <Picker.Item label="Board" value="Board" />
+          </Picker>
+        </View>
+      )}
+    </View>
+  );
 }
 
 export default Category;
