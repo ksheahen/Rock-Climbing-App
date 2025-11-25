@@ -8,11 +8,13 @@ import styles from "./Type.styles";
 interface TypeComponentProps {
   selectedProp: string;
   onSelectedChange?: (category: string) => void;
+  editToggle: boolean;
 }
 
 function Type({
   selectedProp, // sets the initial category
   onSelectedChange, // callback function
+  editToggle,
 }: TypeComponentProps) {
   const [selectedType, setSelectedType] = useState(selectedProp || "Boulder");
   const [isPickerVisible, setIsPickerVisible] = useState(false);
@@ -33,19 +35,28 @@ function Type({
     <View>
       <View style={styles.container}>
         <Text style={styles.title}>Type</Text>
-        <Pressable
-          style={styles.dropdown_container}
-          onPress={() => setIsPickerVisible(!isPickerVisible)}
-        >
-          <Text style={styles.dropdown}>{selectedType}</Text>
-          <View style={styles.icon_container}>
-            <Icon name="arrow-drop-down-line" size="24"></Icon>
+
+        {/* when editToggle = true, show everthing */}
+        {/* when editToggle = false, show just view mode */}
+        {editToggle ? (
+          <Pressable
+            style={styles.dropdown_container}
+            onPress={() => setIsPickerVisible(!isPickerVisible)}
+          >
+            <Text style={styles.dropdown}>{selectedType}</Text>
+            <View style={styles.icon_container}>
+              <Icon name="arrow-drop-down-line" size="24"></Icon>
+            </View>
+          </Pressable>
+        ) : (
+          <View style={styles.dropdown_container}>
+            <Text style={styles.dropdown}>{selectedType}</Text>
           </View>
-        </Pressable>
+        )}
       </View>
 
       {/* conditionally render the picker */}
-      {isPickerVisible && (
+      {editToggle && isPickerVisible && (
         <View style={styles.picker_container}>
           <Picker
             selectedValue={selectedType}

@@ -6,14 +6,24 @@ import styles from "./Difficulty.styles";
 
 interface GradeComponentProps {
   selectedProp: string;
-  onSelectedChange?: (category: string) => void;
+  onSelectedChange?: (value: string) => void;
+  editToggle: boolean;
 }
 
-function Difficulty({ selectedProp, onSelectedChange }: GradeComponentProps) {
+function Difficulty({
+  selectedProp,
+  onSelectedChange,
+  editToggle,
+}: GradeComponentProps) {
   const [selectedDifficulty, setSelectedDifficulty] = useState(
     selectedProp || "4a/V0",
   );
   const [isPickerVisible, setIsPickerVisible] = useState(false);
+
+  // Sync internal state with prop whenever the prop changes
+  useEffect(() => {
+    setSelectedDifficulty(selectedProp);
+  }, [selectedProp]);
 
   // notify parent whenever the state changes
   useEffect(() => {
@@ -26,19 +36,27 @@ function Difficulty({ selectedProp, onSelectedChange }: GradeComponentProps) {
     <View>
       <View style={styles.container}>
         <Text style={styles.title}>Grade</Text>
-        <Pressable
-          style={styles.dropdown_container}
-          onPress={() => setIsPickerVisible(!isPickerVisible)}
-        >
-          <Text style={styles.dropdown}>{selectedDifficulty}</Text>
-          <View style={styles.icon_container}>
-            <Icon name="arrow-drop-down-line" size="24"></Icon>
+        {/* when editToggle = true, show everthing */}
+        {/* when editToggle = false, show just view mode */}
+        {editToggle ? (
+          <Pressable
+            style={styles.dropdown_container}
+            onPress={() => setIsPickerVisible(!isPickerVisible)}
+          >
+            <Text style={styles.dropdown}>{selectedDifficulty}</Text>
+            <View style={styles.icon_container}>
+              <Icon name="arrow-drop-down-line" size="24"></Icon>
+            </View>
+          </Pressable>
+        ) : (
+          <View style={styles.dropdown_container}>
+            <Text style={styles.dropdown}>{selectedDifficulty}</Text>
           </View>
-        </Pressable>
+        )}
       </View>
 
       {/* conditionally render the picker */}
-      {isPickerVisible && (
+      {editToggle && isPickerVisible && (
         <View style={styles.picker_container}>
           <Picker
             selectedValue={selectedDifficulty}

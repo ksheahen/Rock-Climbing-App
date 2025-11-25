@@ -2,6 +2,7 @@
 // so that all children of the application
 // can use the same database.
 // we access this database using the sqlite db hook.
+
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 import { StatusBar } from "react-native";

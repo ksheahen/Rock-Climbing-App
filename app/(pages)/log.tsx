@@ -12,6 +12,7 @@ import Type from "@/components/Type/Type";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 import styles from "../styles/log.styles";
 
 function LogAscent() {
@@ -26,6 +27,8 @@ function LogAscent() {
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedMedia, setSelectedMedia] = useState("");
+  const editToggle = true;
+  const router = useRouter();
 
   console.log("----------------------------");
   console.log("Local Storage 'category'  -", selectedCategory);
@@ -95,31 +98,40 @@ function LogAscent() {
         <Category
           selectedProp={selectedCategory}
           onSelectedChange={setSelectedCategory}
+          editToggle={editToggle}
         />
         <Line />
-        <Type selectedProp={selectedType} onSelectedChange={setSelectedType} />
+        <Type
+          selectedProp={selectedType}
+          onSelectedChange={setSelectedType}
+          editToggle={editToggle}
+        />
         <Line />
         <Complete
           selectedProp={selectedComplete}
           onSelectedChange={setSelectedComplete}
+          editToggle={editToggle}
         />
         <Line />
         <Attempt
           selectedProp={selectedAttempt}
           onSelectedChange={setSelectedAttempt}
+          editToggle={editToggle}
         />
         <Line />
         <Difficulty
           selectedProp={selectedGrade}
           onSelectedChange={setSelectedGrade}
+          editToggle={editToggle}
         />
         <Line />
         <Rating
           selectedProp={selectedRating}
           onSelectedChange={setSelectedRating}
+          editToggle={editToggle}
         />
         <Line />
-        <DateTime />
+        <DateTime editToggle={editToggle} />
         <Line />
         <Description />
         <Line />
