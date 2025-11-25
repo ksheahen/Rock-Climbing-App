@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
-		paddingHorizontal: 20,
 		paddingTop: global.margin.page_top,
 	},
 	logo: {
