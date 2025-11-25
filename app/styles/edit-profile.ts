@@ -1,32 +1,32 @@
-import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING } from "@/theme";
+import { COLORS, FONT_SIZES, PADDING, global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background1,
-    padding: PADDING.page_padding,
+    backgroundColor: global.colors.background_1,
+    padding: global.padding.medium,
     justifyContent: "center",
     alignItems: "center",
   },
   card: {
     width: "100%",
-    backgroundColor: COLORS.background2,
-    borderRadius: BORDERRADIUS.default,
-    padding: PADDING.page_padding * 2,
+    backgroundColor: global.colors.background_1,
+    borderRadius: global.border.border_radius,
+    padding: global.margin.page_border * 2,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
   },
   heading: {
-    fontSize: FONT_SIZES.large,
+    fontSize: global.font_size.phone_large,
     fontWeight: "bold",
-    marginBottom: PADDING.page_padding,
+    marginBottom: global.margin.page_border,
     color: COLORS.text1,
   },
   inputGroup: {
-    marginBottom: PADDING.page_padding,
+    marginBottom: global.margin.page_border,
   },
   label: {
     fontSize: FONT_SIZES.medium,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: BORDERRADIUS.default,
+    borderRadius: global.border.border_radius,
     padding: PADDING.dropdown_padding,
     backgroundColor: COLORS.background3,
     color: COLORS.text1,
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: PADDING.page_padding,
+    marginTop: global.margin.page_border,
   },
   button: {
     flex: 1,
     padding: PADDING.dropdown_padding,
-    borderRadius: BORDERRADIUS.default,
+    borderRadius: global.border.border_radius,
     alignItems: "center",
     marginHorizontal: 5,
   },

@@ -1,21 +1,21 @@
+import { COLORS, GLOBAL, global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { COLORS, GLOBAL, global } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
     marginTop: GLOBAL.component_spacing_large,
   },
   mini_container: {
-    marginBottom: GLOBAL.component_spacing_medium,
+    marginBottom: global.gap.medium,
   },
   date: {
     fontSize: global.font_size.phone_medium,
     color: COLORS.text2,
-    marginBottom: GLOBAL.component_spacing_medium,
+    marginBottom: global.gap.medium,
   },
   time: {
     fontSize: global.font_size.phone_medium,
-    marginTop: GLOBAL.component_spacing_medium,
+    marginTop: global.gap.medium,
     marginBottom: GLOBAL.component_spacing_small,
   },
   gradeRow: {

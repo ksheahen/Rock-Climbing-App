@@ -1,19 +1,19 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, PADDING } from "../../theme";
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: PADDING.page_padding * 4,
+    marginTop: global.margin.page_border * 4,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: PADDING.page_padding,
+    paddingHorizontal: global.margin.page_border,
     paddingVertical: 10,
-    backgroundColor: COLORS.background1,
+    backgroundColor: global.colors.background_1,
   },
   button: {
     backgroundColor: "#E5E5EA",
-    borderRadius: BORDERRADIUS.default,
+    borderRadius: global.border.border_radius,
     paddingHorizontal: 12,
     paddingVertical: 5,
   },

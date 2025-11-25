@@ -1,7 +1,7 @@
+import { COLORS } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../theme";
 import { styles } from "./SessionCard.styles";
 
 export interface SessionData {

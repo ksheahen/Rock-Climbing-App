@@ -1,5 +1,5 @@
+import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   header: {

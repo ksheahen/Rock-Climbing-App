@@ -1,6 +1,6 @@
+import { COLORS } from "@/theme";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput, View } from "react-native";
-import { COLORS } from "../../theme";
 import { styles } from "./Password.styles";
 
 // TODO: May need updating for security purposes
