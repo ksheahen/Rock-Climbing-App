@@ -12,6 +12,7 @@ import Type from "@/components/Type/Type";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 import styles from "../styles/log.styles";
 
 function LogAscent() {
@@ -26,6 +27,8 @@ function LogAscent() {
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedMedia, setSelectedMedia] = useState("");
+  const editToggle = true;
+  const router = useRouter();
 
   console.log("----------------------------");
   console.log("Local Storage 'category'  -", selectedCategory);
@@ -52,18 +55,8 @@ function LogAscent() {
       description: selectedDescription,
       media: selectedMedia,
     };
-    // check
-    console.log("DB Storage 'category'   -", climb.category);
-    console.log("DB Storage 'type'       - ", climb.type);
-    console.log("DB Storage 'complete'   - ", climb.complete);
-    console.log("DB Storage 'attempt'    - ", climb.attempt);
-    console.log("DB Storage 'grade'      - ", climb.grade);
-    console.log("DB Storage 'rating'     - ", climb.rating);
-    console.log("DB Storage 'datetime'   - ", climb.datetime);
-    console.log("DB Storage 'desc'       - ", climb.description);
-    console.log("DB Storage 'media'      - ", climb.media);
 
-    // send to db
+    // Insert into existing log_climb3 table
     await db.runAsync(
       `INSERT INTO log_climb3 (category, type, complete, attempt, grade, rating, datetime, description, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
@@ -79,7 +72,7 @@ function LogAscent() {
       ],
     );
 
-    console.log("Sent log data to db...");
+    console.log("Climb saved to database");
   };
 
   return (
@@ -105,31 +98,40 @@ function LogAscent() {
         <Category
           selectedProp={selectedCategory}
           onSelectedChange={setSelectedCategory}
+          editToggle={editToggle}
         />
         <Line />
-        <Type selectedProp={selectedType} onSelectedChange={setSelectedType} />
+        <Type
+          selectedProp={selectedType}
+          onSelectedChange={setSelectedType}
+          editToggle={editToggle}
+        />
         <Line />
         <Complete
           selectedProp={selectedComplete}
           onSelectedChange={setSelectedComplete}
+          editToggle={editToggle}
         />
         <Line />
         <Attempt
           selectedProp={selectedAttempt}
           onSelectedChange={setSelectedAttempt}
+          editToggle={editToggle}
         />
         <Line />
         <Difficulty
           selectedProp={selectedGrade}
           onSelectedChange={setSelectedGrade}
+          editToggle={editToggle}
         />
         <Line />
         <Rating
           selectedProp={selectedRating}
           onSelectedChange={setSelectedRating}
+          editToggle={editToggle}
         />
         <Line />
-        <DateTime />
+        <DateTime editToggle={editToggle} />
         <Line />
         <Description />
         <Line />

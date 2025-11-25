@@ -1,62 +1,47 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
+    paddingTop: global.margin.page_top,
   },
   logo: {
-    fontSize: FONT_SIZES.regular,
-    fontWeight: "600",
+    fontSize: global.font_size.phone_medium,
     color: global.colors.text_1,
-    fontFamily: "Roboto",
+    fontWeight: 600,
   },
   headerRight: {
     flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 12,
-  },
-  filterContainer: {
-    flexDirection: "column",
-    alignItems: "center",
+    gap: global.gap.large,
   },
   flameBadge: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: COLORS.white,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: BORDERRADIUS.medium,
     gap: 4,
-    width: 60,
-    marginTop: 2,
   },
   flameText: {
-    fontSize: FONT_SIZES.medium,
-    fontWeight: "600",
-    color: COLORS.streakRed,
-    fontFamily: "Roboto",
+    fontSize: global.font_size.phone_medium,
+    fontWeight: 600,
+    color: global.colors.red,
   },
+  filterContainer: {},
   filterButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 4,
-    backgroundColor: COLORS.lightGray,
+    backgroundColor: global.colors.background_3,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: BORDERRADIUS.small,
-    width: 60,
+    borderRadius: global.border.border_radius_large,
+    width: 65,
   },
   filterText: {
-    fontSize: FONT_SIZES.medium,
-    color: COLORS.textGray,
-    fontFamily: "Roboto",
+    fontSize: global.font_size.phone_medium,
+    color: global.colors.text_2,
   },
 });

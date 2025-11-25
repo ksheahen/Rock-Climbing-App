@@ -1,8 +1,3 @@
-import { borderRadius, BORDERRADIUS } from "./borderRadius";
-import { colors, COLORS } from "./colors";
-import { MARGIN, PADDING, spacing } from "./spacing";
-import { FONT_SIZES, typography } from "./typography";
-
 // this is going to be our global styling
 // did it this way to keep it very simple.
 export const global = {
@@ -21,9 +16,11 @@ export const global = {
   border: {
     border_color: "#F0F1F9",
     border_radius: 2,
+    border_radius_large: 4,
   },
 
   font_size: {
+    tiny: 10,
     phone_medium: 16,
     phone_large: 18,
   },
@@ -46,40 +43,4 @@ export const global = {
   },
 };
 
-export const theme = {
-  colors,
-  typography,
-  spacing,
-  borderRadius,
-} as const;
-
-export const GLOBAL = {
-  // page padding
-  page_leftright_margin: 15,
-  page_top_margin: 50,
-  page_bottom_margin: 15,
-
-  // spacing between components
-  component_spacing_small: 5,
-  component_spacing_medium: 10,
-  component_spacing_large: 15,
-
-  // border radius for buttons, images, ext
-  border_radius: 2,
-};
-
-// Legacy exports for backward compatibility during migration
-export {
-  borderRadius,
-  BORDERRADIUS,
-  colors,
-  COLORS,
-  FONT_SIZES,
-  MARGIN,
-  PADDING,
-  spacing,
-  typography
-};
-
-// Default export
-export default theme;
+export default global;

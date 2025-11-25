@@ -43,9 +43,10 @@ function buildTimeOptions() {
 type Props = {
   initial?: Date;
   onChange?: (value: Date) => void;
+  editToggle: boolean;
 };
 
-function DateTime({ initial, onChange }: Props) {
+function DateTime({ initial, onChange, editToggle }: Props) {
   const [value, setValue] = useState<Date>(initial ?? new Date());
   const [showModal, setShowModal] = useState(false); // single modal for both date+time (iOS) or time (Android)
   const timeOptions = useMemo(buildTimeOptions, []);
@@ -104,12 +105,21 @@ function DateTime({ initial, onChange }: Props) {
       <Text style={styles.title}>Date/Time</Text>
 
       {/* SINGLE CHIP */}
-      <Pressable style={styles.pillCompact} onPress={openPicker} hitSlop={8}>
-        <Text style={styles.pillCompactText} numberOfLines={1}>
-          {formatChip(value)}
-        </Text>
-      </Pressable>
-
+      {/* when editToggle = true, show everthing */}
+      {/* when editToggle = false, show just view mode */}
+      {editToggle ? (
+        <Pressable style={styles.pillCompact} onPress={openPicker} hitSlop={8}>
+          <Text style={styles.pillCompactText} numberOfLines={1}>
+            {formatChip(value)}
+          </Text>
+        </Pressable>
+      ) : (
+        <View style={styles.pillCompact} hitSlop={8}>
+          <Text style={styles.pillCompactText} numberOfLines={1}>
+            {formatChip(value)}
+          </Text>
+        </View>
+      )}
       {/* ONE MODAL FOR BOTH (iOS shows date+time; Android shows time only after date chosen) */}
       <Modal visible={showModal} transparent animationType="fade">
         <View style={styles.modalBackdrop}>

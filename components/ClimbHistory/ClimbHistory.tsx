@@ -5,6 +5,8 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import Line from "../Line/Line";
 import styles from "./ClimbHistory.styles";
+import { global } from "@/theme";
+import { Ionicons } from "@expo/vector-icons";
 
 type Log = {
   id: number;
@@ -13,7 +15,7 @@ type Log = {
   grade: string;
   attempt: string;
   complete: string;
-  rating: string;
+  rating: number;
   description: string;
   media: string;
   datetime: string;
@@ -57,6 +59,17 @@ function ClimbHistory() {
     });
   };
 
+  const renderStars = (count: number) => {
+    return Array.from({ length: 3 }, (_, i) => (
+      <Ionicons
+        key={i}
+        name="star"
+        size={12}
+        color={i < count ? global.colors.yellow : global.colors.background_2}
+      />
+    ));
+  };
+
   // Trigger loadClimbs whenever the screen is focused
   useFocusEffect(
     useCallback(() => {
@@ -75,7 +88,7 @@ function ClimbHistory() {
             <View style={styles.gradeRow}>
               <Icon name="check-line" size="18" />
               <Text style={styles.grade}>{climb.grade}</Text>
-              <Text style={styles.stars}>{climb.rating} Stars *FIXME</Text>
+              <Text style={styles.stars}> {renderStars(climb.rating)}</Text>
             </View>
             <View style={styles.tries}>
               <Text>{climb.attempt} Tries</Text>

@@ -1,10 +1,12 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.pageBackground,
+    backgroundColor: global.colors.background_1,
+    paddingLeft: global.margin.page_border,
+    paddingRight: global.margin.page_border,
   },
 });
 

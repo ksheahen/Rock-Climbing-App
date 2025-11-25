@@ -8,9 +8,14 @@ const STAR_COLOR = "#F5C542";
 interface RatingComponentProps {
   selectedProp: number;
   onSelectedChange?: (value: number) => void;
+  editToggle: boolean;
 }
 
-function Rating({ selectedProp, onSelectedChange }: RatingComponentProps) {
+function Rating({
+  selectedProp,
+  onSelectedChange,
+  editToggle,
+}: RatingComponentProps) {
   const [rating, setRating] = useState(selectedProp);
 
   const handlePress = (value: number) => {
@@ -35,23 +40,44 @@ function Rating({ selectedProp, onSelectedChange }: RatingComponentProps) {
     <View style={styles.container}>
       <Text style={styles.title}>Rating</Text>
 
-      <View style={styles.stars_container}>
-        {[1, 2, 3].map((value, idx) => (
-          <Pressable
-            key={value}
-            onPress={() => handlePress(value)}
-            hitSlop={8}
-            accessibilityRole="button"
-            accessibilityLabel={`Rate ${value} star${value > 1 ? "s" : ""}`}
-          >
-            <Icon
-              name={rating >= value ? "star-fill" : "star-line"}
-              size={28}
-              color={STAR_COLOR}
-            />
-          </Pressable>
-        ))}
-      </View>
+      {/* when editToggle = true, show everthing */}
+      {/* when editToggle = false, show just view mode */}
+      {editToggle ? (
+        <View style={styles.stars_container}>
+          {[1, 2, 3].map((value, idx) => (
+            <Pressable
+              key={value}
+              onPress={() => handlePress(value)}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel={`Rate ${value} star${value > 1 ? "s" : ""}`}
+            >
+              <Icon
+                name={rating >= value ? "star-fill" : "star-line"}
+                size={28}
+                color={STAR_COLOR}
+              />
+            </Pressable>
+          ))}
+        </View>
+      ) : (
+        <View style={styles.stars_container}>
+          {[1, 2, 3].map((value, idx) => (
+            <View
+              key={value}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel={`Rate ${value} star${value > 1 ? "s" : ""}`}
+            >
+              <Icon
+                name={rating >= value ? "star-fill" : "star-line"}
+                size={28}
+                color={STAR_COLOR}
+              />
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 }

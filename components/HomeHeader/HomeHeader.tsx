@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./HomeHeader.styles";
+import Icon from "react-native-remix-icon";
 
 export interface HomeHeaderProps {
   streakCount: number;
@@ -23,7 +24,7 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
         <View style={styles.filterContainer}>
           <TouchableOpacity style={styles.filterButton} onPress={onFilterPress}>
             <Text style={styles.filterText}>Filter</Text>
-            <Ionicons name="chevron-down" size={12} color="#8E8E93" />
+            <Ionicons name="chevron-down" size={12} />
           </TouchableOpacity>
         </View>
       </View>
