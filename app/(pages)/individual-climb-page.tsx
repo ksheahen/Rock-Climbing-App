@@ -58,82 +58,92 @@ function IndividualClimbPage() {
 
   // LOAD -------------
   const loadClimbs = async () => {
-    if (paramsid != null) {
-      const result = await db.getAllAsync(
-        `SELECT * FROM log_climb3 WHERE id = ?`,
-        [paramsid],
-      );
-      if (result.length > 0) {
-        const climbData = result[0] as {
-          category: string;
-          type: string;
-          complete: string;
-          attempt: string;
-          grade: string;
-          rating: number;
-          datetime: string;
-          description: string;
-          media: string;
-        };
-        // update local state with db values
-        setSelectedCategory(climbData.category);
-        setSelectedType(climbData.type);
-        setSelectedComplete(climbData.complete);
-        setSelectedAttempt(climbData.attempt);
-        setSelectedGrade(climbData.grade);
-        setSelectedRating(climbData.rating);
-        setSelectedDateTime(climbData.datetime);
-        setSelectedDescription(climbData.description);
-        setSelectedMedia(climbData.media);
+    try {
+      if (paramsid != null) {
+        const result = await db.getAllAsync(
+          `SELECT * FROM log_climb3 WHERE id = ?`,
+          [paramsid],
+        );
+        if (result.length > 0) {
+          const climbData = result[0] as {
+            category: string;
+            type: string;
+            complete: string;
+            attempt: string;
+            grade: string;
+            rating: number;
+            datetime: string;
+            description: string;
+            media: string;
+          };
+          // update local state with db values
+          setSelectedCategory(climbData.category);
+          setSelectedType(climbData.type);
+          setSelectedComplete(climbData.complete);
+          setSelectedAttempt(climbData.attempt);
+          setSelectedGrade(climbData.grade);
+          setSelectedRating(climbData.rating);
+          setSelectedDateTime(climbData.datetime);
+          setSelectedDescription(climbData.description);
+          setSelectedMedia(climbData.media);
+        }
       }
+    } catch (error: any) {
+      // TODO : Add a modal pop up for error
+      console.error("Failed to load logs:", error);
     }
   };
 
   // SEND -------------
   const handleSubmit = async () => {
-    const climb = {
-      category: selectedCategory,
-      type: selectedType,
-      complete: selectedComplete,
-      attempt: selectedAttempt,
-      grade: selectedGrade,
-      rating: selectedRating,
-      datetime: selectedDateTime,
-      description: selectedDescription,
-      media: selectedMedia,
-    };
-    // check
-    console.log("DB Storage 'category'   -", climb.category);
-    console.log("DB Storage 'type'       - ", climb.type);
-    console.log("DB Storage 'complete'   - ", climb.complete);
-    console.log("DB Storage 'attempt'    - ", climb.attempt);
-    console.log("DB Storage 'grade'      - ", climb.grade);
-    console.log("DB Storage 'rating'     - ", climb.rating);
-    console.log("DB Storage 'datetime'   - ", climb.datetime);
-    console.log("DB Storage 'desc'       - ", climb.description);
-    console.log("DB Storage 'media'      - ", climb.media);
+    try {
+      const climb = {
+        category: selectedCategory,
+        type: selectedType,
+        complete: selectedComplete,
+        attempt: selectedAttempt,
+        grade: selectedGrade,
+        rating: selectedRating,
+        datetime: selectedDateTime,
+        description: selectedDescription,
+        media: selectedMedia,
+      };
+      // check
+      console.log("DB Storage 'category'   -", climb.category);
+      console.log("DB Storage 'type'       - ", climb.type);
+      console.log("DB Storage 'complete'   - ", climb.complete);
+      console.log("DB Storage 'attempt'    - ", climb.attempt);
+      console.log("DB Storage 'grade'      - ", climb.grade);
+      console.log("DB Storage 'rating'     - ", climb.rating);
+      console.log("DB Storage 'datetime'   - ", climb.datetime);
+      console.log("DB Storage 'desc'       - ", climb.description);
+      console.log("DB Storage 'media'      - ", climb.media);
 
-    // update the db
-    await db.runAsync(
-      `UPDATE log_climb3 
+      // update the db
+      const result = await db.runAsync(
+        `UPDATE log_climb3 
 			SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?
 			WHERE id = ?`,
-      [
-        climb.category,
-        climb.type,
-        climb.complete,
-        climb.attempt,
-        climb.grade,
-        climb.rating,
-        climb.datetime,
-        climb.description,
-        climb.media,
-        paramsid,
-      ],
-    );
+        [
+          climb.category,
+          climb.type,
+          climb.complete,
+          climb.attempt,
+          climb.grade,
+          climb.rating,
+          climb.datetime,
+          climb.description,
+          climb.media,
+          paramsid,
+        ],
+      );
 
-    console.log("Sent log data to db...");
-    setEditToggle(false);
+      console.log("Updating logs in db", result);
+      setEditToggle(false);
+    } catch (error: any) {
+      // TODO : Add a modal pop up for error
+      console.error("Failed to update logs:", error);
+    }
   };
 
   // trigger loadClimbs whenever the screen is focused
@@ -161,10 +171,17 @@ function IndividualClimbPage() {
   };
 
   const deletePress = async () => {
-    await db.runAsync(`DELETE FROM log_climb3 WHERE id = ?`, [paramsid]);
-    console.log("Deleted log from db...");
-    setModalVisible(false); // this doesnt really matter
-    handleRedirect();
+    try {
+      const result = await db.runAsync(`DELETE FROM log_climb3 WHERE id = ?`, [
+        paramsid,
+      ]);
+      console.log(`Deleted log ${paramsid} from db`, result);
+      setModalVisible(false); // this doesnt really matter
+      handleRedirect();
+    } catch (error: any) {
+      // TODO : Add a modal pop up for error
+      console.error("Failed to delete log:", error);
+    }
   };
 
   return (
