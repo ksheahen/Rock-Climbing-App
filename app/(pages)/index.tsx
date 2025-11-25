@@ -2,6 +2,7 @@ import { router, useFocusEffect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import React, { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { LocalClimb } from "../../types/LocalClimb";
 import {
   AnalyticsPreview,
   DayData,
@@ -15,20 +16,6 @@ import {
 } from "../../components";
 import styles from "../styles/index.styles";
 
-// Local climb log interface matching SQLite schema
-interface ClimbLog {
-  id: number;
-  category: string;
-  type: string;
-  complete: string;
-  attempt: string;
-  grade: string;
-  rating: number;
-  datetime: string;
-  description: string;
-  media: string;
-}
-
 const Index = () => {
   const db = useSQLiteContext();
   const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -40,44 +27,44 @@ const Index = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [climbLogs, setClimbLogs] = useState<ClimbLog[]>([]);
+  const [climbs, setClimbs] = useState<LocalClimb[]>([]);
 
-  // Fetch climb logs from SQLite - runs every time the page comes into focus
-  const fetchClimbLogs = useCallback(async () => {
+  // Fetch climbs from SQLite - runs every time the page comes into focus
+  const fetchClimbs = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Query all climbs from SQLite, ordered by id descending (most recent first)
-      const result = await db.getAllAsync<ClimbLog>(
+      // Query all climbs from log_climb3 table, ordered by id descending (most recent first)
+      const result = await db.getAllAsync<LocalClimb>(
         `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`
       );
 
-      setClimbLogs(result);
+      setClimbs(result);
     } catch (err: any) {
-      const errorMessage = err?.message || "Failed to load climb logs";
-      console.error("Error fetching climb logs:", err);
+      const errorMessage = err?.message || "Failed to load climbs";
+      console.error("Error fetching climbs:", err);
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
   }, [db]);
 
-  // Refresh logs whenever the screen comes into focus (e.g., after logging a climb)
+  // Refresh climbs whenever the screen comes into focus (e.g., after logging a climb)
   useFocusEffect(
     useCallback(() => {
-      fetchClimbLogs();
-    }, [fetchClimbLogs])
+      fetchClimbs();
+    }, [fetchClimbs])
   );
 
-  // Convert SQLite climb logs to SessionData format for UI
+  // Convert climbs to SessionData format for UI
   const allSessionsData: SessionData[] = useMemo(() => {
-    return climbLogs.map((log) => {
+    return climbs.map((climb) => {
       // Format date
       let formattedDate = "N/A";
-      if (log.datetime) {
+      if (climb.datetime) {
         try {
-          const date = new Date(log.datetime);
+          const date = new Date(climb.datetime);
           if (!isNaN(date.getTime())) {
             formattedDate = date.toLocaleDateString("en-US", {
               month: "numeric",
@@ -90,18 +77,18 @@ const Index = () => {
         }
       }
 
-      // Format attempts
-      const attemptNum = parseInt(log.attempt) || 1;
+      // Format attempts (attempt is stored as string in current schema)
+      const attemptNum = parseInt(climb.attempt) || 1;
       const tries = `${attemptNum} ${attemptNum === 1 ? "Try" : "Tries"}`;
 
       return {
-        grade: log.grade,
+        grade: climb.grade,
         tries: tries,
-        stars: log.rating || 0,
+        stars: climb.rating || 0,
         date: formattedDate,
       };
     });
-  }, [climbLogs]);
+  }, [climbs]);
 
   const days: DayData[] = [
     { day: "S", date: "20", status: "red" },
@@ -175,7 +162,7 @@ const Index = () => {
 
   const handleSessionPress = (index: number) => {
     // Navigate to individual climb page
-    const climbId = climbLogs[index]?.id;
+    const climbId = climbs[index]?.id;
     if (climbId) {
       router.push(`/individual-climb-page?id=${climbId}`);
     }
@@ -188,14 +175,11 @@ const Index = () => {
   // Loading state
   if (loading) {
     return (
-      <View
-        style={[
-          styles.container,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
         <ActivityIndicator size="large" color="#007AFF" />
-        <Text style={{ marginTop: 10, color: "#8E8E93" }}>Loading logs...</Text>
+        <Text style={{ marginTop: 10, color: "#8E8E93" }}>
+          Loading logs...
+        </Text>
       </View>
     );
   }
@@ -203,12 +187,7 @@ const Index = () => {
   // Error state
   if (error) {
     return (
-      <View
-        style={[
-          styles.container,
-          { justifyContent: "center", alignItems: "center", padding: 20 },
-        ]}
-      >
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center", padding: 20 }]}>
         <Text style={{ color: "#FF3B30", fontSize: 16, textAlign: "center" }}>
           {error}
         </Text>
@@ -224,9 +203,7 @@ const Index = () => {
         <DaySelector days={days} onDayPress={handleDayPress} />
         {filteredSessions.length === 0 ? (
           <View style={{ padding: 20, alignItems: "center" }}>
-            <Text
-              style={{ color: "#8E8E93", fontSize: 16, textAlign: "center" }}
-            >
+            <Text style={{ color: "#8E8E93", fontSize: 16, textAlign: "center" }}>
               No climb logs yet.{"\n"}
               Start logging your climbs!
             </Text>
