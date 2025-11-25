@@ -20,6 +20,7 @@ import { Modal } from "react-native";
 import { Text } from "react-native";
 import { Pressable } from "react-native";
 import Icon from "react-native-remix-icon";
+import { useRouter } from "expo-router/build/hooks";
 
 // TODO: Make it so that this page
 // can also update the values in
@@ -152,6 +153,12 @@ function IndividualClimbPage() {
 		}, [paramsid]),
 	);
 
+
+	const router = useRouter();
+	const handleRedirect = () => {
+		router.push(`/profile`);
+	};
+
 	const editPress = async () => {
 		console.log("edit pressed");
 		setModalVisible(false);
@@ -159,8 +166,12 @@ function IndividualClimbPage() {
 	};
 
 	const deletePress = async () => {
-		console.log("delete pressed");
-		setModalVisible(false);
+		await db.runAsync(
+			`DELETE FROM log_climb3 WHERE id = ?`, [paramsid]
+		);
+		console.log("Deleted log from db...");
+		setModalVisible(false); // this doesnt really matter
+		handleRedirect();
 	};
 
 	return (
@@ -211,10 +222,8 @@ function IndividualClimbPage() {
 					editToggle={editToggle}
 				/>
 				<Line />
-				{/* TODO */}
 				<DateTime editToggle={editToggle} />
 				<Line />
-				{/* TODO */}
 				<Description />
 				{/* only render the button when in edit mode */}
 				{editToggle ? (
