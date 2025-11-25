@@ -1,6 +1,6 @@
+import { global } from "@/theme";
 import { Tabs } from "expo-router";
 import Icon from "react-native-remix-icon";
-import { COLORS, global } from "../../theme";
 
 // the navbar at the bottom of the screen
 function TabLayout() {
@@ -9,8 +9,8 @@ function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          borderColor: COLORS.background1,
-          backgroundColor: COLORS.background1,
+          borderColor: global.colors.background_1,
+          backgroundColor: global.colors.background_1,
           height: 70,
         },
       }}

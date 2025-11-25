@@ -1,17 +1,17 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingHorizontal: PADDING.page_padding,
-    paddingVertical: PADDING.page_padding / 2,
+    paddingHorizontal: global.margin.page_border,
+    paddingVertical: global.margin.page_border / 2,
   },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: PADDING.page_padding / 2,
+    marginBottom: global.margin.page_border / 2,
   },
   avatarPlaceholder: {
     width: 50,
@@ -23,14 +23,14 @@ export const styles = StyleSheet.create({
     backgroundColor: global.colors.background_2,
     paddingVertical: global.padding.small / 2,
     paddingHorizontal: global.padding.small,
-    borderRadius: BORDERRADIUS.default,
+    borderRadius: global.border.border_radius,
   },
   editButtonText: {
     fontSize: global.font_size.phone_medium,
     color: global.colors.text_1,
   },
   name: {
-    fontSize: FONT_SIZES.medium,
+    fontSize: global.font_size.phone_medium,
     fontWeight: "bold",
     marginBottom: 5,
   },
@@ -41,6 +41,6 @@ export const styles = StyleSheet.create({
   handle: {
     fontSize: global.font_size.phone_medium,
     marginLeft: 5,
-    color: COLORS.text2,
+    color: global.colors.text_2,
   },
 });

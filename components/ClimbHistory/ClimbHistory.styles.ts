@@ -1,32 +1,32 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { COLORS, GLOBAL, global } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: GLOBAL.component_spacing_large,
+    marginTop: global.padding.large,
   },
   mini_container: {
-    marginBottom: GLOBAL.component_spacing_medium,
+    marginBottom: global.gap.medium,
   },
   date: {
     fontSize: global.font_size.phone_medium,
-    color: COLORS.text2,
-    marginBottom: GLOBAL.component_spacing_medium,
+    color: global.colors.text_2,
+    marginBottom: global.gap.medium,
   },
   time: {
     fontSize: global.font_size.phone_medium,
-    marginTop: GLOBAL.component_spacing_medium,
-    marginBottom: GLOBAL.component_spacing_small,
+    marginTop: global.gap.medium,
+    marginBottom: global.padding.small,
   },
   gradeRow: {
     display: "flex",
     flexDirection: "row",
-    gap: GLOBAL.component_spacing_small,
+    gap: global.padding.small,
   },
   grade: {},
   stars: {},
   tries: {
-    marginTop: GLOBAL.component_spacing_small,
+    marginTop: global.padding.small,
     paddingLeft: 22,
   },
 });

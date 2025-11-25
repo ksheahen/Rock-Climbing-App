@@ -1,5 +1,5 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   header: {
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   logo: {
-    fontSize: FONT_SIZES.regular,
+    fontSize: global.font_size.phone_medium,
     fontWeight: "600",
     color: global.colors.text_1,
     fontFamily: "Roboto",
@@ -29,18 +29,18 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: COLORS.white,
+    backgroundColor: global.colors.background_2,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: BORDERRADIUS.medium,
+    borderRadius: global.border.border_radius_large,
     gap: 4,
     width: 60,
     marginTop: 2,
   },
   flameText: {
-    fontSize: FONT_SIZES.medium,
+    fontSize: global.font_size.phone_medium,
     fontWeight: "600",
-    color: COLORS.streakRed,
+    color: global.colors.red,
     fontFamily: "Roboto",
   },
   filterButton: {
@@ -48,15 +48,15 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 4,
-    backgroundColor: COLORS.lightGray,
+    backgroundColor: global.colors.background_2,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: BORDERRADIUS.small,
-    width: 60,
+    borderRadius: global.border.border_radius_large,
+    width: 65,
   },
   filterText: {
-    fontSize: FONT_SIZES.medium,
-    color: COLORS.textGray,
+    fontSize: global.font_size.phone_medium,
+    color: global.colors.text_2,
     fontFamily: "Roboto",
   },
 });

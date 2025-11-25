@@ -1,19 +1,19 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, MARGIN } from "../../theme";
 
 export const styles = StyleSheet.create({
   analyticsSection: {
     paddingHorizontal: 20,
     paddingVertical: 20,
-    backgroundColor: COLORS.analyticsBackground,
-    borderRadius: BORDERRADIUS.medium,
+    backgroundColor: global.colors.background_3,
+    borderRadius: global.border.border_radius,
     marginHorizontal: 20,
-    marginVertical: MARGIN.element_margin,
+    marginVertical: global.padding.medium,
   },
   sectionTitle: {
-    fontSize: FONT_SIZES.medium,
+    fontSize: global.font_size.phone_medium,
     fontWeight: "bold",
-    color: COLORS.textGray,
+    color: global.colors.text_2,
     marginBottom: 16,
     letterSpacing: 0.5,
     fontFamily: "Roboto",
@@ -30,28 +30,28 @@ export const styles = StyleSheet.create({
   },
   analyticsCard: {
     flex: 1,
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: BORDERRADIUS.medium,
+    backgroundColor: global.colors.background_1,
+    borderRadius: global.border.border_radius,
     padding: 16,
     alignItems: "center",
   },
   chartPlaceholder: {
     width: "100%",
     height: 120,
-    backgroundColor: COLORS.lightGray,
-    borderRadius: BORDERRADIUS.small,
+    backgroundColor: global.colors.background_2,
+    borderRadius: global.border.border_radius,
   },
   circularPlaceholder: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: COLORS.lightGray,
+    backgroundColor: global.colors.background_2,
     marginBottom: 12,
   },
   smallChartPlaceholder: {
     width: "100%",
     height: 40,
-    backgroundColor: COLORS.lightGray,
-    borderRadius: BORDERRADIUS.small,
+    backgroundColor: global.colors.background_2,
+    borderRadius: global.border.border_radius,
   },
 });

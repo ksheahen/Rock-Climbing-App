@@ -1,5 +1,5 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, PADDING, global } from "../../theme";
 
 const TILE = 90;
 
@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    paddingLeft: PADDING.page_padding,
+    paddingLeft: global.margin.page_border,
 
     alignItems: "center",
     justifyContent: "space-between",
@@ -20,9 +20,9 @@ const styles = StyleSheet.create({
     height: 182,
     width: 182,
     backgroundColor: global.colors.background_2,
-    borderRadius: BORDERRADIUS.default,
+    borderRadius: global.border.border_radius,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: global.border.border_color,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   addTile: {
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: global.border.border_color,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -1,5 +1,5 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   daySelector: {
@@ -13,34 +13,34 @@ export const styles = StyleSheet.create({
   dayCircle: {
     width: 40,
     height: 40,
-    borderRadius: BORDERRADIUS.large,
-    backgroundColor: COLORS.lightGray,
+    borderRadius: 100,
+    backgroundColor: global.colors.background_2,
     alignItems: "center",
     justifyContent: "center",
   },
   dayRed: {
-    backgroundColor: COLORS.streakRed,
+    backgroundColor: global.colors.red,
   },
   dayGreen: {
-    backgroundColor: COLORS.streakGreen,
+    backgroundColor: global.colors.green,
   },
   daySelected: {
-    backgroundColor: COLORS.white,
+    backgroundColor: "white",
     borderWidth: 2,
     borderColor: global.colors.text_1,
   },
   dayText: {
     fontSize: global.font_size.phone_medium,
     fontWeight: "600",
-    color: COLORS.white,
+    color: "white",
     fontFamily: "Roboto",
   },
   dayTextSelected: {
     color: global.colors.text_1,
   },
   dateText: {
-    fontSize: FONT_SIZES.tiny,
-    color: COLORS.white,
+    fontSize: global.font_size.tiny,
+    color: "white",
     marginTop: -2,
     fontFamily: "Roboto",
   },
