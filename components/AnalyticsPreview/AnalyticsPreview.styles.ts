@@ -1,14 +1,14 @@
-import { MARGIN, global } from "@/theme";
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   analyticsSection: {
     paddingHorizontal: 20,
     paddingVertical: 20,
-    backgroundColor: global.colors.background_1,
+    backgroundColor: global.colors.background_3,
     borderRadius: global.border.border_radius,
     marginHorizontal: 20,
-    marginVertical: MARGIN.element_margin,
+    marginVertical: global.padding.medium,
   },
   sectionTitle: {
     fontSize: global.font_size.phone_medium,
@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
   },
   analyticsCard: {
     flex: 1,
-    backgroundColor: global.colors.background_2,
+    backgroundColor: global.colors.background_1,
     borderRadius: global.border.border_radius,
     padding: 16,
     alignItems: "center",
@@ -38,20 +38,20 @@ export const styles = StyleSheet.create({
   chartPlaceholder: {
     width: "100%",
     height: 120,
-    backgroundColor: global.colors.background_4,
+    backgroundColor: global.colors.background_2,
     borderRadius: global.border.border_radius,
   },
   circularPlaceholder: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: global.colors.background_4,
+    backgroundColor: global.colors.background_2,
     marginBottom: 12,
   },
   smallChartPlaceholder: {
     width: "100%",
     height: 40,
-    backgroundColor: global.colors.background_4,
+    backgroundColor: global.colors.background_2,
     borderRadius: global.border.border_radius,
   },
 });

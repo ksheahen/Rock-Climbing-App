@@ -26,7 +26,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({
         key={i}
         name="star"
         size={12}
-        color={i < count ? global.colors.yellow : global.colors.background_4}
+        color={i < count ? global.colors.yellow : global.colors.background_2}
       />
     ));
   };

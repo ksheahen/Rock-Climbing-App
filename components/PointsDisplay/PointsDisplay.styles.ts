@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   pointsTitle: {
-    fontSize: global.font_size.phone_large,
+    fontSize: 24,
     fontWeight: "bold",
     color: global.colors.text_1,
     fontFamily: "Roboto",

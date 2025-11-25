@@ -1,9 +1,9 @@
-import { GLOBAL, global } from "@/theme";
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: GLOBAL.component_spacing_large,
+    marginTop: global.padding.large,
   },
   mini_container: {
     marginBottom: global.gap.medium,
@@ -16,17 +16,17 @@ const styles = StyleSheet.create({
   time: {
     fontSize: global.font_size.phone_medium,
     marginTop: global.gap.medium,
-    marginBottom: GLOBAL.component_spacing_small,
+    marginBottom: global.padding.small,
   },
   gradeRow: {
     display: "flex",
     flexDirection: "row",
-    gap: GLOBAL.component_spacing_small,
+    gap: global.padding.small,
   },
   grade: {},
   stars: {},
   tries: {
-    marginTop: GLOBAL.component_spacing_small,
+    marginTop: global.padding.small,
     paddingLeft: 22,
   },
 });

@@ -6,12 +6,12 @@ export const styles = StyleSheet.create({
     width: 160,
     marginRight: 16,
     backgroundColor: global.colors.background_3,
-    borderRadius: global.border.border_radius,
+    borderRadius: 10,
     overflow: "hidden",
   },
   sessionImagePlaceholder: {
     height: 100,
-    backgroundColor: global.colors.background_4,
+    backgroundColor: global.colors.background_2,
   },
   sessionInfo: {
     padding: 12,

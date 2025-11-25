@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: global.colors.background_4,
+    borderBottomColor: global.colors.background_2,
   },
   modalTitle: {
     fontSize: 20,
@@ -59,9 +59,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: global.colors.background_4,
+    backgroundColor: global.colors.background_2,
     borderWidth: 1,
-    borderColor: global.colors.background_4,
+    borderColor: global.colors.background_2,
   },
   optionChipSelected: {
     backgroundColor: global.colors.red,
@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: global.colors.background_4,
+    borderTopColor: global.colors.background_2,
   },
   resetButton: {
     flex: 1,
