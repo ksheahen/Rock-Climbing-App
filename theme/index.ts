@@ -10,6 +10,7 @@ export const global = {
     background_1: "#FFFFFE",
     background_2: "#E7E7EA",
     background_3: "#F7F7FC",
+    background_4: "#E5E5EA",
     text_1: "#000000",
     text_2: "#333333",
     blue: "#5A99E4",
@@ -21,9 +22,11 @@ export const global = {
   border: {
     border_color: "#F0F1F9",
     border_radius: 2,
+    border_radius_large: 4,
   },
 
   font_size: {
+    tiny: 10,
     phone_medium: 16,
     phone_large: 18,
   },

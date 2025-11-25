@@ -1,4 +1,4 @@
-import { COLORS, global } from "@/theme";
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 const TILE = 90;
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     backgroundColor: global.colors.background_2,
     borderRadius: global.border.border_radius,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: global.border.border_color,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   addTile: {
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: global.border.border_color,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -126,7 +126,6 @@ const Index = () => {
         />
         <AnalyticsPreview onPress={handleAnalyticsPress} />
       </ScrollView>
-
       <FilterModal
         visible={filterModalVisible}
         onClose={() => setFilterModalVisible(false)}

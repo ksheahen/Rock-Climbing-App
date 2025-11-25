@@ -1,4 +1,4 @@
-import { COLORS, FONT_SIZES, global } from "@/theme";
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -8,14 +8,14 @@ export const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   pointsTitle: {
-    fontSize: FONT_SIZES.xlarge,
+    fontSize: global.font_size.phone_large,
     fontWeight: "bold",
     color: global.colors.text_1,
     fontFamily: "Roboto",
   },
   pointsSubtitle: {
-    fontSize: FONT_SIZES.regular,
-    color: COLORS.textGray,
+    fontSize: global.font_size.phone_medium,
+    color: global.colors.text_2,
     marginTop: 4,
     fontFamily: "Roboto",
   },

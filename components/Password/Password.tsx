@@ -1,4 +1,3 @@
-import { COLORS } from "@/theme";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput, View } from "react-native";
 import { styles } from "./Password.styles";
@@ -23,7 +22,7 @@ export const Password = ({
         onChangeText={(text) => setPassword(text)}
         value={password}
         placeholder={displayText}
-        placeholderTextColor={COLORS.text2}
+        placeholderTextColor={global.colors.text_2}
         autoCapitalize={"none"}
         secureTextEntry={true}
       />

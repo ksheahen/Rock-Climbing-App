@@ -1,4 +1,4 @@
-import { COLORS, FONT_SIZES } from "@/theme";
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -7,9 +7,9 @@ export const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   sectionTitle: {
-    fontSize: FONT_SIZES.medium,
+    fontSize: global.font_size.phone_medium,
     fontWeight: "bold",
-    color: COLORS.textGray,
+    color: global.colors.text_2,
     marginBottom: 16,
     letterSpacing: 0.5,
     fontFamily: "Roboto",

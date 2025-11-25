@@ -1,4 +1,4 @@
-import { COLORS, FONT_SIZES, global } from "@/theme";
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     color: global.colors.text_1,
   },
   name: {
-    fontSize: FONT_SIZES.medium,
+    fontSize: global.font_size.phone_medium,
     fontWeight: "bold",
     marginBottom: 5,
   },
@@ -41,6 +41,6 @@ export const styles = StyleSheet.create({
   handle: {
     fontSize: global.font_size.phone_medium,
     marginLeft: 5,
-    color: COLORS.text2,
+    color: global.colors.text_2,
   },
 });

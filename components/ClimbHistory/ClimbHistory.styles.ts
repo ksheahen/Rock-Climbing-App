@@ -1,4 +1,4 @@
-import { COLORS, GLOBAL, global } from "@/theme";
+import { GLOBAL, global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: global.font_size.phone_medium,
-    color: COLORS.text2,
+    color: global.colors.text_2,
     marginBottom: global.gap.medium,
   },
   time: {

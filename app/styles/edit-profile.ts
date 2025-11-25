@@ -1,4 +1,4 @@
-import { COLORS, FONT_SIZES, PADDING, global } from "@/theme";
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
@@ -23,23 +23,23 @@ const styles = StyleSheet.create({
     fontSize: global.font_size.phone_large,
     fontWeight: "bold",
     marginBottom: global.margin.page_border,
-    color: COLORS.text1,
+    color: global.colors.text_1,
   },
   inputGroup: {
     marginBottom: global.margin.page_border,
   },
   label: {
-    fontSize: FONT_SIZES.medium,
+    fontSize: global.font_size.phone_medium,
     marginBottom: 4,
-    color: COLORS.text2,
+    color: global.colors.text_2,
   },
   input: {
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: global.border.border_color,
     borderRadius: global.border.border_radius,
-    padding: PADDING.dropdown_padding,
-    backgroundColor: COLORS.background3,
-    color: COLORS.text1,
+    padding: global.padding.small,
+    backgroundColor: global.colors.background_3,
+    color: global.colors.text_1,
   },
   buttonRow: {
     flexDirection: "row",
@@ -48,19 +48,19 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    padding: PADDING.dropdown_padding,
+    padding: global.padding.small,
     borderRadius: global.border.border_radius,
     alignItems: "center",
     marginHorizontal: 5,
   },
   cancelButton: {
-    backgroundColor: COLORS.blue,
+    backgroundColor: global.colors.blue,
   },
   saveButton: {
-    backgroundColor: COLORS.blue,
+    backgroundColor: global.colors.blue,
   },
   buttonText: {
-    color: COLORS.text1,
+    color: global.colors.text_1,
     fontWeight: "bold",
   },
 });

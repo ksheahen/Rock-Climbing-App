@@ -1,9 +1,9 @@
-import { COLORS, global } from "@/theme";
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   button: {
-    backgroundColor: COLORS.blue,
+    backgroundColor: global.colors.blue,
     padding: 12,
     borderRadius: global.border.border_radius,
     width: "100%",

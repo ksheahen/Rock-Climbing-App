@@ -1,4 +1,4 @@
-import { COLORS, global } from "@/theme";
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: global.border.border_color,
     borderRadius: global.border.border_radius,
     paddingHorizontal: 10,
     paddingVertical: 6,
