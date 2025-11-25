@@ -2,10 +2,10 @@ import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: global.colors.background_1,
-  },
+	container: {
+		flex: 1,
+		backgroundColor: global.colors.background_1,
+	},
 });
 
 export default styles;
