@@ -34,29 +34,14 @@ function ClimbHistory() {
   };
 
   //LOAD -------------
-  const [climbs, setClimbs] = useState<Log[]>([]);
+  const [climbs, setClimbs] = useState<LocalClimb[]>([]);
 
   const loadClimbs = async () => {
     // get all climbs in order desc
     const results = (await db.getAllAsync(
       `SELECT * FROM log_climb3 ORDER BY id DESC`,
-    )) as Log[];
+    )) as LocalClimb[];
     setClimbs(results);
-
-    results.forEach((log, index) => {
-      console.log("----------------");
-      console.log(`Climb Id: ${log.id}`);
-      console.log(`Category: ${log.category}`);
-      console.log(`Type: ${log.type}`);
-      console.log(`Complete: ${log.complete}`);
-      console.log(`Attempt: ${log.attempt}`);
-      console.log(`Grade: ${log.grade}`);
-      console.log(`Rating: ${log.rating}`);
-      console.log(`DateTime: ${log.datetime}`);
-      console.log(`Description: ${log.description}`);
-      console.log(`Media: ${log.media}`);
-      console.log("----------------");
-    });
   };
 
   const renderStars = (count: number) => {
@@ -84,14 +69,24 @@ function ClimbHistory() {
       {climbs.map((climb) => (
         <View key={climb.id} style={styles.mini_container}>
           <TouchableOpacity onPress={() => handleRedirect(climb.id)}>
-            <Text style={styles.time}>6:55 PM *FIXME</Text>
+            <Text style={styles.time}>
+              {climb.datetime
+                ? new Date(climb.datetime).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "6:55 PM"}
+            </Text>
             <View style={styles.gradeRow}>
               <Icon name="check-line" size="18" />
               <Text style={styles.grade}>{climb.grade}</Text>
               <View style={styles.stars}> {renderStars(climb.rating)}</View>
             </View>
             <View style={styles.tries}>
-              <Text>{climb.attempt} Tries</Text>
+              <Text>
+                {climb.attempt}{" "}
+                {parseInt(climb.attempt) === 1 ? "Try" : "Tries"}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

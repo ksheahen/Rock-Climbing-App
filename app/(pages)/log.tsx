@@ -55,18 +55,8 @@ function LogAscent() {
       description: selectedDescription,
       media: selectedMedia,
     };
-    // check
-    console.log("DB Storage 'category'   -", climb.category);
-    console.log("DB Storage 'type'       - ", climb.type);
-    console.log("DB Storage 'complete'   - ", climb.complete);
-    console.log("DB Storage 'attempt'    - ", climb.attempt);
-    console.log("DB Storage 'grade'      - ", climb.grade);
-    console.log("DB Storage 'rating'     - ", climb.rating);
-    console.log("DB Storage 'datetime'   - ", climb.datetime);
-    console.log("DB Storage 'desc'       - ", climb.description);
-    console.log("DB Storage 'media'      - ", climb.media);
 
-    // send to db
+    // Insert into existing log_climb3 table
     await db.runAsync(
       `INSERT INTO log_climb3 (category, type, complete, attempt, grade, rating, datetime, description, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
@@ -82,7 +72,7 @@ function LogAscent() {
       ],
     );
 
-    console.log("Sent log data to db...");
+    console.log("Climb saved to database");
   };
 
   return (
