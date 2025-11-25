@@ -205,7 +205,7 @@ const Index = () => {
 
   return (
     <>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
         <HomeHeader streakCount={2} onFilterPress={handleFilterPress} />
         <PointsDisplay points={104} subtitle="This week" />
         <DaySelector days={days} onDayPress={handleDayPress} />
@@ -225,7 +225,7 @@ const Index = () => {
           />
         )}
         <AnalyticsPreview onPress={handleAnalyticsPress} />
-      </ScrollView>
+      </View>
       <FilterModal
         visible={filterModalVisible}
         onClose={() => setFilterModalVisible(false)}

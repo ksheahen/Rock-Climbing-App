@@ -11,11 +11,8 @@ export const AnalyticsPreview: React.FC<AnalyticsPreviewProps> = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity style={styles.analyticsSection} onPress={onPress}>
-      <View style={styles.analyticsHeader}>
-        <Text style={styles.sectionTitle}>ANALYTICS</Text>
-        <Ionicons name="chevron-forward" size={16} color="#8E8E93" />
-      </View>
+    <TouchableOpacity style={styles.section} onPress={onPress}>
+      <Text style={styles.sectionTitle}> ANALYTICS </Text>
       <View style={styles.analyticsContainer}>
         <View style={styles.analyticsCard}>
           <View style={styles.chartPlaceholder} />

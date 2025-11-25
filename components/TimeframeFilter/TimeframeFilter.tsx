@@ -28,8 +28,8 @@ function TimeframeFilter() {
     //   ))}
     // </View>
     <View style={styles.container}>
-      <Pressable style={styles.button}>
-        <Text style={styles.text}>Day</Text>
+      <Pressable style={styles.selected_button}>
+        <Text style={styles.selected_text}>Day</Text>
       </Pressable>
       <Pressable style={styles.button}>
         <Text style={styles.text}>Week</Text>

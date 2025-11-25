@@ -24,7 +24,11 @@ const styles = StyleSheet.create({
     gap: global.padding.small,
   },
   grade: {},
-  stars: {},
+  stars: {
+    display: "flex",
+    flexDirection: "row",
+    width: 100,
+  },
   tries: {
     marginTop: global.padding.small,
     paddingLeft: 22,

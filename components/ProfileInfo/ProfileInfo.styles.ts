@@ -2,27 +2,23 @@ import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    paddingHorizontal: global.margin.page_border,
-    paddingVertical: global.margin.page_border / 2,
-  },
+  container: {},
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: global.margin.page_border / 2,
+    marginBottom: global.padding.large,
+    alignItems: "flex-start",
   },
   avatarPlaceholder: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
+    width: 100,
+    height: 100,
+    borderRadius: 100,
     backgroundColor: global.colors.background_2,
   },
   editButton: {
-    backgroundColor: global.colors.background_2,
-    paddingVertical: global.padding.small / 2,
-    paddingHorizontal: global.padding.small,
+    paddingVertical: global.padding.small,
+    backgroundColor: global.colors.background_3,
+    paddingHorizontal: global.padding.medium,
     borderRadius: global.border.border_radius,
   },
   editButtonText: {
@@ -31,12 +27,13 @@ export const styles = StyleSheet.create({
   },
   name: {
     fontSize: global.font_size.phone_medium,
-    fontWeight: "bold",
-    marginBottom: 5,
+    fontWeight: 600,
+    marginBottom: global.padding.small,
   },
   socialRow: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: global.padding.medium,
   },
   handle: {
     fontSize: global.font_size.phone_medium,

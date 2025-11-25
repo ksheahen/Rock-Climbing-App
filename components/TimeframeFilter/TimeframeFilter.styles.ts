@@ -3,20 +3,33 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
+    marginTop: global.padding.large,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     width: "100%",
-    paddingHorizontal: global.margin.page_border,
-    paddingVertical: global.margin.page_border / 2,
+    backgroundColor: global.colors.background_3,
+    paddingVertical: global.padding.small,
+    paddingHorizontal: global.padding.medium,
+    alignItems: "center",
+    borderRadius: global.border.border_radius_large,
   },
-  button: {
-    backgroundColor: global.colors.background_2,
-    paddingVertical: global.padding.small / 2,
-    paddingHorizontal: global.padding.small,
+  selected_button: {
+    // TODO:  only have background and shadow when selected
+    backgroundColor: "white",
+    paddingVertical: global.padding.small,
+    paddingHorizontal: global.padding.medium,
     borderRadius: global.border.border_radius,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
   },
-  text: {
+  selected_text: {
     fontSize: global.font_size.phone_medium,
     color: global.colors.text_1,
+    // TODO:  only bold when selected
+    fontWeight: 600,
   },
+  button: {},
+  text: {},
 });

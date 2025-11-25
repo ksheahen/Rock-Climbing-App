@@ -5,44 +5,47 @@ export const styles = StyleSheet.create({
   daySelector: {
     flexDirection: "row",
     justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 20,
     gap: 12,
+    marginTop: global.padding.large,
   },
   dayCircle: {
+    borderColor: global.colors.background_2,
+    borderStyle: "dashed",
+    borderWidth: 2,
+
     width: 40,
     height: 40,
     borderRadius: 100,
-    backgroundColor: global.colors.background_2,
     alignItems: "center",
     justifyContent: "center",
   },
   dayRed: {
-    backgroundColor: global.colors.red,
+    borderColor: global.colors.red,
+    borderStyle: "solid",
+    borderWidth: 2,
   },
   dayGreen: {
-    backgroundColor: global.colors.green,
+    borderColor: global.colors.green,
+    borderStyle: "solid",
+    borderWidth: 2,
   },
   daySelected: {
     backgroundColor: "white",
     borderWidth: 2,
     borderColor: global.colors.text_1,
+    borderStyle: "solid",
   },
   dayText: {
     fontSize: global.font_size.phone_medium,
-    fontWeight: "600",
-    color: "white",
-    fontFamily: "Roboto",
+    color: global.colors.text_1,
   },
   dayTextSelected: {
     color: global.colors.text_1,
   },
   dateText: {
     fontSize: global.font_size.tiny,
-    color: "white",
+    color: global.colors.text_1,
     marginTop: -2,
-    fontFamily: "Roboto",
   },
   dateTextSelected: {
     color: global.colors.text_1,

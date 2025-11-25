@@ -21,12 +21,13 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: "center",
-    marginTop: 10,
-    marginBottom: 8,
+    paddingTop: global.padding.medium,
+    paddingBottom: global.padding.medium,
   },
   title: {
-    fontSize: global.font_size.phone_large,
-    fontWeight: "300",
+    fontSize: 24,
+    fontWeight: 600,
+    color: global.colors.text_1,
   },
 });
 
