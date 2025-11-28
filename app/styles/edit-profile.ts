@@ -1,66 +1,66 @@
-import { global } from "@/theme";
+import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING } from "@/theme";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: global.colors.background_1,
-    padding: global.padding.medium,
+    backgroundColor: COLORS.background1,
+    padding: PADDING.page_padding,
     justifyContent: "center",
     alignItems: "center",
   },
   card: {
     width: "100%",
-    backgroundColor: global.colors.background_1,
-    borderRadius: global.border.border_radius,
-    padding: global.margin.page_border * 2,
+    backgroundColor: COLORS.background2,
+    borderRadius: BORDERRADIUS.default,
+    padding: PADDING.page_padding * 2,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
   },
   heading: {
-    fontSize: global.font_size.phone_large,
+    fontSize: FONT_SIZES.large,
     fontWeight: "bold",
-    marginBottom: global.margin.page_border,
-    color: global.colors.text_1,
+    marginBottom: PADDING.page_padding,
+    color: COLORS.text1,
   },
   inputGroup: {
-    marginBottom: global.margin.page_border,
+    marginBottom: PADDING.page_padding,
   },
   label: {
-    fontSize: global.font_size.phone_medium,
+    fontSize: FONT_SIZES.medium,
     marginBottom: 4,
-    color: global.colors.text_2,
+    color: COLORS.text2,
   },
   input: {
     borderWidth: 1,
-    borderColor: global.border.border_color,
-    borderRadius: global.border.border_radius,
-    padding: global.padding.small,
-    backgroundColor: global.colors.background_3,
-    color: global.colors.text_1,
+    borderColor: COLORS.border,
+    borderRadius: BORDERRADIUS.default,
+    padding: PADDING.dropdown_padding,
+    backgroundColor: COLORS.background3,
+    color: COLORS.text1,
   },
   buttonRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: global.margin.page_border,
+    marginTop: PADDING.page_padding,
   },
   button: {
     flex: 1,
-    padding: global.padding.small,
-    borderRadius: global.border.border_radius,
+    padding: PADDING.dropdown_padding,
+    borderRadius: BORDERRADIUS.default,
     alignItems: "center",
     marginHorizontal: 5,
   },
   cancelButton: {
-    backgroundColor: global.colors.blue,
+    backgroundColor: COLORS.blue,
   },
   saveButton: {
-    backgroundColor: global.colors.blue,
+    backgroundColor: COLORS.blue,
   },
   buttonText: {
-    color: global.colors.text_1,
+    color: COLORS.text1,
     fontWeight: "bold",
   },
 });

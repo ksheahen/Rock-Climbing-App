@@ -1,19 +1,22 @@
-import { global } from "@/theme";
 import { StyleSheet } from "react-native";
+import { COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   pointsSection: {
-    gap: global.gap.small,
     alignItems: "center",
-    paddingVertical: global.padding.medium,
+    paddingVertical: 20,
+    paddingBottom: 12,
   },
   pointsTitle: {
-    fontSize: 24,
-    fontWeight: 600,
+    fontSize: FONT_SIZES.xlarge,
+    fontWeight: "bold",
     color: global.colors.text_1,
+    fontFamily: "Roboto",
   },
   pointsSubtitle: {
-    fontSize: global.font_size.phone_medium,
-    color: global.colors.text_2,
+    fontSize: FONT_SIZES.regular,
+    color: COLORS.textGray,
+    marginTop: 4,
+    fontFamily: "Roboto",
   },
 });

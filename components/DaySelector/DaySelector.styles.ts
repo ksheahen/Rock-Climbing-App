@@ -1,51 +1,48 @@
-import { global } from "@/theme";
 import { StyleSheet } from "react-native";
+import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   daySelector: {
     flexDirection: "row",
     justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 20,
     gap: 12,
-    marginTop: global.padding.large,
   },
   dayCircle: {
-    borderColor: global.colors.background_2,
-    borderStyle: "dashed",
-    borderWidth: 2,
-
     width: 40,
     height: 40,
-    borderRadius: 100,
+    borderRadius: BORDERRADIUS.large,
+    backgroundColor: COLORS.lightGray,
     alignItems: "center",
     justifyContent: "center",
   },
   dayRed: {
-    borderColor: global.colors.red,
-    borderStyle: "solid",
-    borderWidth: 2,
+    backgroundColor: COLORS.streakRed,
   },
   dayGreen: {
-    borderColor: global.colors.green,
-    borderStyle: "solid",
-    borderWidth: 2,
+    backgroundColor: COLORS.streakGreen,
   },
   daySelected: {
-    backgroundColor: "white",
+    backgroundColor: COLORS.white,
     borderWidth: 2,
     borderColor: global.colors.text_1,
-    borderStyle: "solid",
   },
   dayText: {
     fontSize: global.font_size.phone_medium,
-    color: global.colors.text_1,
+    fontWeight: "600",
+    color: COLORS.white,
+    fontFamily: "Roboto",
   },
   dayTextSelected: {
     color: global.colors.text_1,
   },
   dateText: {
-    fontSize: global.font_size.tiny,
-    color: global.colors.text_1,
+    fontSize: FONT_SIZES.tiny,
+    color: COLORS.white,
     marginTop: -2,
+    fontFamily: "Roboto",
   },
   dateTextSelected: {
     color: global.colors.text_1,

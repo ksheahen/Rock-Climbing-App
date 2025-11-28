@@ -14,7 +14,7 @@ export const RecentSessions: React.FC<RecentSessionsProps> = ({
 }) => {
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>RECENT LOGS</Text>
+      <Text style={styles.sectionTitle}>RECENT SESSIONS</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

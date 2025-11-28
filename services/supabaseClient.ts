@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "test") {
   // Use anon/publishable key for normal operations
   SUPABASE_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
   if (!SUPABASE_KEY)
-    throw new Error("SUPABASE_ANON_KEY is missing in .env");
+    throw new Error("NEXT_PUBLIC_SUPABASE_ANON_KEY is missing in .env");
 }
 
 // Create Supabase client

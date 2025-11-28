@@ -1,5 +1,5 @@
-import { global } from "@/theme";
 import { StyleSheet } from "react-native";
+import { COLORS } from "../../theme";
 
 export const styles = StyleSheet.create({
   modalOverlay: {
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: global.colors.background_2,
+    borderBottomColor: COLORS.lightGray,
   },
   modalTitle: {
     fontSize: 20,
@@ -59,13 +59,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: global.colors.background_2,
+    backgroundColor: COLORS.lightGray,
     borderWidth: 1,
-    borderColor: global.colors.background_2,
+    borderColor: COLORS.lightGray,
   },
   optionChipSelected: {
-    backgroundColor: global.colors.red,
-    borderColor: global.colors.red,
+    backgroundColor: COLORS.red,
+    borderColor: COLORS.red,
   },
   optionChipText: {
     fontSize: 14,
@@ -81,27 +81,27 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: global.colors.background_2,
+    borderTopColor: COLORS.lightGray,
   },
   resetButton: {
     flex: 1,
     paddingVertical: 14,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: global.colors.red,
+    borderColor: COLORS.red,
     alignItems: "center",
     justifyContent: "center",
   },
   resetButtonText: {
     fontSize: 16,
     fontWeight: "600",
-    color: global.colors.red,
+    color: COLORS.red,
   },
   applyButton: {
     flex: 2,
     paddingVertical: 14,
     borderRadius: 8,
-    backgroundColor: global.colors.red,
+    backgroundColor: COLORS.red,
     alignItems: "center",
     justifyContent: "center",
   },

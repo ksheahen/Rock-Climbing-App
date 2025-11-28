@@ -1,33 +1,32 @@
-import { global } from "@/theme";
 import { StyleSheet } from "react-native";
+import { COLORS, FONT_SIZES, GLOBAL } from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.background1,
     width: "100%",
-    backgroundColor: global.colors.background_1,
-    paddingLeft: global.margin.page_border,
-    paddingRight: global.margin.page_border,
-    paddingBottom: global.margin.page_top,
+    paddingLeft: GLOBAL.page_leftright_margin,
+    paddingRight: GLOBAL.page_leftright_margin,
+    paddingBottom: GLOBAL.page_bottom_margin,
   },
   scroll: {
     flex: 1,
   },
   scrollContent: {
     paddingBottom: 80,
-    backgroundColor: global.colors.background_1,
+    backgroundColor: COLORS.background1,
     display: "flex",
-    gap: global.gap.medium,
+    gap: GLOBAL.component_spacing_medium,
   },
   titleContainer: {
     alignItems: "center",
-    paddingTop: global.padding.medium,
-    paddingBottom: global.padding.medium,
+    marginTop: 10,
+    marginBottom: 8,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 600,
-    color: global.colors.text_1,
+    fontSize: FONT_SIZES.large,
+    fontWeight: "300",
   },
 });
 

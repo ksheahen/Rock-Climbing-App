@@ -1,43 +1,46 @@
-import { global } from "@/theme";
 import { StyleSheet } from "react-native";
+import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING, global } from "../../theme";
 
 export const styles = StyleSheet.create({
-  container: {},
+  container: {
+    width: "100%",
+    paddingHorizontal: PADDING.page_padding,
+    paddingVertical: PADDING.page_padding / 2,
+  },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: global.padding.large,
-    alignItems: "flex-start",
+    alignItems: "center",
+    marginBottom: PADDING.page_padding / 2,
   },
   avatarPlaceholder: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
     backgroundColor: global.colors.background_2,
   },
   editButton: {
-    paddingVertical: global.padding.small,
-    backgroundColor: global.colors.background_3,
-    paddingHorizontal: global.padding.medium,
-    borderRadius: global.border.border_radius,
+    backgroundColor: global.colors.background_2,
+    paddingVertical: global.padding.small / 2,
+    paddingHorizontal: global.padding.small,
+    borderRadius: BORDERRADIUS.default,
   },
   editButtonText: {
     fontSize: global.font_size.phone_medium,
     color: global.colors.text_1,
   },
   name: {
-    fontSize: global.font_size.phone_medium,
-    fontWeight: 600,
-    marginBottom: global.padding.small,
+    fontSize: FONT_SIZES.medium,
+    fontWeight: "bold",
+    marginBottom: 5,
   },
   socialRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: global.padding.medium,
   },
   handle: {
     fontSize: global.font_size.phone_medium,
     marginLeft: 5,
-    color: global.colors.text_2,
+    color: COLORS.text2,
   },
 });

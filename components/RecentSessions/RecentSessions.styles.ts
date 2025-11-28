@@ -1,15 +1,18 @@
-import { global } from "@/theme";
 import { StyleSheet } from "react-native";
+import { COLORS, FONT_SIZES } from "../../theme";
 
 export const styles = StyleSheet.create({
   section: {
-    marginTop: global.padding.large * 2,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   sectionTitle: {
-    fontSize: global.font_size.phone_medium,
+    fontSize: FONT_SIZES.medium,
     fontWeight: "bold",
-    color: global.colors.text_2,
-    marginBottom: global.padding.large,
+    color: COLORS.textGray,
+    marginBottom: 16,
+    letterSpacing: 0.5,
+    fontFamily: "Roboto",
   },
   sessionsScroll: {
     marginHorizontal: -20,

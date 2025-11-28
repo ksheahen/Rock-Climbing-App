@@ -19,7 +19,7 @@ Created a centralized, well-organized theme system:
 **Benefits:**
 
 - Better organization and discoverability
-- Semantic naming (e.g., `colors.primary.blue` instead of `global.colors.blue`)
+- Semantic naming (e.g., `colors.primary.blue` instead of `COLORS.blue`)
 - Backward compatibility maintained during migration
 
 ### 2. **Component Structure Modernization** ✅

@@ -1,30 +1,30 @@
-import { global } from "@/theme";
 import { StyleSheet } from "react-native";
+import { BORDERRADIUS, COLORS, FONT_SIZES, global } from "../../theme";
 
 export const styles = StyleSheet.create({
   sessionCard: {
     width: 160,
     marginRight: 16,
-    backgroundColor: global.colors.background_3,
-    borderRadius: 10,
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: BORDERRADIUS.medium,
     overflow: "hidden",
   },
   sessionImagePlaceholder: {
     height: 100,
-    backgroundColor: global.colors.background_2,
+    backgroundColor: COLORS.lightGray,
   },
   sessionInfo: {
     padding: 12,
   },
   sessionGrade: {
-    fontSize: global.font_size.phone_large,
+    fontSize: FONT_SIZES.large,
     fontWeight: "bold",
     color: global.colors.text_1,
     fontFamily: "Roboto",
   },
   sessionTries: {
-    fontSize: global.font_size.phone_medium,
-    color: global.colors.text_2,
+    fontSize: FONT_SIZES.medium,
+    color: COLORS.textGray,
     marginTop: 4,
     fontFamily: "Roboto",
   },
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
   },
   sessionDate: {
     fontSize: global.font_size.phone_medium,
-    color: global.colors.text_2,
+    color: COLORS.textGray,
     fontFamily: "Roboto",
   },
 });
