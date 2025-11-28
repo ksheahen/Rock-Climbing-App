@@ -131,7 +131,11 @@ function LogAscent() {
           editToggle={editToggle}
         />
         <Line />
-        <DateTime editToggle={editToggle} />
+        <DateTime
+          selectedProp={selectedDateTime}
+          onSelectedChange={setSelectedDateTime}
+          editToggle={editToggle}
+        />
         <Line />
         <Description
           selectedProp={selectedDescription}

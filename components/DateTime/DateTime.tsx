@@ -1,7 +1,7 @@
 import DateTimePicker, {
   DateTimePickerAndroid,
 } from "@react-native-community/datetimepicker";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FlatList, Modal, Platform, Pressable, Text, View } from "react-native";
 import styles from "./DateTime.styles";
 
@@ -40,24 +40,40 @@ function buildTimeOptions() {
   return res;
 }
 
+// parse parent's string -> Date
+function parseDateString(input?: string | null): Date {
+  if (!input) return new Date();
+  const d = new Date(input);
+  if (isNaN(d.getTime())) return new Date();
+  return d;
+}
+
 type Props = {
-  initial?: Date;
-  onChange?: (value: Date) => void;
+  selectedProp: string; // stored in SQLite
+  onSelectedChange?: (value: string) => void; // send string back to parent
   editToggle: boolean;
 };
 
-function DateTime({ initial, onChange, editToggle }: Props) {
-  const [value, setValue] = useState<Date>(initial ?? new Date());
+function DateTime({ selectedProp, onSelectedChange, editToggle }: Props) {
+  const [value, setValue] = useState<Date>(parseDateString(selectedProp));
   const [showModal, setShowModal] = useState(false); // single modal for both date+time (iOS) or time (Android)
   const timeOptions = useMemo(buildTimeOptions, []);
   const activeMinutes = value.getHours() * 60 + value.getMinutes();
 
+  // keep local Date in sync when parent changes (e.g. editing existing log)
+  useEffect(() => {
+    setValue(parseDateString(selectedProp));
+  }, [selectedProp]);
+
   const commit = (next: Date) => {
     setValue(next);
-    onChange?.(next);
+    // store as ISO string in parent / DB
+    onSelectedChange?.(next.toISOString());
   };
 
   const openPicker = () => {
+    if (!editToggle) return;
+
     if (Platform.OS === "android") {
       // 1) Android date dialog first
       DateTimePickerAndroid.open({
@@ -105,7 +121,7 @@ function DateTime({ initial, onChange, editToggle }: Props) {
       <Text style={styles.title}>Date/Time</Text>
 
       {/* SINGLE CHIP */}
-      {/* when editToggle = true, show everthing */}
+      {/* when editToggle = true, show everything */}
       {/* when editToggle = false, show just view mode */}
       {editToggle ? (
         <Pressable style={styles.pillCompact} onPress={openPicker} hitSlop={8}>
@@ -114,12 +130,13 @@ function DateTime({ initial, onChange, editToggle }: Props) {
           </Text>
         </Pressable>
       ) : (
-        <View style={styles.pillCompact} hitSlop={8}>
+        <View style={styles.pillCompact}>
           <Text style={styles.pillCompactText} numberOfLines={1}>
             {formatChip(value)}
           </Text>
         </View>
       )}
+
       {/* ONE MODAL FOR BOTH (iOS shows date+time; Android shows time only after date chosen) */}
       <Modal visible={showModal} transparent animationType="fade">
         <View style={styles.modalBackdrop}>
@@ -182,3 +199,4 @@ function DateTime({ initial, onChange, editToggle }: Props) {
 }
 
 export default DateTime;
+
