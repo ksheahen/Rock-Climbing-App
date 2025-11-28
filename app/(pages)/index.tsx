@@ -1,15 +1,95 @@
-import { router } from "expo-router";
-import React from "react";
-import { ScrollView } from "react-native";
-import { AnalyticsPreview } from "../(components)/analyticspreview";
-import { DayData, DaySelector } from "../(components)/dayselector";
-import { HomeHeader } from "../(components)/homeheader";
-import { PointsDisplay } from "../(components)/pointsdisplay";
-import { RecentSessions } from "../(components)/recentsessions";
-import { SessionData } from "../(components)/sessioncard";
-import { styles } from "../styles/index";
+import { router, useFocusEffect } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+import React, { useCallback, useMemo, useState } from "react";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { LocalClimb } from "../../types/LocalClimb";
+import {
+  AnalyticsPreview,
+  DayData,
+  DaySelector,
+  FilterModal,
+  FilterOptions,
+  HomeHeader,
+  PointsDisplay,
+  RecentSessions,
+  SessionData,
+} from "../../components";
+import styles from "../styles/index.styles";
 
-const index = () => {
+const Index = () => {
+  const db = useSQLiteContext();
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>({
+    grades: [],
+    tries: [],
+    stars: [],
+    dateRange: "all",
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [climbs, setClimbs] = useState<LocalClimb[]>([]);
+
+  // Fetch climbs from SQLite - runs every time the page comes into focus
+  const fetchClimbs = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Query all climbs from log_climb3 table, ordered by id descending (most recent first)
+      const result = await db.getAllAsync<LocalClimb>(
+        `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`,
+      );
+
+      setClimbs(result);
+    } catch (err: any) {
+      const errorMessage = err?.message || "Failed to load climbs";
+      console.error("Error fetching climbs:", err);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  }, [db]);
+
+  // Refresh climbs whenever the screen comes into focus (e.g., after logging a climb)
+  useFocusEffect(
+    useCallback(() => {
+      fetchClimbs();
+    }, [fetchClimbs]),
+  );
+
+  // Convert climbs to SessionData format for UI
+  const allSessionsData: SessionData[] = useMemo(() => {
+    return climbs.map((climb) => {
+      // Format date
+      let formattedDate = "N/A";
+      if (climb.datetime) {
+        try {
+          const date = new Date(climb.datetime);
+          if (!isNaN(date.getTime())) {
+            formattedDate = date.toLocaleDateString("en-US", {
+              month: "numeric",
+              day: "numeric",
+              year: "2-digit",
+            });
+          }
+        } catch {
+          formattedDate = "N/A";
+        }
+      }
+
+      // Format attempts (attempt is stored as string in current schema)
+      const attemptNum = parseInt(climb.attempt) || 1;
+      const tries = `${attemptNum} ${attemptNum === 1 ? "Try" : "Tries"}`;
+
+      return {
+        grade: climb.grade,
+        tries: tries,
+        stars: climb.rating || 0,
+        date: formattedDate,
+      };
+    });
+  }, [climbs]);
+
   const days: DayData[] = [
     { day: "S", date: "20", status: "red" },
     { day: "S", date: "21", status: "green" },
@@ -20,40 +100,140 @@ const index = () => {
     { day: "F", date: "26", status: "default" },
   ];
 
-  const sessions: SessionData[] = [
-    { grade: "V10", tries: "3 Tries", stars: 2, date: "9/22/25" },
-    { grade: "V8", tries: "10+ Tries", stars: 3, date: "9/22/25" },
-    { grade: "V7", tries: "5 Tries", stars: 2, date: "9/21/25" },
-  ];
+  // Helper function to match tries filter
+  const matchesTries = (tries: string, filterValue: string): boolean => {
+    const triesNum = parseInt(tries.split(" ")[0]);
+
+    switch (filterValue) {
+      case "1-2":
+        return triesNum >= 1 && triesNum <= 2;
+      case "3-5":
+        return triesNum >= 3 && triesNum <= 5;
+      case "6-10":
+        return triesNum >= 6 && triesNum <= 10;
+      case "10+":
+        return tries.includes("10+") || triesNum > 10;
+      default:
+        return true;
+    }
+  };
+
+  // Filtered sessions based on current filters
+  const filteredSessions = useMemo(() => {
+    let filtered = [...allSessionsData];
+
+    // Filter by grade
+    if (filters.grades.length > 0) {
+      filtered = filtered.filter((session) =>
+        filters.grades.includes(session.grade),
+      );
+    }
+
+    // Filter by tries
+    if (filters.tries.length > 0) {
+      filtered = filtered.filter((session) =>
+        filters.tries.some((filterTries) =>
+          matchesTries(session.tries, filterTries),
+        ),
+      );
+    }
+
+    // Filter by stars
+    if (filters.stars.length > 0) {
+      filtered = filtered.filter((session) =>
+        filters.stars.includes(session.stars),
+      );
+    }
+
+    return filtered;
+  }, [allSessionsData, filters]);
 
   const handleFilterPress = () => {
-    // TODO: Implement filter functionality
-    console.log("Filter pressed");
+    setFilterModalVisible(true);
+  };
+
+  const handleApplyFilters = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
   };
 
   const handleDayPress = (index: number) => {
     // TODO: Implement day selection functionality
-    console.log("Day pressed:", index);
   };
 
   const handleSessionPress = (index: number) => {
-    // TODO: Navigate to session detail page
-    console.log("Session pressed:", index);
+    // Navigate to individual climb page
+    const climbId = climbs[index]?.id;
+    if (climbId) {
+      router.push(`/individual-climb-page?id=${climbId}`);
+    }
   };
 
   const handleAnalyticsPress = () => {
     router.push("/analytics");
   };
 
+  // Loading state
+  if (loading) {
+    return (
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text style={{ marginTop: 10, color: "#8E8E93" }}>Loading logs...</Text>
+      </View>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center", padding: 20 },
+        ]}
+      >
+        <Text style={{ color: "#FF3B30", fontSize: 16, textAlign: "center" }}>
+          {error}
+        </Text>
+      </View>
+    );
+  }
+
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <HomeHeader streakCount={2} onFilterPress={handleFilterPress} />
-      <PointsDisplay points={104} subtitle="This week" />
-      <DaySelector days={days} onDayPress={handleDayPress} />
-      <RecentSessions sessions={sessions} onSessionPress={handleSessionPress} />
-      <AnalyticsPreview onPress={handleAnalyticsPress} />
-    </ScrollView>
+    <>
+      <View style={styles.container}>
+        <HomeHeader streakCount={2} onFilterPress={handleFilterPress} />
+        <PointsDisplay points={104} subtitle="This week" />
+        <DaySelector days={days} onDayPress={handleDayPress} />
+        {filteredSessions.length === 0 ? (
+          <View style={{ padding: 20, alignItems: "center" }}>
+            <Text
+              style={{ color: "#8E8E93", fontSize: 16, textAlign: "center" }}
+            >
+              No climb logs yet.{"\n"}
+              Start logging your climbs!
+            </Text>
+          </View>
+        ) : (
+          <RecentSessions
+            sessions={filteredSessions}
+            onSessionPress={handleSessionPress}
+          />
+        )}
+        <AnalyticsPreview onPress={handleAnalyticsPress} />
+      </View>
+      <FilterModal
+        visible={filterModalVisible}
+        onClose={() => setFilterModalVisible(false)}
+        onApply={handleApplyFilters}
+        currentFilters={filters}
+      />
+    </>
   );
 };
 
-export default index;
+export default Index;

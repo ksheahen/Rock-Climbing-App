@@ -1,6 +1,6 @@
+import { global } from "@/theme";
 import { Tabs } from "expo-router";
 import Icon from "react-native-remix-icon";
-import { COLORS } from "../styles/global-styles";
 
 // the navbar at the bottom of the screen
 function TabLayout() {
@@ -9,8 +9,8 @@ function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          borderColor: COLORS.background1,
-          backgroundColor: COLORS.background1,
+          borderColor: global.colors.background_1,
+          backgroundColor: global.colors.background_1,
           height: 70,
         },
       }}
@@ -21,7 +21,7 @@ function TabLayout() {
           title: "Home",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="home-line" size={30} color={COLORS.text1} />
+            <Icon name="home-line" size={30} color={global.colors.text_1} />
           ),
         }}
       />
@@ -29,10 +29,15 @@ function TabLayout() {
       <Tabs.Screen
         name="analytics"
         options={{
+          href: null,
           title: "Analytics",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="bar-chart-2-line" size={30} color={COLORS.text1} />
+            <Icon
+              name="bar-chart-2-line"
+              size={30}
+              color={global.colors.text_1}
+            />
           ),
         }}
       />
@@ -42,7 +47,11 @@ function TabLayout() {
           title: "Log",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="add-circle-line" size={30} color={COLORS.text1} />
+            <Icon
+              name="add-circle-line"
+              size={30}
+              color={global.colors.text_1}
+            />
           ),
         }}
       />
@@ -53,7 +62,23 @@ function TabLayout() {
           title: "Profile",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="account-circle-line" size={30} color={COLORS.text1} />
+            <Icon
+              name="account-circle-line"
+              size={30}
+              color={global.colors.text_1}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="edit-profile"
+        options={{
+          href: null,
+          title: "Edit profile page",
+          tabBarShowLabel: false,
+          tabBarIcon: () => (
+            <Icon name="circle-line" size={30} color={global.colors.text_1} />
           ),
         }}
       />
@@ -61,11 +86,11 @@ function TabLayout() {
       <Tabs.Screen
         name="individual-climb-page"
         options={{
-          // href: null,
+          href: null,
           title: "Individual climb page",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="circle-line" size={30} color={COLORS.text1} />
+            <Icon name="circle-line" size={30} color={global.colors.text_1} />
           ),
         }}
       />

@@ -7,21 +7,21 @@ Tracks user participation and progress in challenges.
 
 ### Columns
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `user_id` | UUID | FK -> `user.user_id` | Challenge participant |
-| `challenge_id` | UUID | FK -> `challenge.challenge_id` | Associated challenge |
-| `progress` | INTEGER | DEFAULT 0 | Current progress metric |
-| `status` | TEXT | DEFAULT 'in progress' | Status: `in progress`, `complete`, or `failed` |
+| Column         | Type    | Constraints                    | Description                                    |
+| -------------- | ------- | ------------------------------ | ---------------------------------------------- |
+| `user_id`      | UUID    | FK -> `user.user_id`           | Challenge participant                          |
+| `challenge_id` | UUID    | FK -> `challenge.challenge_id` | Associated challenge                           |
+| `progress`     | INTEGER | DEFAULT 0                      | Current progress metric                        |
+| `status`       | TEXT    | DEFAULT 'in progress'          | Status: `in progress`, `complete`, or `failed` |
 
 ---
 
 ### Relationships
 
-| Column | References | Relationship | Description |
-|--------|------------|--------------|-------------|
-| `user_id` | `user.user_id` | N:1 | Participant user |
-| `challenge_id` | `challenge.challenge_id` | N:1 | Challenge joined by user |
+| Column         | References               | Relationship | Description              |
+| -------------- | ------------------------ | ------------ | ------------------------ |
+| `user_id`      | `user.user_id`           | N:1          | Participant user         |
+| `challenge_id` | `challenge.challenge_id` | N:1          | Challenge joined by user |
 
 ---
 
@@ -32,6 +32,7 @@ auth.uid() = user_id
 ```
 
 ### Example Queries
+
 ```sql
 -- Get active challenges for current user
 SELECT uc.*, c.title

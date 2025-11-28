@@ -1,12 +1,12 @@
+import Button from "@/components/Button/Button";
+import Email from "@/components/Email/Email";
+import { Password } from "@/components/Password/Password";
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Alert, AppState, Image, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ButtonComponent from "./(components)/button";
-import EmailComponent from "./(components)/email";
-import PasswordComponent from "./(components)/password";
-import styles from "./styles/login";
+import styles from "../styles/login.styles";
 
 // Refreshes session automtically if the app is in the foreground
 AppState.addEventListener("change", (state) => {
@@ -21,19 +21,33 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const logo = require("../assets/icon.png");
+  const [error, setError] = useState<string | null>(null);
+  const logo = require("../../assets/icon.png");
   const login = "Login";
   const router = useRouter();
 
   // Sign In with Email
   async function signInWithEmail() {
+    if (!email) {
+      setError("Email is required");
+      return;
+    }
+    if (!password) {
+      setError("Password is required");
+      return;
+    }
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
 
-    if (error) Alert.alert(error.message);
+    if (error) {
+      Alert.alert(error.message);
+      setError(error.message);
+    } else {
+      router.navigate("/");
+    }
     setLoading(false);
   }
 
@@ -42,16 +56,17 @@ export default function Login() {
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
         <Image source={logo} alt="logo" style={styles.logo} />
-        <EmailComponent email={email} setEmail={setEmail} />
-        <PasswordComponent
+        <Email email={email} setEmail={setEmail} />
+        <Password
           password={password}
           setPassword={setPassword}
           displayText="Password"
         />
+        {error && <Text>{error}</Text>}
         <View style={styles.forgotPasswordContainer}>
           <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
         </View>
-        <ButtonComponent
+        <Button
           title={login}
           disabled={loading}
           onPress={() => signInWithEmail()}
