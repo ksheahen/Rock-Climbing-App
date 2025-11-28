@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Modal,
   View,
@@ -9,12 +9,25 @@ import {
 } from "react-native";
 import { styles } from "./Description.styles";
 
-function Description() {
+interface DescriptionProps {
+  selectedProp: string;
+  onSelectedChange?: (value: string) => void;
+  editToggle: boolean;
+}
+
+function Description({ selectedProp, onSelectedChange, editToggle }: DescriptionProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [description, setDescription] = useState("");
-  const [draft, setDraft] = useState("");
+  const [description, setDescription] = useState(selectedProp || "");
+  const [draft, setDraft] = useState(selectedProp || "");
+
+  // keep local state in sync if parent changes selectedProp
+  useEffect(() => {
+    setDescription(selectedProp || "");
+    setDraft(selectedProp || "");
+  }, [selectedProp]);
 
   const openModal = () => {
+    if (!editToggle) return; // don't open in view-only mode
     setDraft(description);
     setModalVisible(true);
   };
@@ -22,6 +35,7 @@ function Description() {
   const save = () => {
     setDescription(draft);
     setModalVisible(false);
+    onSelectedChange?.(draft); // notify parent
   };
 
   const cancel = () => {
@@ -35,21 +49,35 @@ function Description() {
       <View style={styles.container}>
         <Text style={styles.title}>Description</Text>
 
-        <TouchableOpacity
-          style={styles.preview_container}
-          onPress={openModal}
-          activeOpacity={0.7}
-        >
-          <Text
-            style={[
-              styles.preview_text,
-              !description && styles.preview_placeholder,
-            ]}
-            numberOfLines={2}
+        {editToggle ? (
+          <TouchableOpacity
+            style={styles.preview_container}
+            onPress={openModal}
+            activeOpacity={0.7}
           >
-            {description || "Add description..."}
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={[
+                styles.preview_text,
+                !description && styles.preview_placeholder,
+              ]}
+              numberOfLines={2}
+            >
+              {description || "Add description..."}
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.preview_container}>
+            <Text
+              style={[
+                styles.preview_text,
+                !description && styles.preview_placeholder,
+              ]}
+              numberOfLines={2}
+            >
+              {description || "No description."}
+            </Text>
+          </View>
+        )}
       </View>
 
       {/* Modal */}

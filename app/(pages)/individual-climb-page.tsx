@@ -241,8 +241,11 @@ function IndividualClimbPage() {
         <Line />
         <DateTime editToggle={editToggle} />
         <Line />
-        <Description />
-        {/* only render the button when in edit mode */}
+        <Description
+          selectedProp={selectedDescription}
+          onSelectedChange={setSelectedDescription}
+          editToggle={editToggle}
+        />
         {editToggle ? (
           <View style={styles.save_container}>
             <Pressable onPress={handleSubmit} style={styles.save_button}>
