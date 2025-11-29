@@ -22,10 +22,18 @@ To run ESLint and Prettier:
 ```bash
 npx expo lint .
 ```
+Or use:
+```
+npm run lint .
+```
 
 To fix any errors:
 ```bash
 npx expo lint --fix
+```
+If it's missing any errors use this command:
+```
+npm run lint:all
 ```
 
 # Testing
