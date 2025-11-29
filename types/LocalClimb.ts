@@ -14,4 +14,3 @@ export interface LocalClimb {
 }
 
 export type LocalClimbInsert = Omit<LocalClimb, "id">;
-
