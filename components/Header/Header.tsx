@@ -1,14 +1,14 @@
 import { Pressable, Text, View } from "react-native";
 import { styles } from "./Header.styles";
 
-interface HeaderProps {
+export interface HeaderProps {
   leftText: string;
   rightText: string;
   onLeftPress: () => void;
   onRightPress: () => void;
 }
 
-function Header({
+export function Header({
   leftText,
   rightText,
   onLeftPress,
@@ -25,5 +25,3 @@ function Header({
     </View>
   );
 }
-
-export default Header;

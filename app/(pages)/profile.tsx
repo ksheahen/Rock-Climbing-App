@@ -1,7 +1,7 @@
-import ClimbHistory from "@/components/ClimbHistory/ClimbHistory";
-import Line from "@/components/Line/Line";
-import ProfileInfo from "@/components/ProfileInfo/ProfileInfo";
-import TimeframeFilter from "@/components/TimeframeFilter/TimeframeFilter";
+import { ClimbHistory } from "@/components";
+import { Line } from "@/components";
+import { ProfileInfo } from "@/components";
+import { TimeframeFilter } from "@/components";
 import { View } from "react-native";
 import styles from "../styles/profile.styles";
 // import { useFocusEffect } from "expo-router";
@@ -122,8 +122,3 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
-
-
-
-
-

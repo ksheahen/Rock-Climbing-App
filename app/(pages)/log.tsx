@@ -1,14 +1,16 @@
-import Attempt from "@/components/Attempt/Attempt";
-import Category from "@/components/Category/Category";
-import Complete from "@/components/Complete/Complete";
-import DateTime from "@/components/DateTime/DateTime";
-import Description from "@/components/Description/Description";
-import Difficulty from "@/components/Difficulty/Difficulty";
-import Header from "@/components/Header/Header";
-import Line from "@/components/Line/Line";
-import Media from "@/components/Media/Media";
-import Rating from "@/components/Rating/Rating";
-import Type from "@/components/Type/Type";
+import {
+  Attempt,
+  Category,
+  Complete,
+  DateTime,
+  Description,
+  Difficulty,
+  Header,
+  Line,
+  Media,
+  Rating,
+  Type,
+} from "@/components";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";

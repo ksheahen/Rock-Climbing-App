@@ -11,7 +11,7 @@ interface CategoryComponentProps {
   editToggle: boolean;
 }
 
-function Category({
+export function Category({
   selectedProp, // sets the initial category
   onSelectedChange, // callback function
   editToggle,
@@ -71,5 +71,3 @@ function Category({
     </View>
   );
 }
-
-export default Category;

@@ -1,4 +1,4 @@
- import { Session, SessionInsert, SessionUpdate } from "../types/Session.ts";
+import { Session, SessionInsert, SessionUpdate } from "../types/Session.ts";
 import { table } from "./supabaseHelper.ts";
 
 // Fetch a single session by UUID

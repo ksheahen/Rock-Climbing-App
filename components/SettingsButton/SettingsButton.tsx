@@ -8,7 +8,7 @@ interface SettingsButtonProps {
   onSelectedChange?: (value: boolean) => void;
 }
 
-function SettingsButton({
+export function SettingsButton({
   modalVisibleProp,
   onSelectedChange,
 }: SettingsButtonProps) {
@@ -38,5 +38,3 @@ function SettingsButton({
     </View>
   );
 }
-
-export default SettingsButton;

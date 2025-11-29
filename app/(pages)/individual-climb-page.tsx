@@ -1,14 +1,16 @@
-import Attempt from "@/components/Attempt/Attempt";
-import BackButton from "@/components/BackButton/BackButton";
-import Category from "@/components/Category/Category";
-import Complete from "@/components/Complete/Complete";
-import DateTime from "@/components/DateTime/DateTime";
-import Description from "@/components/Description/Description";
-import Difficulty from "@/components/Difficulty/Difficulty";
-import Line from "@/components/Line/Line";
-import Rating from "@/components/Rating/Rating";
-import SettingsButton from "@/components/SettingsButton/SettingsButton";
-import Type from "@/components/Type/Type";
+import {
+  Attempt,
+  BackButton,
+  Category,
+  Complete,
+  DateTime,
+  Description,
+  Difficulty,
+  Line,
+  Rating,
+  SettingsButton,
+  Type,
+} from "@/components";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSearchParams, useRouter } from "expo-router/build/hooks";
 import { useSQLiteContext } from "expo-sqlite";

@@ -3,7 +3,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
-import Line from "../Line/Line";
+import { Line } from "@/components";
 import styles from "./ClimbHistory.styles";
 
 type Log = {
@@ -23,7 +23,7 @@ type Log = {
 // we might have to move all of this logic to the page
 // so that filters work in the future
 
-function ClimbHistory() {
+export function ClimbHistory() {
   const db = useSQLiteContext();
 
   const router = useRouter();
@@ -86,5 +86,3 @@ function ClimbHistory() {
     </ScrollView>
   );
 }
-
-export default ClimbHistory;

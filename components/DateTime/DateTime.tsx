@@ -46,7 +46,7 @@ type Props = {
   editToggle: boolean;
 };
 
-function DateTime({ initial, onChange, editToggle }: Props) {
+export function DateTime({ initial, onChange, editToggle }: Props) {
   const [value, setValue] = useState<Date>(initial ?? new Date());
   const [showModal, setShowModal] = useState(false); // single modal for both date+time (iOS) or time (Android)
   const timeOptions = useMemo(buildTimeOptions, []);
@@ -180,5 +180,3 @@ function DateTime({ initial, onChange, editToggle }: Props) {
     </View>
   );
 }
-
-export default DateTime;

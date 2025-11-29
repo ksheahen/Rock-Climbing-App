@@ -10,7 +10,7 @@ interface CompleteComponentProps {
   editToggle: boolean;
 }
 
-function Complete({
+export function Complete({
   selectedProp,
   onSelectedChange,
   editToggle,
@@ -70,5 +70,3 @@ function Complete({
     </View>
   );
 }
-
-export default Complete;

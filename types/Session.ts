@@ -6,7 +6,5 @@ export interface Session {
   source?: string;
 }
 
-export type SessionInsert = Omit<Session, "session_id">;
-
-// session_id should NOT be required when updating
+export type SessionInsert = Omit<Session, "session_id"> & { date?: string };
 export type SessionUpdate = Partial<Omit<Session, "session_id">>;

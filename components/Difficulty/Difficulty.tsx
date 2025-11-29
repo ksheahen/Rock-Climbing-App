@@ -10,7 +10,7 @@ interface GradeComponentProps {
   editToggle: boolean;
 }
 
-function Difficulty({
+export function Difficulty({
   selectedProp,
   onSelectedChange,
   editToggle,
@@ -94,5 +94,3 @@ function Difficulty({
     </View>
   );
 }
-
-export default Difficulty;

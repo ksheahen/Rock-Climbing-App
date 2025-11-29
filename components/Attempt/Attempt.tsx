@@ -10,7 +10,7 @@ interface AttemptComponentProps {
   editToggle: boolean;
 }
 
-function Attempt({
+export function Attempt({
   selectedProp,
   onSelectedChange,
   editToggle,
@@ -79,5 +79,3 @@ function Attempt({
     </View>
   );
 }
-
-export default Attempt;

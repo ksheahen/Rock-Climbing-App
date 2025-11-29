@@ -1,17 +1,19 @@
 // Auth Components
-export { Email } from "./Email/Email";
+export { EmailComponent } from "./Email/Email";
 export type { EmailProps } from "./Email/Email";
 export { Password } from "./Password/Password";
 export type { PasswordProps } from "./Password/Password";
 
 // UI Components
-export { Button } from "./Button/Button";
+export { ButtonComponent } from "./Button/Button";
 export type { ButtonProps } from "./Button/Button";
 export { Header } from "./Header/Header";
 export type { HeaderProps } from "./Header/Header";
 export { HomeHeader } from "./HomeHeader/HomeHeader";
 export type { HomeHeaderProps } from "./HomeHeader/HomeHeader";
 export { Line } from "./Line/Line";
+export { BackButton } from "./BackButton/BackButton";
+export { SettingsButton } from "./SettingsButton/SettingsButton";
 
 // Session Components
 export { SessionCard } from "./SessionCard/SessionCard";

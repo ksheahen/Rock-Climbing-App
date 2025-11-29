@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 import { styles } from "./Description.styles";
 
-function Description() {
+export function Description() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Description</Text>
@@ -11,5 +11,3 @@ function Description() {
     </View>
   );
 }
-
-export default Description;

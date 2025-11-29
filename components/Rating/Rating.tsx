@@ -11,7 +11,7 @@ interface RatingComponentProps {
   editToggle: boolean;
 }
 
-function Rating({
+export function Rating({
   selectedProp,
   onSelectedChange,
   editToggle,
@@ -81,5 +81,3 @@ function Rating({
     </View>
   );
 }
-
-export default Rating;

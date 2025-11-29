@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import styles from "./BackButton.styles";
 
-function BackButton() {
+export function BackButton() {
   const router = useRouter();
   const handleRedirect = () => {
     router.push(`/profile`);
@@ -21,5 +21,3 @@ function BackButton() {
     </TouchableOpacity>
   );
 }
-
-export default BackButton;

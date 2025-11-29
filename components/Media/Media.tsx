@@ -7,7 +7,7 @@ import styles from "./Media.styles";
 
 type MediaItem = { uri: string; type: "image" | "video" };
 
-function Media({
+export function Media({
   maxItems = 5,
   onChange,
 }: {
@@ -145,5 +145,3 @@ function Media({
     </View>
   );
 }
-
-export default Media;

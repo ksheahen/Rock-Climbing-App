@@ -1,5 +1,4 @@
-import Button from "@/components/Button/Button";
-import Email from "@/components/Email/Email";
+import { ButtonComponent, EmailComponent } from "@/components";
 import { Password } from "@/components/Password/Password";
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
@@ -56,7 +55,7 @@ export default function Login() {
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
         <Image source={logo} alt="logo" style={styles.logo} />
-        <Email email={email} setEmail={setEmail} />
+        <EmailComponent email={email} setEmail={setEmail} />
         <Password
           password={password}
           setPassword={setPassword}
@@ -66,7 +65,7 @@ export default function Login() {
         <View style={styles.forgotPasswordContainer}>
           <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
         </View>
-        <Button
+        <ButtonComponent
           title={login}
           disabled={loading}
           onPress={() => signInWithEmail()}

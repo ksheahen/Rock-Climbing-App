@@ -3,12 +3,12 @@ import { TextInput, View } from "react-native";
 import { COLORS } from "../../theme";
 import { styles } from "./Email.styles";
 
-interface EmailProps {
+export interface EmailProps {
   email: string;
   setEmail: (text: string) => void;
 }
 
-function EmailComponent({ email, setEmail }: EmailProps) {
+export function EmailComponent({ email, setEmail }: EmailProps) {
   return (
     <View style={styles.emailContainer}>
       <MaterialIcons name="email" size={20} />
@@ -24,5 +24,3 @@ function EmailComponent({ email, setEmail }: EmailProps) {
     </View>
   );
 }
-
-export default EmailComponent;

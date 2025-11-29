@@ -7,7 +7,7 @@ import { styles } from "./TimeframeFilter.styles";
 // }
 
 // function TimeframeFilterComponent({ timeframe, setTimeframe }: Props) {
-function TimeframeFilter() {
+export function TimeframeFilter() {
   return (
     //   <View style={styles.container}>
     //   {["day", "week", "month", "all"].map((tf) => (
@@ -43,5 +43,3 @@ function TimeframeFilter() {
     </View>
   );
 }
-
-export default TimeframeFilter;

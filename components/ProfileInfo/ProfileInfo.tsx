@@ -1,35 +1,50 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, Alert } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./ProfileInfo.styles";
+import { useRouter } from "expo-router";
+import { supabase } from "@/services/supabaseClient";
+import { syncLocalClimbsSQLite } from "@/services/climbService";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useSQLiteContext } from "expo-sqlite";
 
-// interface ProfileInfoProps {
-//   user?: {
-//     name: string;
-//   };
-// }
+export function ProfileInfo() {
+  const router = useRouter();
+  const db = useSQLiteContext(); 
 
-// function ProfileInfoComponent({ user }: ProfileInfoProps) {
-// const navigation = useNavigation();
-function ProfileInfo() {
+  const handleSyncPress = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      router.navigate("/login");
+    } else {
+      try {
+        await syncLocalClimbsSQLite(db); 
+      } catch (err) {
+        Alert.alert("Sync failed", "Please try again later.");
+      }
+    }
+  };
+
   return (
-    // <View style={styles.container}>
-    //   <View style={styles.headerRow}>
-    //     <View style={styles.avatarPlaceholder} />
-    //     <Pressable
-    //       style={styles.editButton}
-    //       onPress={() => navigation.navigate("edit-profile" as never)}
-    //     >
-    //       <Text style={styles.editButtonText}>Edit Profile</Text>
-    //     </Pressable>
-    //   </View>
-    //   <Text style={styles.name}>{user?.name ?? "Your name here"}</Text>
-    // </View>
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <View style={styles.avatarPlaceholder} />
-        <Pressable style={styles.editButton}>
-          <Text style={styles.editButtonText}>Edit Profile</Text>
-        </Pressable>
+        <View style={{ flexDirection: "row", gap: 10 }}>
+          <Pressable style={styles.editButton} onPress={() => router.navigate("/edit-profile")}>
+            <Text style={styles.editButtonText}>Edit Profile</Text>
+          </Pressable>
+          <Pressable
+            style={{
+              padding: 8,
+              backgroundColor: "#eee",
+              borderRadius: 8,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={handleSyncPress}
+          >
+            <MaterialIcons name="sync" size={24} color="black" />
+          </Pressable>
+        </View>
       </View>
       <Text style={styles.name}>Thane Tate</Text>
       <View style={styles.socialRow}>
@@ -39,5 +54,3 @@ function ProfileInfo() {
     </View>
   );
 }
-
-export default ProfileInfo;
