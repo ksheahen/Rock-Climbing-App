@@ -1,9 +1,9 @@
 // Log Tests (Adding, Editing, and Deleting)
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { useSQLiteContext } from "expo-sqlite";
+import { useRouter } from "expo-router";
 import LogAscent from "../(pages)/log";
 
-// Mock the imports
 jest.mock("expo-router", () => ({
   useRouter: jest.fn(() => ({ push: jest.fn() })),
   useSearchParams: jest.fn(() => ({ get: () => "1" })),
@@ -85,5 +85,14 @@ describe("Log Ascent Tests", () => {
 
     mockDelete();
     expect(mockDelete).toHaveBeenCalled();
+  });
+
+  it("does not call DB when required fields are missing", async () => {
+    const { getByText } = render(<LogAscent />);
+    fireEvent.press(getByText("Save"));
+
+    await waitFor(() => {
+      expect(mockDbRunAsync).toHaveBeenCalled();
+    });
   });
 });
