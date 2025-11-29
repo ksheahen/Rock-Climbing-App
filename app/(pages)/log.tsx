@@ -143,7 +143,11 @@ function LogAscent() {
           editToggle={editToggle}
         />
         <Line />
-        <Media />
+        <Media
+          selectedProp={selectedMedia}
+          onSelectedChange={setSelectedMedia}
+          editToggle={editToggle}
+        />
       </ScrollView>
     </View>
   );

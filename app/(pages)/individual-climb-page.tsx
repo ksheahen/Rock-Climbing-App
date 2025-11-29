@@ -9,14 +9,42 @@ import Line from "@/components/Line/Line";
 import Rating from "@/components/Rating/Rating";
 import SettingsButton from "@/components/SettingsButton/SettingsButton";
 import Type from "@/components/Type/Type";
+import Media from "@/components/Media/Media";
+
 import { useFocusEffect } from "@react-navigation/native";
 import { useSearchParams, useRouter } from "expo-router/build/hooks";
 import { useSQLiteContext } from "expo-sqlite";
-import { useCallback, useState } from "react";
-import { ScrollView, View, Modal, Text, Pressable } from "react-native";
+import { useCallback, useState, useMemo } from "react";
+import {
+  ScrollView,
+  View,
+  Modal,
+  Text,
+  Pressable,
+  Image,
+} from "react-native";
 import styles from "../styles/individual-climb-page.styles";
-import { Link } from "expo-router";
 import Icon from "react-native-remix-icon";
+import { ResizeMode, Video } from "expo-av";
+
+// ---- media helpers ----
+type MediaItem = { uri: string; type: "image" | "video" };
+
+function parseMediaItems(raw: string): MediaItem[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (it) =>
+        it &&
+        typeof it.uri === "string" &&
+        (it.type === "image" || it.type === "video"),
+    );
+  } catch {
+    return [];
+  }
+}
 
 // TODO: Make it so that this page
 // can also update the values in
@@ -50,6 +78,12 @@ function IndividualClimbPage() {
   console.log("Local Storage 'desc'      -", selectedDescription);
   console.log("Local Storage 'media'     -", selectedMedia);
   console.log("----------------------------");
+
+  // derive media items from stored JSON string
+  const mediaItems = useMemo(
+    () => parseMediaItems(selectedMedia),
+    [selectedMedia],
+  );
 
   // get the id from params of the request
   const searchParams = useSearchParams();
@@ -122,8 +156,8 @@ function IndividualClimbPage() {
       // update the db
       const result = await db.runAsync(
         `UPDATE log_climb3 
-			SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?
-			WHERE id = ?`,
+         SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?
+         WHERE id = ?`,
         [
           climb.category,
           climb.type,
@@ -197,12 +231,47 @@ function IndividualClimbPage() {
           />
         </View>
       </View>
+
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scroll_container}
       >
-        <View style={styles.media}></View>
+<View style={styles.media}>
+  {mediaItems.length === 0 ? (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Icon name="image-line" size={32} color="#8E8E93" />
+      <Text style={{ marginTop: 8, color: "#8E8E93" }}>No media</Text>
+    </View>
+  ) : (
+    <ScrollView
+      horizontal
+      pagingEnabled
+      showsHorizontalScrollIndicator={false}
+    >
+      {mediaItems.map((m) => (
+        <View key={m.uri} style={styles.mediaItem}>
+          {m.type === "image" ? (
+            <Image
+              source={{ uri: m.uri }}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
+          ) : (
+            <Video
+              source={{ uri: m.uri }}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode={ResizeMode.COVER}
+              shouldPlay={false}
+              isMuted
+              useNativeControls
+            />
+          )}
+        </View>
+      ))}
+    </ScrollView>
+  )}
+</View>
         <Category
           selectedProp={selectedCategory}
           onSelectedChange={setSelectedCategory}
@@ -250,18 +319,24 @@ function IndividualClimbPage() {
           onSelectedChange={setSelectedDescription}
           editToggle={editToggle}
         />
-        {editToggle ? (
-          <View style={styles.save_container}>
-            <Pressable onPress={handleSubmit} style={styles.save_button}>
-              <Text style={styles.save_text}>Save</Text>
-            </Pressable>
-          </View>
-        ) : (
-          <View></View>
+        {/* Media editor + Save button only in edit mode */}
+        {editToggle && (
+          <>
+            <Line />
+            <Media
+              selectedProp={selectedMedia}
+              onSelectedChange={setSelectedMedia}
+              editToggle={editToggle}
+            />
+            <View style={styles.save_container}>
+              <Pressable onPress={handleSubmit} style={styles.save_button}>
+                <Text style={styles.save_text}>Save</Text>
+              </Pressable>
+            </View>
+          </>
         )}
       </ScrollView>
-
-      {/* modal is visible only modalVisible = true */}
+      {/* modal is visible only when modalVisible = true */}
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         {/* overlay */}
         <Pressable
