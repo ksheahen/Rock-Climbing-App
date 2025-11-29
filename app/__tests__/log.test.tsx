@@ -1,7 +1,6 @@
 // Log Tests (Adding, Editing, and Deleting)
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { useSQLiteContext } from "expo-sqlite";
-import { useRouter } from "expo-router";
 import LogAscent from "../(pages)/log";
 
 jest.mock("expo-router", () => ({
