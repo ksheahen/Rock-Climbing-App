@@ -4,7 +4,7 @@ import { global } from "@/theme";
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginBottom: 16,
+    marginBottom: 30,
   },
   row: {
     flexDirection: "row",
@@ -33,6 +33,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: global.colors.text_2,
     textAlign: "center",
+  },
+  iconContainer: {
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    position: "absolute",
   },
 });
 

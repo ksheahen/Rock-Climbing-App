@@ -1,4 +1,5 @@
 import global from "@/theme";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Dimensions, Text, View } from "react-native";
 import { ProgressChart } from "react-native-chart-kit";
@@ -22,26 +23,17 @@ function StatCard({
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 60) / 2;
 
+  // Total logged climbs
   const totalClimbsLogged = Array.isArray(climbs) ? climbs.length : climbsCount;
 
   // Calculates the percentage of climbs completed compared to the goal (default = 100)
   const climbPercentage =
     climbsGoal > 0 ? Math.min(1, totalClimbsLogged / climbsGoal) : 0;
 
-  // Compute the highest grade numerically
+  // TODO: Add parsing of grades and calculate either highest or average. Right now it is just displaying the most recent grade from that last recorded climb.
   let gradeValue = 0;
-  if (typeof highestGrade === "number") {
-    gradeValue = highestGrade;
-  } else if (typeof highestGrade === "string") {
-    // try to parse boulder grade like "V8"
-    const vMatch = highestGrade.match(/^V(\d{1,2})$/i);
-    if (vMatch) gradeValue = Number(vMatch[1]);
-    else {
-      // fallback: try to parse leading number (e.g., "5.12a" -> 5.12)
-      const num = parseFloat(highestGrade);
-      gradeValue = isNaN(num) ? 0 : num;
-    }
-  }
+  const latestGrade =
+    Array.isArray(climbs) && climbs.length > 0 ? climbs[0].grade : highestGrade;
 
   // Calculates the grade percentage
   const gradePercentage =
@@ -60,34 +52,41 @@ function StatCard({
     <View style={styles.container}>
       <View style={styles.row}>
         <View style={[styles.card, { width: cardWidth }]}>
-          <ProgressChart
-            data={{ labels: ["Climbs"], data: [climbPercentage] }}
-            width={cardWidth - 24}
-            height={cardWidth - 24}
-            strokeWidth={12}
-            radius={(cardWidth - 50) / 2}
-            chartConfig={chartConfig}
-            hideLegend
-          />
+          <View style={styles.iconContainer}>
+            <ProgressChart
+              data={{ labels: ["Climbs"], data: [climbPercentage] }}
+              width={cardWidth - 24}
+              height={cardWidth - 24}
+              strokeWidth={12}
+              radius={(cardWidth - 50) / 2}
+              chartConfig={chartConfig}
+              hideLegend
+            />
+            <Ionicons name="body-outline" size={32} style={styles.icon} />
+          </View>
           <Text style={styles.valueText}>{totalClimbsLogged}</Text>
           <Text style={styles.labelText}>Climbs Logged</Text>
         </View>
 
         <View style={[styles.card, { width: cardWidth }]}>
-          <ProgressChart
-            data={{ labels: ["Grade"], data: [gradePercentage] }}
-            width={cardWidth - 24}
-            height={cardWidth - 24}
-            strokeWidth={12}
-            radius={(cardWidth - 50) / 2}
-            chartConfig={{
-              ...chartConfig,
-              color: (opacity = 1) => `rgba(255,204, 2, ${opacity})`,
-            }}
-            hideLegend
-          />
-          <Text style={styles.valueText}>{String(highestGrade)}</Text>
-          <Text style={styles.labelText}>Average Grade</Text>
+          <View style={styles.iconContainer}>
+            <ProgressChart
+              data={{ labels: ["Grade"], data: [gradePercentage] }}
+              width={cardWidth - 24}
+              height={cardWidth - 24}
+              strokeWidth={12}
+              radius={(cardWidth - 50) / 2}
+              chartConfig={{
+                ...chartConfig,
+                color: (opacity = 1) => `rgba(255,204, 2, ${opacity})`,
+              }}
+              hideLegend
+            />
+            <Ionicons name="analytics-outline" size={32} style={styles.icon} />
+          </View>
+          {/* <Text style={styles.valueText}>{String(highestGrade)}</Text> */}
+          <Text style={styles.valueText}>{latestGrade}</Text>
+          <Text style={styles.labelText}>Latest Grade</Text>
         </View>
       </View>
     </View>
