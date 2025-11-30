@@ -1,3 +1,4 @@
+import global from "@/theme";
 import React from "react";
 import { Dimensions, Text, View } from "react-native";
 import { ProgressChart } from "react-native-chart-kit";
@@ -8,21 +9,24 @@ interface StatCardsProps {
   climbsGoal?: number;
   highestGrade?: string | number;
   highestGradeMax?: number;
+  climbs?: { id?: string; grade?: string }[];
 }
 
-// Also currently a WIP - data/calculations are just place holders for now
 function StatCard({
   climbsCount = 0,
   climbsGoal = 100,
   highestGrade = "V0",
   highestGradeMax = 12,
+  climbs = [],
 }: StatCardsProps) {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 60) / 2;
 
+  const totalClimbsLogged = Array.isArray(climbs) ? climbs.length : climbsCount;
+
   // Calculates the percentage of climbs completed compared to the goal (default = 100)
   const climbPercentage =
-    climbsGoal > 0 ? Math.min(1, climbsCount / climbsGoal) : 0;
+    climbsGoal > 0 ? Math.min(1, totalClimbsLogged / climbsGoal) : 0;
 
   // Compute the highest grade numerically
   let gradeValue = 0;
@@ -45,15 +49,15 @@ function StatCard({
 
   // Chart configuration
   const chartConfig = {
-    backgroundGradientFrom: "#fff",
-    backgroundGradientTo: "#fff",
-    color: (opacity = 1) => `rgba(74,144,226, ${opacity})`,
+    backgroundGradientFrom: global.colors.background_1,
+    backgroundGradientTo: global.colors.background_1,
+    color: (opacity = 1) => `rgba(90, 153, 228, ${opacity})`,
     strokeWidth: 8,
     useShadowColorFromDataset: false,
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.container}>
       <View style={styles.row}>
         <View style={[styles.card, { width: cardWidth }]}>
           <ProgressChart
@@ -65,7 +69,7 @@ function StatCard({
             chartConfig={chartConfig}
             hideLegend
           />
-          <Text style={styles.valueText}>{climbsCount}</Text>
+          <Text style={styles.valueText}>{totalClimbsLogged}</Text>
           <Text style={styles.labelText}>Climbs Logged</Text>
         </View>
 
@@ -78,7 +82,7 @@ function StatCard({
             radius={(cardWidth - 50) / 2}
             chartConfig={{
               ...chartConfig,
-              color: (opacity = 1) => `rgba(245,166,35, ${opacity})`,
+              color: (opacity = 1) => `rgba(255,204, 2, ${opacity})`,
             }}
             hideLegend
           />

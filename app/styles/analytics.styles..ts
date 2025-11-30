@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native";
+import { global } from "@/theme";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffffff",
+    backgroundColor: global.colors.background_1,
   },
   header: {
     flexDirection: "row",
@@ -14,10 +15,9 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#000",
-    fontFamily: "Roboto",
+    fontSize: global.font_size.phone_large,
+    fontWeight: 600,
+    color: global.colors.text_1,
     marginRight: 30,
   },
   placeholder: {
