@@ -1,4 +1,4 @@
-import global from "@/theme";
+import { global } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Dimensions, Text, View } from "react-native";

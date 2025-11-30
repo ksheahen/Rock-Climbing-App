@@ -3,9 +3,16 @@ import { Dimensions, View } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import styles from "./LineCharts.styles";
 
+interface LineChartProps {
+  climbs?: { id?: string; grade?: string }[];
+  dateRange?: "week" | "month" | "year" | "all time";
+}
+
 // Place holder data for right now
-function LineCharts() {
+function LineCharts({ climbs = [], dateRange = "week" }: LineChartProps) {
   const screenWidth = Dimensions.get("window").width - 40;
+
+  // Chart Data
   const lineData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
     datasets: [
@@ -16,6 +23,18 @@ function LineCharts() {
       },
     ],
   };
+
+  if (dateRange === "month") {
+    console.log("displaying month data");
+  } else if (dateRange === "year") {
+    console.log("displaying year data");
+  } else if (dateRange === "all time") {
+    console.log("displaying all time data");
+
+    // Default (week)
+  } else {
+    console.log("displaying week data");
+  }
 
   return (
     <View style={styles.chartSection}>

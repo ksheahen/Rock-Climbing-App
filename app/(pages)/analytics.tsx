@@ -13,6 +13,10 @@ const Analytics = () => {
   const db = useSQLiteContext();
   const [climbsArr, setClimbsArr] = useState<ClimbRow[]>([]);
 
+  const [dates, setDates] = useState<"week" | "month" | "year" | "all time">(
+    "month",
+  );
+
   useEffect(() => {
     let mounted = true;
     const loadClimbs = async () => {
@@ -45,8 +49,8 @@ const Analytics = () => {
 
       {/* Line Chart */}
       <View style={styles.content}>
-        <AnalyticsDateButtons />
-        <LineCharts />
+        <AnalyticsDateButtons dates={dates} onChange={setDates} />
+        <LineCharts climbs={climbsArr} dateRange={dates} />
       </View>
     </ScrollView>
   );

@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import styles from "./AnalyticsDateButtons.styles";
 
+interface AnalyticsDataButtonsProps {
+  dates: "week" | "month" | "year" | "all time";
+  onChange: (r: "week" | "month" | "year" | "all time") => void;
+}
 // Buttons specifically for filtering by date range on the Analytics page
-function AnalyticsDateButtons() {
-  const [dates, setDates] = useState<"week" | "month" | "year" | "all time">(
-    "month",
-  );
+function AnalyticsDateButtons({ dates, onChange }: AnalyticsDataButtonsProps) {
   return (
     <View style={styles.dateRow}>
       {/* Week */}
       <TouchableOpacity
         style={[styles.dateButton, dates === "week" && styles.dateButtonActive]}
-        onPress={() => setDates("week")}
+        onPress={() => onChange("week")}
       >
         <Text
           style={[
@@ -30,7 +31,7 @@ function AnalyticsDateButtons() {
           styles.dateButton,
           dates === "month" && styles.dateButtonActive,
         ]}
-        onPress={() => setDates("month")}
+        onPress={() => onChange("month")}
       >
         <Text
           style={[
@@ -45,7 +46,7 @@ function AnalyticsDateButtons() {
       {/* Year */}
       <TouchableOpacity
         style={[styles.dateButton, dates === "year" && styles.dateButtonActive]}
-        onPress={() => setDates("year")}
+        onPress={() => onChange("year")}
       >
         <Text
           style={[
@@ -63,7 +64,7 @@ function AnalyticsDateButtons() {
           styles.dateButton,
           dates === "all time" && styles.dateButtonActive,
         ]}
-        onPress={() => setDates("all time")}
+        onPress={() => onChange("all time")}
       >
         <Text
           style={[
