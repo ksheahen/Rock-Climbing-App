@@ -188,7 +188,7 @@ function IndividualClimbPage() {
     <View style={styles.container}>
       <View style={styles.leftright_container}>
         <View style={styles.left}>
-          <BackButton />
+          <BackButton url="/profile" />
         </View>
         <View style={styles.right}>
           <SettingsButton
