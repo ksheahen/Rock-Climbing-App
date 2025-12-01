@@ -1,4 +1,5 @@
 import { global } from "@/theme";
+import { LocalClimb } from "@/types/LocalClimb";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Dimensions, Text, View } from "react-native";
@@ -10,7 +11,7 @@ interface StatCardsProps {
   climbsGoal?: number;
   highestGrade?: string | number;
   highestGradeMax?: number;
-  climbs?: { id?: string; grade?: string }[];
+  climbs?: LocalClimb[];
 }
 
 function StatCard({
@@ -18,7 +19,7 @@ function StatCard({
   climbsGoal = 100,
   highestGrade = "V0",
   highestGradeMax = 12,
-  climbs = [],
+  climbs = [] as LocalClimb[],
 }: StatCardsProps) {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 60) / 2;
@@ -30,14 +31,24 @@ function StatCard({
   const climbPercentage =
     climbsGoal > 0 ? Math.min(1, totalClimbsLogged / climbsGoal) : 0;
 
-  // TODO: Add parsing of grades and calculate either highest or average. Right now it is just displaying the most recent grade from that last recorded climb.
-  let gradeValue = 0;
-  const latestGrade =
-    Array.isArray(climbs) && climbs.length > 0 ? climbs[0].grade : highestGrade;
+  // Parser to convert grade to a numeric value
+  const parseGrade = (g: string | number | undefined): number => {
+    if (typeof g === "number") return g;
+    if (!g) return 0;
+    const s = String(g).trim();
+    const vMatch = /^V\s*([-+]?\d+)/i.exec(s);
+    if (vMatch) return parseInt(vMatch[1], 10) || 0;
+    const n = parseFloat(s);
+    return Number.isFinite(n) ? n : 0;
+  };
 
+  // Update latest grade's state
+  const latestGradeState =
+    Array.isArray(climbs) && climbs.length > 0 ? climbs[0].grade : highestGrade;
+  const gradeValueState = parseGrade(latestGradeState);
   // Calculates the grade percentage
   const gradePercentage =
-    highestGradeMax > 0 ? Math.min(1, gradeValue / highestGradeMax) : 0;
+    highestGradeMax > 0 ? Math.min(1, gradeValueState / highestGradeMax) : 0;
 
   // Chart configuration
   const chartConfig = {
@@ -84,8 +95,7 @@ function StatCard({
             />
             <Ionicons name="analytics-outline" size={32} style={styles.icon} />
           </View>
-          {/* <Text style={styles.valueText}>{String(highestGrade)}</Text> */}
-          <Text style={styles.valueText}>{latestGrade}</Text>
+          <Text style={styles.valueText}>{latestGradeState}</Text>
           <Text style={styles.labelText}>Latest Grade</Text>
         </View>
       </View>
