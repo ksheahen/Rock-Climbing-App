@@ -1,5 +1,5 @@
 import { ButtonComponent, EmailComponent } from "@/components";
-import { Password } from "@/components/Password/Password";
+import { PasswordComponent } from "@/components/Password/Password";
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -22,17 +22,54 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+
   const logo = require("../../assets/icon.png");
   const btnText = "Signup";
   const router = useRouter();
 
+  // Small styling changes for if invlaid email/password
+  const invalidInputStyle = {
+    borderColor: "red",
+    borderWidth: 1,
+    borderRadius: 6,
+  };
+
+  // handleEmailChange Function
+  function handleEmailChange(text: string) {
+    setEmail(text);
+    if (emailError) setEmailError(false);
+    if (error) setError(null);
+  }
+
+  // hanldePasswordChange Function
+  function handlePasswordChange(text: string) {
+    setPassword(text);
+    if (passwordError) setPasswordError(false);
+    if (confirmPasswordError) setConfirmPasswordError(false);
+    if (error) setError(null);
+  }
+
+  // handleConfirmPasswordChange Function
+  function handleConfirmPasswordChange(text: string) {
+    setConfirmPassword(text);
+    if (confirmPasswordError) setConfirmPasswordError(false);
+    if (passwordError) setPasswordError(false);
+    if (error) setError(null);
+  }
+
+  // Sign up with Email
   async function signUpWithEmail() {
     if (!email) {
+      setEmailError(true);
       setError("Email is required");
       return;
     }
 
     if (!password) {
+      setPasswordError(true);
       setError("Password is required");
       return;
     }
@@ -40,6 +77,8 @@ export default function Signup() {
     if (password !== confirmPassword) {
       Alert.alert("Passwords do not match");
       setError("Passwords do not match");
+      setPasswordError(true);
+      setConfirmPasswordError(true);
       return;
     }
 
@@ -52,6 +91,26 @@ export default function Signup() {
 
     if (error) {
       setError(error.message);
+      const errorMessage = (error.message || "").toLowerCase();
+
+      // If error message includes passowrd, set the password error to true
+      if (
+        errorMessage.includes("password") ||
+        errorMessage.includes("weak") ||
+        errorMessage.includes("invalid")
+      ) {
+        setPasswordError(true);
+        setConfirmPasswordError(true);
+      }
+
+      // If the error message includes email, set the email error to true
+      if (
+        errorMessage.includes("email") ||
+        errorMessage.includes("user") ||
+        errorMessage.includes("already")
+      ) {
+        setEmailError(true);
+      }
     } else if (!data?.session) {
       Alert.alert("Please check your inbox for email verification!");
     } else {
@@ -70,22 +129,43 @@ export default function Signup() {
       <SafeAreaView style={styles.container}>
         <Image source={logo} alt="logo" style={styles.logo} />
 
-        <EmailComponent email={email} setEmail={setEmail} />
+        <EmailComponent
+          email={email}
+          setEmail={handleEmailChange}
+          inputStyle={emailError ? invalidInputStyle : undefined}
+        />
 
-        <Password
+        <PasswordComponent
           password={password}
-          setPassword={setPassword}
+          setPassword={handlePasswordChange}
           displayText="Create Password"
+          inputStyle={passwordError ? invalidInputStyle : undefined}
         />
-        <Password
+        <PasswordComponent
           password={confirmPassword}
-          setPassword={setConfirmPassword}
+          setPassword={handleConfirmPasswordChange}
           displayText="Confirm Password"
+          inputStyle={confirmPasswordError ? invalidInputStyle : undefined}
         />
-        {error && <Text>{error}</Text>}
-        <View style={styles.forgotPasswordContainer}>
-          <Text></Text>
-        </View>
+        {error && (
+          <Text
+            style={{
+              color: "#8B0000",
+              backgroundColor: "#fdecea",
+              paddingVertical: 6,
+              paddingHorizontal: 10,
+              borderRadius: 6,
+              fontWeight: "bold",
+              fontSize: 13,
+              marginTop: 12,
+              marginBottom: 0,
+            }}
+          >
+            {error}
+          </Text>
+        )}
+
+        <View style={{ paddingBottom: 10 }} />
 
         <ButtonComponent
           title={btnText}

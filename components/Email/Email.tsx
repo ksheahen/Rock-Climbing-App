@@ -1,23 +1,25 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput, View } from "react-native";
-import { COLORS } from "../../theme";
-import { styles } from "./Email.styles";
+import colors from "../../theme/index";
+import styles from "../../app/styles/login.styles";
+
 
 export interface EmailProps {
   email: string;
   setEmail: (text: string) => void;
+  inputStyle?: object;
 }
 
-export function EmailComponent({ email, setEmail }: EmailProps) {
+export function EmailComponent({ email, setEmail, inputStyle }: EmailProps) {
   return (
     <View style={styles.emailContainer}>
       <MaterialIcons name="email" size={20} />
       <TextInput
-        style={styles.input}
+        style={[styles.input, inputStyle]}
         onChangeText={(text) => setEmail(text)}
         value={email}
         placeholder="Email Address"
-        placeholderTextColor={COLORS.text2}
+        placeholderTextColor={colors.colors.text.secondary}
         autoCapitalize={"none"}
         autoComplete={"email"}
       />

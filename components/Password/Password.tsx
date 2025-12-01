@@ -1,32 +1,34 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput, View } from "react-native";
-import { COLORS } from "../../theme";
-import { styles } from "./Password.styles";
+import colors from "../../theme/index";
+import styles from "../../app/styles/login.styles";
 
 // TODO: May need updating for security purposes
-export interface PasswordProps {
+interface PasswordProps {
   password: string;
   setPassword: (text: string) => void;
   displayText: string;
+  inputStyle?: object;
 }
 
-export const Password = ({
+export function PasswordComponent({
   password,
   setPassword,
   displayText,
-}: PasswordProps) => {
+  inputStyle,
+}: PasswordProps) {
   return (
     <View style={styles.passwordContainer}>
       <MaterialIcons name="lock" size={20} />
       <TextInput
-        style={styles.input}
+        style={[styles.input, inputStyle]}
         onChangeText={(text) => setPassword(text)}
         value={password}
         placeholder={displayText}
-        placeholderTextColor={COLORS.text2}
+        placeholderTextColor={colors.colors.text.secondary}
         autoCapitalize={"none"}
         secureTextEntry={true}
       />
     </View>
   );
-};
+}
