@@ -131,11 +131,23 @@ function LogAscent() {
           editToggle={editToggle}
         />
         <Line />
-        <DateTime editToggle={editToggle} />
+        <DateTime
+          selectedProp={selectedDateTime}
+          onSelectedChange={setSelectedDateTime}
+          editToggle={editToggle}
+        />
         <Line />
-        <Description />
+        <Description
+          selectedProp={selectedDescription}
+          onSelectedChange={setSelectedDescription}
+          editToggle={editToggle}
+        />
         <Line />
-        <Media />
+        <Media
+          selectedProp={selectedMedia}
+          onSelectedChange={setSelectedMedia}
+          editToggle={editToggle}
+        />
       </ScrollView>
     </View>
   );
