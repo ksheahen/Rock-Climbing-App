@@ -1,7 +1,12 @@
 import { global } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { styles } from "./SessionCard.styles";
 
 export interface SessionData {
@@ -9,6 +14,7 @@ export interface SessionData {
   tries: string;
   stars: number;
   date: string;
+  imageUri?: string | null;
 }
 
 export interface SessionCardProps {
@@ -33,7 +39,15 @@ export const SessionCard: React.FC<SessionCardProps> = ({
 
   return (
     <TouchableOpacity style={styles.sessionCard} onPress={onPress}>
-      <View style={styles.sessionImagePlaceholder} />
+      {session.imageUri ? (
+        <Image
+          source={{ uri: session.imageUri }}
+          style={styles.sessionImage}
+          resizeMode="cover"
+        />
+      ) : (
+        <View style={styles.sessionImagePlaceholder} />
+      )}
       <View style={styles.sessionInfo}>
         <Text style={styles.sessionGrade}>{session.grade}</Text>
         <Text style={styles.sessionTries}>{session.tries}</Text>

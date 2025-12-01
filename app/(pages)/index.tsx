@@ -76,16 +76,36 @@ const Index = () => {
           formattedDate = "N/A";
         }
       }
-
-      // Format attempts (attempt is stored as string in current schema)
+  
+      // Format attempts
       const attemptNum = parseInt(climb.attempt) || 1;
       const tries = `${attemptNum} ${attemptNum === 1 ? "Try" : "Tries"}`;
-
+  
+      // Extract first image URI from climb.media
+      let imageUri: string | null = null;
+      if (climb.media) {
+        try {
+          const parsed = JSON.parse(climb.media) as {
+            uri: string;
+            type: "image" | "video";
+          }[];
+  
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const firstImage = parsed.find((m) => m.type === "image") || parsed[0];
+            imageUri = firstImage?.uri ?? null;
+          }
+        } catch (e) {
+          console.warn("Failed to parse media JSON:", e);
+          imageUri = null;
+        }
+      }
+  
       return {
         grade: climb.grade,
-        tries: tries,
+        tries,
         stars: climb.rating || 0,
         date: formattedDate,
+        imageUri,
       };
     });
   }, [climbs]);

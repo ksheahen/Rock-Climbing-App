@@ -13,6 +13,11 @@ export const styles = StyleSheet.create({
     height: 100,
     backgroundColor: global.colors.background_2,
   },
+  sessionImage: {
+    width: "100%",
+    height: 100,
+    borderRadius: 12,
+  },
   sessionInfo: {
     padding: 12,
   },
