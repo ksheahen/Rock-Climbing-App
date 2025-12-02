@@ -14,7 +14,7 @@ export type ClimbInsertExtended = ClimbInsert & {
   type: string;
   completed: boolean;
   attempts: number;
-  difficulty: string;
+  grade: string;
   rating: number | null;
   description: string | null;
   datetime: string | null;
@@ -161,7 +161,7 @@ export const syncLocalClimbsSQLite = async (
         completed: row.completed === "Yes",
         attempts: parseInt(row.attempts || "0", 10),
         grade: row.grade || "Unknown", //added this bc of an error
-        difficulty: row.grade || "Unknown",
+        // difficulty: row.grade || "Unknown",
         rating: row.rating ?? null,
         description: row.description || null,
         datetime: row.datetime || new Date().toISOString(),

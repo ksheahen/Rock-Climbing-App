@@ -150,6 +150,8 @@ function DateTime({ selectedProp, onSelectedChange, editToggle }: Props) {
                 display="inline"
                 onChange={onIOSDateChange}
                 style={{ alignSelf: "stretch" }}
+                // Adding as temporary fix for calendar text being white on white background
+                themeVariant="light"
               />
             )}
 

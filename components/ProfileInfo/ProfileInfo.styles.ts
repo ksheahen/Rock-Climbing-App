@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     backgroundColor: global.colors.background_2,
   },
   editButton: {
-    paddingVertical: global.padding.small,
+    paddingVertical: global.padding.medium,
     backgroundColor: global.colors.background_3,
     paddingHorizontal: global.padding.medium,
     borderRadius: global.border.border_radius,
