@@ -1,62 +1,37 @@
-import { useFocusEffect, useRouter } from "expo-router";
-import { useSQLiteContext } from "expo-sqlite";
-import { useCallback, useState } from "react";
+import { global } from "@/theme";
+import { LocalClimb } from "@/types/LocalClimb";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import Line from "../Line/Line";
 import styles from "./ClimbHistory.styles";
-import { global } from "@/theme";
-import { Ionicons } from "@expo/vector-icons";
 
-type Log = {
-  id: number;
-  category: string;
-  type: string;
-  grade: string;
-  attempt: string;
-  complete: string;
-  rating: number;
-  description: string;
-  media: string;
-  datetime: string;
-};
+interface ClimbHistoryProps {
+  climbs?: LocalClimb[];
+  dates?: "day" | "week" | "month" | "all";
+}
 
-//TODO : we are going to have to group climbs by date
-// we might have to move all of this logic to the page
-// so that filters work in the future
-
-function ClimbHistory() {
-  const db = useSQLiteContext();
-
+// Pass in log data to this component. If you want it filtered, filter the data before sending it through.
+// This displays the individual logs grouped by date on the profile
+function ClimbHistory({
+  climbs = [] as LocalClimb[],
+  dates = "day",
+}: ClimbHistoryProps) {
   const router = useRouter();
   const handleRedirect = (id: number) => {
     router.push(`/individual-climb-page?id=${id}`);
   };
 
-  //LOAD -------------
-  const [climbs, setClimbs] = useState<Log[]>([]);
-
-  const loadClimbs = async () => {
-    // get all climbs in order desc
-    const results = (await db.getAllAsync(
-      `SELECT * FROM log_climb3 ORDER BY id DESC`,
-    )) as Log[];
-    setClimbs(results);
-
-    results.forEach((log, index) => {
-      console.log("----------------");
-      console.log(`Climb Id: ${log.id}`);
-      console.log(`Category: ${log.category}`);
-      console.log(`Type: ${log.type}`);
-      console.log(`Complete: ${log.complete}`);
-      console.log(`Attempt: ${log.attempt}`);
-      console.log(`Grade: ${log.grade}`);
-      console.log(`Rating: ${log.rating}`);
-      console.log(`DateTime: ${log.datetime}`);
-      console.log(`Description: ${log.description}`);
-      console.log(`Media: ${log.media}`);
-      console.log("----------------");
-    });
+  // Helps format date and time for logs
+  const formatDateTime = (iso?: string) => {
+    if (!iso) return { date: "", time: "" };
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return { date: "", time: "" };
+    return {
+      date: d.toLocaleDateString(),
+      time: d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }),
+    };
   };
 
   const renderStars = (count: number) => {
@@ -70,32 +45,40 @@ function ClimbHistory() {
     ));
   };
 
-  // Trigger loadClimbs whenever the screen is focused
-  useFocusEffect(
-    useCallback(() => {
-      loadClimbs();
-    }, []),
-  );
-
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.date}>2025-08-18 *FIXME</Text>
-      <Line />
-      {climbs.map((climb) => (
-        <View key={climb.id} style={styles.mini_container}>
-          <TouchableOpacity onPress={() => handleRedirect(climb.id)}>
-            <Text style={styles.time}>6:55 PM *FIXME</Text>
-            <View style={styles.gradeRow}>
-              <Icon name="check-line" size="18" />
-              <Text style={styles.grade}>{climb.grade}</Text>
-              <Text style={styles.stars}> {renderStars(climb.rating)}</Text>
+      {climbs.map((climb, index) => {
+        const { date, time } = formatDateTime(climb.datetime);
+        const prevClimb = index > 0 ? climbs[index - 1] : null;
+        const prevDate = prevClimb
+          ? formatDateTime(prevClimb.datetime).date
+          : null;
+        const showDate = date !== prevDate;
+
+        return (
+          <View key={climb.id}>
+            {showDate && (
+              <>
+                <Text style={styles.date}>{date}</Text>
+                <Line />
+              </>
+            )}
+            <View style={styles.mini_container}>
+              <TouchableOpacity onPress={() => handleRedirect(climb.id)}>
+                <Text style={styles.time}>{time}</Text>
+                <View style={styles.gradeRow}>
+                  <Icon name="check-line" size="18" />
+                  <Text style={styles.grade}>{climb.grade}</Text>
+                  <Text style={styles.stars}> {renderStars(climb.rating)}</Text>
+                </View>
+                <View style={styles.tries}>
+                  <Text>{climb.attempt} Tries</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-            <View style={styles.tries}>
-              <Text>{climb.attempt} Tries</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      ))}
+          </View>
+        );
+      })}
     </ScrollView>
   );
 }
