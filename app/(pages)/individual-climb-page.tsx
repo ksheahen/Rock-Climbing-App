@@ -6,26 +6,19 @@ import DateTime from "@/components/DateTime/DateTime";
 import Description from "@/components/Description/Description";
 import Difficulty from "@/components/Difficulty/Difficulty";
 import Line from "@/components/Line/Line";
+import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import SettingsButton from "@/components/SettingsButton/SettingsButton";
 import Type from "@/components/Type/Type";
-import Media from "@/components/Media/Media";
 
 import { useFocusEffect } from "@react-navigation/native";
-import { useSearchParams, useRouter } from "expo-router/build/hooks";
-import { useSQLiteContext } from "expo-sqlite";
-import { useCallback, useState, useMemo } from "react";
-import {
-  ScrollView,
-  View,
-  Modal,
-  Text,
-  Pressable,
-  Image,
-} from "react-native";
-import styles from "../styles/individual-climb-page.styles";
-import Icon from "react-native-remix-icon";
 import { ResizeMode, Video } from "expo-av";
+import { useRouter, useSearchParams } from "expo-router/build/hooks";
+import { useSQLiteContext } from "expo-sqlite";
+import { useCallback, useMemo, useState } from "react";
+import { Image, Modal, Pressable, ScrollView, Text, View } from "react-native";
+import Icon from "react-native-remix-icon";
+import styles from "../styles/individual-climb-page.styles";
 
 // ---- media helpers ----
 type MediaItem = { uri: string; type: "image" | "video" };
@@ -237,41 +230,47 @@ function IndividualClimbPage() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scroll_container}
       >
-<View style={styles.media}>
-  {mediaItems.length === 0 ? (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Icon name="image-line" size={32} color="#8E8E93" />
-      <Text style={{ marginTop: 8, color: "#8E8E93" }}>No media</Text>
-    </View>
-  ) : (
-    <ScrollView
-      horizontal
-      pagingEnabled
-      showsHorizontalScrollIndicator={false}
-    >
-      {mediaItems.map((m) => (
-        <View key={m.uri} style={styles.mediaItem}>
-          {m.type === "image" ? (
-            <Image
-              source={{ uri: m.uri }}
-              style={{ width: "100%", height: "100%" }}
-              resizeMode="cover"
-            />
+        <View style={styles.media}>
+          {mediaItems.length === 0 ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Icon name="image-line" size={32} color="#8E8E93" />
+              <Text style={{ marginTop: 8, color: "#8E8E93" }}>No media</Text>
+            </View>
           ) : (
-            <Video
-              source={{ uri: m.uri }}
-              style={{ width: "100%", height: "100%" }}
-              resizeMode={ResizeMode.COVER}
-              shouldPlay={false}
-              isMuted
-              useNativeControls
-            />
+            <ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+            >
+              {mediaItems.map((m) => (
+                <View key={m.uri} style={styles.mediaItem}>
+                  {m.type === "image" ? (
+                    <Image
+                      source={{ uri: m.uri }}
+                      style={{ width: "100%", height: "100%" }}
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <Video
+                      source={{ uri: m.uri }}
+                      style={{ width: "100%", height: "100%" }}
+                      resizeMode={ResizeMode.COVER}
+                      shouldPlay={false}
+                      isMuted
+                      useNativeControls
+                    />
+                  )}
+                </View>
+              ))}
+            </ScrollView>
           )}
         </View>
-      ))}
-    </ScrollView>
-  )}
-</View>
         <Category
           selectedProp={selectedCategory}
           onSelectedChange={setSelectedCategory}
