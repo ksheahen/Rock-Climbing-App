@@ -14,7 +14,7 @@ function RootLayout() {
       onInit={async (db) => {
         // Create new unified climb table matching Supabase schema
         await db.execAsync(`
-        CREATE TABLE IF NOT EXISTS climb (
+        CREATE TABLE IF NOT EXISTS log_climb3 (
           climb_id TEXT PRIMARY KEY,
           session_id TEXT,
           type TEXT NOT NULL,
@@ -26,20 +26,6 @@ function RootLayout() {
           datetime TEXT NOT NULL,
           category TEXT
         );
-        
-        -- Migrate data from old table to new table if it exists
-        INSERT OR IGNORE INTO climb (climb_id, type, grade, attempts, rating, comments, datetime, category)
-        SELECT 
-          'local-' || id as climb_id,
-          type,
-          grade,
-          CAST(attempt AS INTEGER) as attempts,
-          rating,
-          description as comments,
-          datetime,
-          category
-        FROM log_climb3
-        WHERE EXISTS (SELECT 1 FROM sqlite_master WHERE type='table' AND name='log_climb3');
         
         PRAGMA journal_mode=WAL;
         `); // Write Ahead Logging, allows concurrency
