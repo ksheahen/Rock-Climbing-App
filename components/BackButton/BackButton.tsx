@@ -4,10 +4,15 @@ import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import styles from "./BackButton.styles";
 
-function BackButton() {
+interface BackButtonProps {
+  url?: string;
+}
+
+function BackButton({ url }: BackButtonProps) {
   const router = useRouter();
   const handleRedirect = () => {
-    router.push(`/profile`);
+    if (url) router.push(url as any);
+    else router.back();
   };
 
   return (

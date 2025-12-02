@@ -1,134 +1,85 @@
-import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import AnalyticsDateButtons from "@/components/AnalyticsDateButton/AnalyticsDateButtons";
+import BackButton from "@/components/BackButton/BackButton";
+import LineCharts from "@/components/LineCharts/LineCharts";
+import StatCard from "@/components/StatCard/StatCard";
+import { useFocusEffect } from "@react-navigation/native";
+import { useSQLiteContext } from "expo-sqlite";
+import React, { useCallback, useEffect, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
+import { LocalClimb } from "../../types/LocalClimb";
+import styles from "../styles/analytics.styles.";
 
-const analytics = () => {
+// Currently a WIP
+const Analytics = () => {
+  const db = useSQLiteContext();
+  const [climbsArr, setClimbsArr] = useState<LocalClimb[]>([]);
+  const [dates, setDates] = useState<"week" | "month" | "year" | "all time">(
+    "week",
+  );
+
+  useEffect(() => {
+    let mounted = true;
+    const loadClimbs = async () => {
+      try {
+        const rows = await db.getAllAsync(
+          `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`,
+          [],
+        );
+        if (!mounted) return;
+        setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
+      } catch (err) {
+        console.error("Failed to load climbs for analytics", err);
+      }
+    };
+
+    loadClimbs();
+    return () => {
+      mounted = false;
+    };
+  }, [db]);
+
+  // Refetch when screen gains focus so UI (StatCard, charts) updates after DB changes
+  useFocusEffect(
+    useCallback(() => {
+      let mounted = true;
+      const loadClimbsOnFocus = async () => {
+        try {
+          const rows = await db.getAllAsync(
+            `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`,
+            [],
+          );
+          if (!mounted) return;
+          setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
+        } catch (err) {
+          console.error("Failed to load climbs on focus", err);
+        }
+      };
+      loadClimbsOnFocus();
+      return () => {
+        mounted = false;
+      };
+    }, [db]),
+  );
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
-          <Ionicons name="arrow-back" size={24} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Analytics</Text>
+        <BackButton url="/" />
+        <Text style={styles.headerTitle}>PROGRESS</Text>
         <View style={styles.placeholder} />
       </View>
 
-      {/* Analytics Content */}
+      {/* Stat Cards */}
+      <StatCard climbs={climbsArr} />
+
+      {/* Line Chart */}
       <View style={styles.content}>
-        <Text style={styles.sectionTitle}>CLIMBING STATISTICS</Text>
-
-        <View style={styles.statsContainer}>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>47</Text>
-            <Text style={styles.statLabel}>Routes Completed</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>V8</Text>
-            <Text style={styles.statLabel}>Highest Grade</Text>
-          </View>
-        </View>
-
-        <View style={styles.chartSection}>
-          <Text style={styles.sectionTitle}>PROGRESS OVER TIME</Text>
-          <View style={styles.chartPlaceholder} />
-        </View>
-
-        <View style={styles.chartSection}>
-          <Text style={styles.sectionTitle}>GRADE DISTRIBUTION</Text>
-          <View style={styles.pieChartPlaceholder} />
-        </View>
+        <AnalyticsDateButtons dates={dates} onChange={setDates} />
+        <LineCharts climbs={climbsArr} dateRange={dates} />
       </View>
     </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F2F2F7",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
-  },
-  backButton: {
-    padding: 8,
-    backgroundColor: "#E5E5EA",
-    borderRadius: 8,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#000",
-    fontFamily: "Roboto",
-  },
-  placeholder: {
-    width: 40,
-  },
-  content: {
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#8E8E93",
-    marginBottom: 16,
-    letterSpacing: 0.5,
-    fontFamily: "Roboto",
-  },
-  statsContainer: {
-    flexDirection: "row",
-    gap: 16,
-    marginBottom: 32,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: "#FFF",
-    borderRadius: 12,
-    padding: 20,
-    alignItems: "center",
-  },
-  statNumber: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#4A90E2",
-    marginBottom: 8,
-    fontFamily: "Roboto",
-  },
-  statLabel: {
-    fontSize: 14,
-    color: "#8E8E93",
-    textAlign: "center",
-    fontFamily: "Roboto",
-  },
-  chartSection: {
-    marginBottom: 32,
-  },
-  chartPlaceholder: {
-    height: 200,
-    backgroundColor: "#E5E5EA",
-    borderRadius: 12,
-  },
-  pieChartPlaceholder: {
-    height: 200,
-    backgroundColor: "#E5E5EA",
-    borderRadius: 100,
-  },
-});
-
-export default analytics;
+export default Analytics;
