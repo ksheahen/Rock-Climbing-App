@@ -1,6 +1,6 @@
+import { ProfileInfo } from "@/components";
 import ClimbHistory from "@/components/ClimbHistory/ClimbHistory";
 import Line from "@/components/Line/Line";
-import ProfileInfo from "@/components/ProfileInfo/ProfileInfo";
 import TimeframeFilter from "@/components/TimeframeFilter/TimeframeFilter";
 import { useState } from "react";
 import { View } from "react-native";
