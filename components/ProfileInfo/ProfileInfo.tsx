@@ -49,7 +49,7 @@ export function ProfileInfo() {
 
       setDisplayName(profile?.name || user.email?.split("@")[0] || "User");
       setInstagramHandle(
-        user.email?.split("@")[0] || profile?.email || "username"
+        user.email?.split("@")[0] || profile?.email || "username",
       );
     } else if (!user) {
       setDisplayName("Kathryn");
@@ -63,7 +63,7 @@ export function ProfileInfo() {
         <View style={styles.avatarPlaceholder} />
         <View style={{ flexDirection: "row", gap: 10 }}>
           {/* Temporary way to reset login/signout page to appear on sync */}
-            {/* <Pressable
+          {/* <Pressable
             style={styles.editButton}
             onPress={() => supabase.auth.signOut()}
           >

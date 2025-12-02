@@ -23,7 +23,7 @@ function ProfilePage() {
   // const [user, setUser] = useState<User | null>(null);
   // const [climbs, setClimbs] = useState<Climb[]>([]);
   const [timeframe, setTimeframe] = useState<"day" | "week" | "month" | "all">(
-    "day"
+    "day",
   );
   const db = useSQLiteContext();
   const [climbsArr, setClimbsArr] = useState<LocalClimb[]>([]);
@@ -122,7 +122,7 @@ function ProfilePage() {
         try {
           const rows = await db.getAllAsync(
             `SELECT * FROM log_climb3 ORDER BY datetime DESC`,
-            []
+            [],
           );
           if (!mounted) return;
           setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
@@ -134,7 +134,7 @@ function ProfilePage() {
       return () => {
         mounted = false;
       };
-    }, [db])
+    }, [db]),
   );
 
   const filteredClimbs = filterClimbsByTimeframe(climbsArr, timeframe);

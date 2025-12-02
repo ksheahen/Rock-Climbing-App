@@ -112,7 +112,7 @@ describe("Login Page", () => {
 
     await waitFor(() => {
       console.log(mockNavigate.mock.calls);
-      expect(mockNavigate).toHaveBeenCalledWith("/");
+      expect(mockNavigate).toHaveBeenCalledWith("/profile");
     });
   });
 });
