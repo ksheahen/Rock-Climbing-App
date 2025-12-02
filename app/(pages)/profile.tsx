@@ -1,11 +1,10 @@
 import ClimbHistory from "@/components/ClimbHistory/ClimbHistory";
 import Line from "@/components/Line/Line";
 import ProfileInfo from "@/components/ProfileInfo/ProfileInfo";
-import { View } from "react-native";
-import styles from "../styles/profile.styles";
 import TimeframeFilter from "@/components/TimeframeFilter/TimeframeFilter";
 import { useState } from "react";
-import { time } from "node:console";
+import { View } from "react-native";
+import styles from "../styles/profile.styles";
 // import { useFocusEffect } from "expo-router";
 // import { useCallback, useEffect, useState } from "react";
 // import { Alert, View } from "react-native";

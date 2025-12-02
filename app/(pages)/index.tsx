@@ -1,8 +1,7 @@
 import { router, useFocusEffect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import React, { useCallback, useMemo, useState } from "react";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
-import { LocalClimb } from "../../types/LocalClimb";
+import { ActivityIndicator, Text, View } from "react-native";
 import {
   AnalyticsPreview,
   DayData,
@@ -14,6 +13,7 @@ import {
   RecentSessions,
   SessionData,
 } from "../../components";
+import { LocalClimb } from "../../types/LocalClimb";
 import styles from "../styles/index.styles";
 
 const Index = () => {
@@ -76,11 +76,11 @@ const Index = () => {
           formattedDate = "N/A";
         }
       }
-  
+
       // Format attempts
       const attemptNum = parseInt(climb.attempt) || 1;
       const tries = `${attemptNum} ${attemptNum === 1 ? "Try" : "Tries"}`;
-  
+
       // Extract first image URI from climb.media
       let imageUri: string | null = null;
       if (climb.media) {
@@ -89,9 +89,10 @@ const Index = () => {
             uri: string;
             type: "image" | "video";
           }[];
-  
+
           if (Array.isArray(parsed) && parsed.length > 0) {
-            const firstImage = parsed.find((m) => m.type === "image") || parsed[0];
+            const firstImage =
+              parsed.find((m) => m.type === "image") || parsed[0];
             imageUri = firstImage?.uri ?? null;
           }
         } catch (e) {
@@ -99,7 +100,7 @@ const Index = () => {
           imageUri = null;
         }
       }
-  
+
       return {
         grade: climb.grade,
         tries,
