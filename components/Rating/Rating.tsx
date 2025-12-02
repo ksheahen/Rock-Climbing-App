@@ -19,7 +19,7 @@ export function Rating({
   const [rating, setRating] = useState(selectedProp);
 
   const handlePress = (value: number) => {
-    const next = value;
+    const next = rating === value ? 0 : value; // toggle back to zero
     setRating(next);
     onSelectedChange?.(next);
   };

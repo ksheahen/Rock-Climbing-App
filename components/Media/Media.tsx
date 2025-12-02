@@ -1,24 +1,50 @@
 import { ResizeMode, Video } from "expo-av";
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Image, Pressable, ScrollView, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import styles from "./Media.styles";
 
 type MediaItem = { uri: string; type: "image" | "video" };
 
-export function Media({
-  maxItems = 5,
-  onChange,
-}: {
+interface MediaProps {
   maxItems?: number;
-  onChange?: (items: MediaItem[]) => void;
-}) {
+  selectedProp: string; // stored in DB as string
+  onSelectedChange?: (value: string) => void; // send string (JSON) to parent
+  editToggle: boolean;
+}
+
+function Media({ maxItems = 5, selectedProp, onSelectedChange, editToggle }: MediaProps) {
   const [items, setItems] = useState<MediaItem[]>([]);
+
+  // Keep local items in sync with parent/DB
+  useEffect(() => {
+    if (!selectedProp) {
+      setItems([]);
+      return;
+    }
+    try {
+      const parsed = JSON.parse(selectedProp);
+      if (Array.isArray(parsed)) {
+        const valid = parsed.filter(
+          (it) =>
+            it &&
+            typeof it.uri === "string" &&
+            (it.type === "image" || it.type === "video"),
+        );
+        setItems(valid);
+      } else {
+        setItems([]);
+      }
+    } catch {
+      setItems([]);
+    }
+  }, [selectedProp]);
 
   const updateItems = (next: MediaItem[]) => {
     setItems(next);
-    onChange?.(next);
+    // store as JSON string in parent / DB
+    onSelectedChange?.(JSON.stringify(next));
   };
 
   const askForPermissions = async (kind: "camera" | "library") => {
@@ -72,6 +98,7 @@ export function Media({
   };
 
   const handleAdd = () => {
+    if (!editToggle) return; // view-only mode
     Alert.alert("Add media", "Choose a source", [
       { text: "Take photo/video", onPress: captureWithCamera },
       { text: "Choose from library", onPress: pickFromLibrary },
@@ -80,6 +107,7 @@ export function Media({
   };
 
   const removeAt = (idx: number) => {
+    if (!editToggle) return; // view-only mode
     updateItems(items.filter((_, i) => i !== idx));
   };
 
@@ -87,61 +115,106 @@ export function Media({
     <View style={styles.container}>
       <Text style={styles.title}>Media</Text>
 
-      {items.length === 0 ? (
-        <Pressable style={styles.mediaBox} onPress={handleAdd} hitSlop={8}>
-          <Icon name="attachment-2" size="28" color="#C7C7CC" />
-          <Text style={styles.emptyText}>Add photo or video</Text>
-        </Pressable>
-      ) : (
-        <View style={styles.mediaBox}>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
-          >
-            {items.length < maxItems && (
-              <Pressable
-                onPress={handleAdd}
-                style={[styles.tile, styles.addTile]}
-                hitSlop={8}
-              >
-                <Icon name="add-line" size={24} color="#8E8E93" />
-                <Text style={styles.addTileText}>Add</Text>
-              </Pressable>
-            )}
-
-            {items.map((m, idx) => (
-              <View key={m.uri} style={styles.thumbWrap}>
-                {m.type === "image" ? (
-                  <Image source={{ uri: m.uri }} style={styles.tile} />
-                ) : (
-                  <Video
-                    source={{ uri: m.uri }}
-                    style={[styles.tile, styles.videoBg]}
-                    resizeMode={ResizeMode.COVER}
-                    shouldPlay={false}
-                    isMuted
-                  />
-                )}
-
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>
-                    {m.type === "image" ? "IMG" : "VID"}
-                  </Text>
-                </View>
-
+      {editToggle ? (
+        //EDIT MODE (can add/remove)
+        items.length === 0 ? (
+          <Pressable style={styles.mediaBox} onPress={handleAdd} hitSlop={8}>
+            <Icon name="attachment-2" size="28" color="#C7C7CC" />
+            <Text style={styles.emptyText}>Add photo or video</Text>
+          </Pressable>
+        ) : (
+          <View style={styles.mediaBox}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContent}
+            >
+              {items.length < maxItems && (
                 <Pressable
-                  onPress={() => removeAt(idx)}
-                  style={styles.removeBtn}
+                  onPress={handleAdd}
+                  style={[styles.tile, styles.addTile]}
                   hitSlop={8}
                 >
-                  <Icon name="close-line" size={14} color="#fff" />
+                  <Icon name="add-line" size={24} color="#8E8E93" />
+                  <Text style={styles.addTileText}>Add</Text>
                 </Pressable>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
+              )}
+
+              {items.map((m, idx) => (
+                <View key={m.uri} style={styles.thumbWrap}>
+                  {m.type === "image" ? (
+                    <Image source={{ uri: m.uri }} style={styles.tile} />
+                  ) : (
+                    <Video
+                      source={{ uri: m.uri }}
+                      style={[styles.tile, styles.videoBg]}
+                      resizeMode={ResizeMode.COVER}
+                      shouldPlay={false}
+                      isMuted
+                    />
+                  )}
+
+                  <View style={styles.badge}>
+                    <Text style={styles.badgeText}>
+                      {m.type === "image" ? "IMG" : "VID"}
+                    </Text>
+                  </View>
+
+                  <Pressable
+                    onPress={() => removeAt(idx)}
+                    style={styles.removeBtn}
+                    hitSlop={8}
+                  >
+                    <Icon name="close-line" size={14} color="#fff" />
+                  </Pressable>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        )
+      ) : (
+        //VIEW MODE (no add/remove, just display)
+        items.length === 0 ? (
+          <View style={styles.mediaBox}>
+            <Icon name="attachment-2" size="28" color="#C7C7CC" />
+            <Text style={styles.emptyText}>No media added</Text>
+          </View>
+        ) : (
+          <View style={styles.mediaBox}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContent}
+            >
+              {items.map((m) => (
+                <View key={m.uri} style={styles.thumbWrap}>
+                  {m.type === "image" ? (
+                    <Image source={{ uri: m.uri }} style={styles.tile} />
+                  ) : (
+                    <Video
+                      source={{ uri: m.uri }}
+                      style={[styles.tile, styles.videoBg]}
+                      resizeMode={ResizeMode.COVER}
+                      shouldPlay={false}
+                      isMuted
+                    />
+                  )}
+
+                  <View style={styles.badge}>
+                    <Text style={styles.badgeText}>
+                      {m.type === "image" ? "IMG" : "VID"}
+                    </Text>
+                  </View>
+                  {/* no remove button in view-only mode */}
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        )
       )}
     </View>
   );
 }
+
+export default Media;
+

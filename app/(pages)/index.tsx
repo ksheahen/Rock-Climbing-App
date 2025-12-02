@@ -22,6 +22,90 @@ const Index = () => {
     stars: [],
     dateRange: "all",
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [climbs, setClimbs] = useState<LocalClimb[]>([]);
+
+  // Fetch climbs from SQLite - runs every time the page comes into focus
+  const fetchClimbs = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Query all climbs from log_climb3 table, ordered by id descending (most recent first)
+      const result = await db.getAllAsync<LocalClimb>(
+        `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`,
+      );
+
+      setClimbs(result);
+    } catch (err: any) {
+      const errorMessage = err?.message || "Failed to load climbs";
+      console.error("Error fetching climbs:", err);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  }, [db]);
+
+  // Refresh climbs whenever the screen comes into focus (e.g., after logging a climb)
+  useFocusEffect(
+    useCallback(() => {
+      fetchClimbs();
+    }, [fetchClimbs]),
+  );
+
+  // Convert climbs to SessionData format for UI
+  const allSessionsData: SessionData[] = useMemo(() => {
+    return climbs.map((climb) => {
+      // Format date
+      let formattedDate = "N/A";
+      if (climb.datetime) {
+        try {
+          const date = new Date(climb.datetime);
+          if (!isNaN(date.getTime())) {
+            formattedDate = date.toLocaleDateString("en-US", {
+              month: "numeric",
+              day: "numeric",
+              year: "2-digit",
+            });
+          }
+        } catch {
+          formattedDate = "N/A";
+        }
+      }
+  
+      // Format attempts
+      const attemptNum = parseInt(climb.attempt) || 1;
+      const tries = `${attemptNum} ${attemptNum === 1 ? "Try" : "Tries"}`;
+  
+      // Extract first image URI from climb.media
+      let imageUri: string | null = null;
+      if (climb.media) {
+        try {
+          const parsed = JSON.parse(climb.media) as {
+            uri: string;
+            type: "image" | "video";
+          }[];
+  
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const firstImage = parsed.find((m) => m.type === "image") || parsed[0];
+            imageUri = firstImage?.uri ?? null;
+          }
+        } catch (e) {
+          console.warn("Failed to parse media JSON:", e);
+          imageUri = null;
+        }
+      }
+  
+      return {
+        grade: climb.grade,
+        tries,
+        stars: climb.rating || 0,
+        date: formattedDate,
+        imageUri,
+      };
+    });
+  }, [climbs]);
 
   const days: DayData[] = [
     { day: "S", date: "20", status: "red" },

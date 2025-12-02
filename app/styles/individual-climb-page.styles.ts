@@ -1,6 +1,7 @@
-import { StyleSheet } from "react-native";
-import { global } from "../../theme";
+import { global } from "@/theme";
+import { StyleSheet, Dimensions } from "react-native";
 
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     display: "flex",
@@ -30,8 +31,17 @@ const styles = StyleSheet.create({
   media: {
     borderRadius: global.border.border_radius,
     width: "100%",
-    height: 400, // placeholder until dynamic media
+    height: 400,
     backgroundColor: global.colors.background_2,
+  },
+  
+  mediaScroll: {
+    flex: 1,
+  },
+  
+  mediaItem: {
+    width: SCREEN_WIDTH - global.margin.page_border * 2,
+    height: "100%",
   },
   modal_outter_container: {
     flex: 1,
