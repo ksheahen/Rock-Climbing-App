@@ -5,6 +5,7 @@ import TimeframeFilter from "@/components/TimeframeFilter/TimeframeFilter";
 import { useState } from "react";
 import { View } from "react-native";
 import styles from "../styles/profile.styles";
+
 // import { useFocusEffect } from "expo-router";
 // import { useCallback, useEffect, useState } from "react";
 // import { Alert, View } from "react-native";
@@ -19,7 +20,7 @@ function ProfilePage() {
   // const [user, setUser] = useState<User | null>(null);
   // const [climbs, setClimbs] = useState<Climb[]>([]);
   const [timeframe, setTimeframe] = useState<"day" | "week" | "month" | "all">(
-    "all",
+    "day",
   );
   // const session = useSession();
   // useEffect(() => {
@@ -114,7 +115,7 @@ function ProfilePage() {
       <View style={styles.mainContent}>
         <ProfileInfo />
         <Line />
-        <TimeframeFilter />
+        <TimeframeFilter dates={timeframe} onChange={setTimeframe} />
         {/* <Line /> */}
         <ClimbHistory />
       </View>

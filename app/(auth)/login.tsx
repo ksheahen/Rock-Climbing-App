@@ -98,7 +98,7 @@ export default function Login() {
         setPasswordError(true);
       }
     } else {
-      router.navigate("/");
+      router.navigate("/profile");
     }
     setLoading(false);
   }
