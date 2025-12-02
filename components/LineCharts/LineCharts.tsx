@@ -119,12 +119,25 @@ function LineCharts({
     });
   }
 
-  const dataPoints = x.map((n) => (Number.isFinite(n) ? n : 0));
+  // TODO: Fix datatime bug and get real data.
+  // Using fake data for now until I can get this fixed
+  const fakeData = {
+    week: [5, 10, 13, 3, 16, 20, 6],
+    month: [45, 64, 32, 53],
+    year: [105, 85, 93, 109, 110, 99, 112, 89, 91, 101, 96],
+  };
+  const base = fakeData[dateRange as keyof typeof fakeData] ?? [];
+  let plotData = Array.from(
+    { length: labels.length },
+    (_, i) => base[i % base.length] ?? 0,
+  );
+
+  // const dataPoints = x.map((n) => (Number.isFinite(n) ? n : 0));
   const lineData = {
     labels,
     datasets: [
       {
-        data: dataPoints,
+        data: plotData,
         color: (opacity = 1) => `rgba(74,144,226, ${opacity})`,
         strokeWidth: 2,
       },
@@ -137,7 +150,8 @@ function LineCharts({
         data={lineData}
         width={screenWidth}
         height={350}
-        yAxisSuffix=""
+        yAxisInterval={5}
+        formatYLabel={(y) => String(Math.round(Number(y)))}
         chartConfig={{
           backgroundGradientFrom: "#ffffffff",
           backgroundGradientTo: "#ffffffff",
