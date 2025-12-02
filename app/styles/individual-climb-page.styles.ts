@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
     height: 400,
     backgroundColor: global.colors.background_2,
   },
-  
+
   mediaScroll: {
     flex: 1,
   },
-  
+
   mediaItem: {
     width: SCREEN_WIDTH - global.margin.page_border * 2,
     height: "100%",

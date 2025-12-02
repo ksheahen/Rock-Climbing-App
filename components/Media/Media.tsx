@@ -14,7 +14,12 @@ interface MediaProps {
   editToggle: boolean;
 }
 
-function Media({ maxItems = 5, selectedProp, onSelectedChange, editToggle }: MediaProps) {
+function Media({
+  maxItems = 5,
+  selectedProp,
+  onSelectedChange,
+  editToggle,
+}: MediaProps) {
   const [items, setItems] = useState<MediaItem[]>([]);
 
   // Keep local items in sync with parent/DB
@@ -172,49 +177,46 @@ function Media({ maxItems = 5, selectedProp, onSelectedChange, editToggle }: Med
             </ScrollView>
           </View>
         )
+      ) : //VIEW MODE (no add/remove, just display)
+      items.length === 0 ? (
+        <View style={styles.mediaBox}>
+          <Icon name="attachment-2" size="28" color="#C7C7CC" />
+          <Text style={styles.emptyText}>No media added</Text>
+        </View>
       ) : (
-        //VIEW MODE (no add/remove, just display)
-        items.length === 0 ? (
-          <View style={styles.mediaBox}>
-            <Icon name="attachment-2" size="28" color="#C7C7CC" />
-            <Text style={styles.emptyText}>No media added</Text>
-          </View>
-        ) : (
-          <View style={styles.mediaBox}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContent}
-            >
-              {items.map((m) => (
-                <View key={m.uri} style={styles.thumbWrap}>
-                  {m.type === "image" ? (
-                    <Image source={{ uri: m.uri }} style={styles.tile} />
-                  ) : (
-                    <Video
-                      source={{ uri: m.uri }}
-                      style={[styles.tile, styles.videoBg]}
-                      resizeMode={ResizeMode.COVER}
-                      shouldPlay={false}
-                      isMuted
-                    />
-                  )}
+        <View style={styles.mediaBox}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+          >
+            {items.map((m) => (
+              <View key={m.uri} style={styles.thumbWrap}>
+                {m.type === "image" ? (
+                  <Image source={{ uri: m.uri }} style={styles.tile} />
+                ) : (
+                  <Video
+                    source={{ uri: m.uri }}
+                    style={[styles.tile, styles.videoBg]}
+                    resizeMode={ResizeMode.COVER}
+                    shouldPlay={false}
+                    isMuted
+                  />
+                )}
 
-                  <View style={styles.badge}>
-                    <Text style={styles.badgeText}>
-                      {m.type === "image" ? "IMG" : "VID"}
-                    </Text>
-                  </View>
-                  {/* no remove button in view-only mode */}
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>
+                    {m.type === "image" ? "IMG" : "VID"}
+                  </Text>
                 </View>
-              ))}
-            </ScrollView>
-          </View>
-        )
+                {/* no remove button in view-only mode */}
+              </View>
+            ))}
+          </ScrollView>
+        </View>
       )}
     </View>
   );
 }
 
 export default Media;
-

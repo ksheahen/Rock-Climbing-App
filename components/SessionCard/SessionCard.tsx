@@ -1,12 +1,7 @@
 import { global } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import {
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./SessionCard.styles";
 
 export interface SessionData {

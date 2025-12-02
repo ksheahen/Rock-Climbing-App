@@ -9,7 +9,6 @@ interface LineChartProps {
   dateRange?: "week" | "month" | "year" | "all time";
 }
 
-// Place holder data for right now
 function LineCharts({
   climbs = [] as LocalClimb[],
   dateRange = "week",
@@ -17,7 +16,7 @@ function LineCharts({
   const screenWidth = Dimensions.get("window").width - 40;
   const now = new Date();
 
-  // Verifies date
+  // Parses and verifies date
   const safeDate = (d?: string | null) => {
     if (!d) return null;
     const newDate = new Date(d);
@@ -34,6 +33,8 @@ function LineCharts({
 
   let labels: string[] = [];
   let x: number[] = [];
+
+  // If the dateRange is the current week:
   if (dateRange === "week") {
     console.log("displaying week data");
     const days = 7;
@@ -53,6 +54,7 @@ function LineCharts({
         x[idx] += 1;
       }
     });
+    // If the dateRange is the current month:
   } else if (dateRange === "month") {
     console.log("displaying month data");
     const weeks = 4;
@@ -71,6 +73,7 @@ function LineCharts({
         x[idx] += 1;
       }
     });
+    // If the dateRange is the current year
   } else if (dateRange === "year") {
     console.log("displaying year data");
     const months = 12;
@@ -97,6 +100,7 @@ function LineCharts({
       const index = yearDiff * 12 + monthDiff;
       if (index >= 0 && index < months) x[index] += 1;
     });
+    // If the dateRange includes all data:
   } else if (dateRange === "all time") {
     console.log("displaying all time data");
 
@@ -119,25 +123,36 @@ function LineCharts({
     });
   }
 
-  // TODO: Fix datatime bug and get real data.
-  // Using fake data for now until I can get this fixed
-  const fakeData = {
-    week: [5, 10, 13, 3, 16, 20, 6],
-    month: [45, 64, 32, 53],
-    year: [105, 85, 93, 109, 110, 99, 112, 89, 91, 101, 96],
-  };
-  const base = fakeData[dateRange as keyof typeof fakeData] ?? [];
-  let plotData = Array.from(
-    { length: labels.length },
-    (_, i) => base[i % base.length] ?? 0,
-  );
+  // Map the datapoints for the graph
+  const dataPoints = x.map((n) => (Number.isFinite(n) ? n : 0));
 
-  // const dataPoints = x.map((n) => (Number.isFinite(n) ? n : 0));
+  // Calculate the min and max for the datapoints
+  const minVal = dataPoints.length ? Math.min(...dataPoints) : 0;
+  const maxVal = dataPoints.length ? Math.max(...dataPoints) : 0;
+
+  // Choose graph step (either round down to 1 or up to 5)
+  let yStep = Math.abs(maxVal - minVal) <= 10 ? 1 : 5;
+  if (yStep <= 0) yStep = 1;
+
+  // Round bounds to nearest step
+  let minRounded = Math.floor(minVal / yStep) * yStep;
+  let maxRounded = Math.ceil(maxVal / yStep) * yStep;
+
+  // Ensures a non-zero range so chart shows multiple ticks
+  if (minRounded === maxRounded) {
+    minRounded = Math.max(0, minRounded - yStep);
+    maxRounded = maxRounded + yStep;
+  }
+
+  // Calculate the graph segments
+  const segments = Math.max(1, Math.round((maxRounded - minRounded) / yStep));
+
+  // Plot data
   const lineData = {
     labels,
     datasets: [
       {
-        data: plotData,
+        data: dataPoints,
         color: (opacity = 1) => `rgba(74,144,226, ${opacity})`,
         strokeWidth: 2,
       },
@@ -150,7 +165,7 @@ function LineCharts({
         data={lineData}
         width={screenWidth}
         height={350}
-        yAxisInterval={5}
+        segments={segments}
         formatYLabel={(y) => String(Math.round(Number(y)))}
         chartConfig={{
           backgroundGradientFrom: "#ffffffff",

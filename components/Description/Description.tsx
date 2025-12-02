@@ -15,7 +15,11 @@ interface DescriptionProps {
   editToggle: boolean;
 }
 
-function Description({ selectedProp, onSelectedChange, editToggle }: DescriptionProps) {
+function Description({
+  selectedProp,
+  onSelectedChange,
+  editToggle,
+}: DescriptionProps) {
   const [modalVisible, setModalVisible] = useState(false);
   const [description, setDescription] = useState(selectedProp || "");
   const [draft, setDraft] = useState(selectedProp || "");

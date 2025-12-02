@@ -199,4 +199,3 @@ function DateTime({ selectedProp, onSelectedChange, editToggle }: Props) {
 }
 
 export default DateTime;
-
