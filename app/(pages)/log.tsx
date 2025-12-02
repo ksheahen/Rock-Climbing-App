@@ -73,7 +73,7 @@ function LogAscent() {
     );
 
     console.log("Climb saved to database");
-    router.navigate("/profile");
+    router.push("/profile");
   };
 
   return (
