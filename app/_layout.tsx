@@ -12,21 +12,19 @@ function RootLayout() {
     <SQLiteProvider
       databaseName="climb.db"
       onInit={async (db) => {
-        // Create new unified climb table matching Supabase schema
         await db.execAsync(`
         CREATE TABLE IF NOT EXISTS log_climb3 (
-          climb_id TEXT PRIMARY KEY,
-          session_id TEXT,
-          type TEXT NOT NULL,
-          grade TEXT NOT NULL,
-          attempts INTEGER NOT NULL DEFAULT 1,
-          rating INTEGER,
-          comments TEXT,
-          media_id TEXT,
-          datetime TEXT NOT NULL,
-          category TEXT
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        category TEXT NOT NULL,
+        type TEXT NOT NULL,
+        complete TEXT NOT NULL,
+        attempt TEXT NOT NULL, 
+        grade TEXT,
+        rating INTEGER,
+        datetime TEXT, 
+        description TEXT,
+        media TEXT
         );
-        
         PRAGMA journal_mode=WAL;
         `); // Write Ahead Logging, allows concurrency
       }}
@@ -34,7 +32,6 @@ function RootLayout() {
       {/* this makes apple's status bar black */}
       <StatusBar barStyle="dark-content" />
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(pages)" options={{ headerShown: false }} />
       </Stack>
     </SQLiteProvider>
