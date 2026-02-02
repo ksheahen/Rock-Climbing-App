@@ -1,120 +1,120 @@
 import { useEffect, useState } from "react";
 import {
   Modal,
-  View,
+  Pressable,
   Text,
   TextInput,
   TouchableOpacity,
-  Pressable,
+  View,
 } from "react-native";
 import { styles } from "./Description.styles";
 
 interface DescriptionProps {
-  selectedProp: string;
-  onSelectedChange?: (value: string) => void;
-  editToggle: boolean;
+	selectedProp: string;
+	onSelectedChange?: (value: string) => void;
+	editToggle: boolean;
 }
 
 function Description({
-  selectedProp,
-  onSelectedChange,
-  editToggle,
+	selectedProp,
+	onSelectedChange,
+	editToggle,
 }: DescriptionProps) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [description, setDescription] = useState(selectedProp || "");
-  const [draft, setDraft] = useState(selectedProp || "");
+	const [modalVisible, setModalVisible] = useState(false);
+	const [description, setDescription] = useState(selectedProp || "");
+	const [draft, setDraft] = useState(selectedProp || "");
 
-  // keep local state in sync if parent changes selectedProp
-  useEffect(() => {
-    setDescription(selectedProp || "");
-    setDraft(selectedProp || "");
-  }, [selectedProp]);
+	// keep local state in sync if parent changes selectedProp
+	useEffect(() => {
+		setDescription(selectedProp || "");
+		setDraft(selectedProp || "");
+	}, [selectedProp]);
 
-  const openModal = () => {
-    if (!editToggle) return; // don't open in view-only mode
-    setDraft(description);
-    setModalVisible(true);
-  };
+	const openModal = () => {
+		if (!editToggle) return; // don't open in view-only mode
+		setDraft(description);
+		setModalVisible(true);
+	};
 
-  const save = () => {
-    setDescription(draft);
-    setModalVisible(false);
-    onSelectedChange?.(draft); // notify parent
-  };
+	const save = () => {
+		setDescription(draft);
+		setModalVisible(false);
+		onSelectedChange?.(draft); // notify parent
+	};
 
-  const cancel = () => {
-    setModalVisible(false);
-    setDraft(description);
-  };
+	const cancel = () => {
+		setModalVisible(false);
+		setDraft(description);
+	};
 
-  return (
-    <>
-      {/* Row with label + preview box */}
-      <View style={styles.container}>
-        <Text style={styles.title}>Description</Text>
+	return (
+		<>
+			{/* Row with label + preview box */}
+			<View style={styles.container}>
+				<Text style={styles.title}>Description</Text>
 
-        {editToggle ? (
-          <TouchableOpacity
-            style={styles.preview_container}
-            onPress={openModal}
-            activeOpacity={0.7}
-          >
-            <Text
-              style={[
-                styles.preview_text,
-                !description && styles.preview_placeholder,
-              ]}
-              numberOfLines={2}
-            >
-              {description || "Add description..."}
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.preview_container}>
-            <Text
-              style={[
-                styles.preview_text,
-                !description && styles.preview_placeholder,
-              ]}
-              numberOfLines={2}
-            >
-              {description || "No description."}
-            </Text>
-          </View>
-        )}
-      </View>
+				{editToggle ? (
+					<TouchableOpacity
+						style={styles.preview_container}
+						onPress={openModal}
+						activeOpacity={0.7}
+					>
+						<Text
+							style={[
+								styles.preview_text,
+								!description && styles.preview_placeholder,
+							]}
+							numberOfLines={2}
+						>
+							{description || "Add description..."}
+						</Text>
+					</TouchableOpacity>
+				) : (
+					<View style={styles.preview_container}>
+						<Text
+							style={[
+								styles.preview_text,
+								!description && styles.preview_placeholder,
+							]}
+							numberOfLines={2}
+						>
+							{description || "No description."}
+						</Text>
+					</View>
+				)}
+			</View>
 
-      {/* Modal */}
-      <Modal visible={modalVisible} animationType="slide" transparent>
-        <View style={styles.modal_backdrop}>
-          <View style={styles.modal_card}>
-            <Text style={styles.modal_title}>Description</Text>
+			{/* Modal */}
+			<Modal visible={modalVisible} animationType="slide" transparent>
+				<View style={styles.modal_backdrop}>
+					<View style={styles.modal_card}>
+						<Text style={styles.modal_title}>Description</Text>
 
-            <TextInput
-              value={draft}
-              onChangeText={setDraft}
-              style={styles.modal_input}
-              multiline
-              maxLength={150}
-              textAlignVertical="top"
-            />
+						<TextInput
+							value={draft}
+							onChangeText={setDraft}
+							style={styles.modal_input}
+							multiline
+							maxLength={150}
+							textAlignVertical="top"
+						/>
 
-            <Text style={styles.counter}>{draft.length}/150</Text>
+						<Text style={styles.counter}>{draft.length}/150</Text>
 
-            <View style={styles.modal_actions}>
-              <Pressable onPress={cancel} style={styles.btn_secondary}>
-                <Text>Cancel</Text>
-              </Pressable>
+						<View style={styles.modal_actions}>
+							<Pressable onPress={cancel} style={styles.btn_secondary}>
+								<Text>Cancel</Text>
+							</Pressable>
 
-              <Pressable onPress={save} style={styles.btn_primary}>
-                <Text style={{ color: "white" }}>Save</Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
-      </Modal>
-    </>
-  );
+							<Pressable onPress={save} style={styles.btn_primary}>
+								<Text style={{ color: "white" }}>Save</Text>
+							</Pressable>
+						</View>
+					</View>
+				</View>
+			</Modal>
+		</>
+	);
 }
 
 export default Description;
