@@ -1,31 +1,29 @@
-import Attempt from "@/components/Attempt/Attempt";
-import BackButton from "@/components/BackButton/BackButton";
-import Category from "@/components/Category/Category";
-import Complete from "@/components/Complete/Complete";
-import DateTime from "@/components/DateTime/DateTime";
-import Description from "@/components/Description/Description";
-import Difficulty from "@/components/Difficulty/Difficulty";
-import Line from "@/components/Line/Line";
-import Rating from "@/components/Rating/Rating";
-import SettingsButton from "@/components/SettingsButton/SettingsButton";
-import Type from "@/components/Type/Type";
+import { DateTime, Description } from "@/components";
+import { Attempt } from "@/components/Attempt/Attempt";
+import { BackButton } from "@/components/BackButton/BackButton";
+import { Category } from "@/components/Category/Category";
+import { Complete } from "@/components/Complete/Complete";
+import { Difficulty } from "@/components/Difficulty/Difficulty";
+import { Line } from "@/components/Line/Line";
 import Media from "@/components/Media/Media";
-
+import { Rating } from "@/components/Rating/Rating";
+import { SettingsButton } from "@/components/SettingsButton/SettingsButton";
+import { Type } from "@/components/Type/Type";
 import { useFocusEffect } from "@react-navigation/native";
-import { useSearchParams, useRouter } from "expo-router/build/hooks";
-import { useSQLiteContext } from "expo-sqlite";
-import { useCallback, useState, useMemo } from "react";
-import {
-  ScrollView,
-  View,
-  Modal,
-  Text,
-  Pressable,
-  Image,
-} from "react-native";
-import styles from "../styles/individual-climb-page.styles";
-import Icon from "react-native-remix-icon";
 import { ResizeMode, Video } from "expo-av";
+import { useRouter, useSearchParams } from "expo-router/build/hooks";
+import { useSQLiteContext } from "expo-sqlite";
+import { useCallback, useMemo, useState } from "react";
+import {
+  Image,
+  Modal,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
+import Icon from "react-native-remix-icon";
+import styles from "../styles/individual-climb-page.styles";
 
 // ---- media helpers ----
 type MediaItem = { uri: string; type: "image" | "video" };
@@ -336,6 +334,7 @@ function IndividualClimbPage() {
           </>
         )}
       </ScrollView>
+      
       {/* modal is visible only when modalVisible = true */}
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         {/* overlay */}

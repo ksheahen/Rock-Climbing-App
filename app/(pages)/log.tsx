@@ -11,10 +11,11 @@ import {
   Rating,
   Type,
 } from "@/components";
+import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { useRouter } from "expo-router";
+import uuid from "react-native-uuid";
 import styles from "../styles/log.styles";
 
 function LogAscent() {
@@ -68,21 +69,28 @@ function LogAscent() {
     console.log("DB Storage 'desc'       - ", climb.description);
     console.log("DB Storage 'media'      - ", climb.media);
 
+    const newId = uuid.v4().toString();
+
     // send to db
     await db.runAsync(
-      `INSERT INTO log_climb3 (category, type, complete, attempt, grade, rating, datetime, description, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        climb.category,
-        climb.type,
-        climb.complete,
-        climb.attempt,
-        climb.grade,
-        climb.rating,
-        climb.datetime,
-        climb.description,
-        climb.media,
-      ],
-    );
+  `INSERT INTO log_climb3 
+    (uuid, category, type, complete, attempt, grade, rating, datetime, description, media, deleted, synced) 
+   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)`,
+  [
+    newId,
+    climb.category,
+    climb.type,
+    climb.complete,
+    climb.attempt,
+    climb.grade,
+    climb.rating,
+    climb.datetime,
+    climb.description,
+    climb.media,
+    0,
+    0,
+  ]
+);
 
     console.log("Sent log data to db...");
   };

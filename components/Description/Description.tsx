@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import {
   Modal,
-  View,
+  Pressable,
   Text,
   TextInput,
   TouchableOpacity,
-  Pressable,
+  View,
 } from "react-native";
 import { styles } from "./Description.styles";
 
@@ -112,3 +112,5 @@ function Description({ selectedProp, onSelectedChange, editToggle }: Description
     </>
   );
 }
+
+export default Description;

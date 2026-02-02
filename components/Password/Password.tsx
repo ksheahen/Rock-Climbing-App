@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput, View } from "react-native";
-import colors from "../../theme/index";
 import styles from "../../app/styles/login.styles";
+import colors from "../../theme/index";
 
 // TODO: May need updating for security purposes
 interface PasswordProps {
@@ -11,7 +11,7 @@ interface PasswordProps {
   inputStyle?: object;
 }
 
-export function PasswordComponent({
+function Password({
   password,
   setPassword,
   displayText,
@@ -32,3 +32,6 @@ export function PasswordComponent({
     </View>
   );
 }
+
+export default Password;
+

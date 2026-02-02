@@ -1,5 +1,6 @@
-import { router } from "expo-router";
-import React, { useMemo, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView } from "react-native";
 import {
   AnalyticsPreview,
@@ -13,8 +14,24 @@ import {
   SessionData,
 } from "../../components";
 import styles from "../styles/index.styles";
+type LocalClimb = {
+  id: number;
+  uuid?: string;
+  category: string;
+  type: string;
+  complete: string;
+  attempt: string;
+  grade: string;
+  rating: number | null;
+  datetime: string | null;
+  description: string | null;
+  media: string | null;
+  deleted?: number;
+  synced?: number;
+};
 
 const Index = () => {
+  const db = useSQLiteContext();
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({
     grades: [],

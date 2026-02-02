@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { COLORS } from "../../theme";
 import { styles } from "./SessionCard.styles";
 
 export interface SessionData {
