@@ -30,6 +30,51 @@ const styles = StyleSheet.create({
 	},
 	dropdown: { fontSize: global.font_size.phone_medium },
 	icon_container: {},
+
+	// Modal
+	modal_backdrop: {
+		flex: 1,
+		backgroundColor: "rgba(0,0,0,0.3)",
+		justifyContent: "center",
+		padding: 20,
+	},
+	modal_card: {
+		backgroundColor: "white",
+		borderRadius: 16,
+		padding: 20,
+	},
+	modal_title: {
+		fontSize: global.font_size.phone_large,
+		marginBottom: 12,
+	},
+	modal_input: {
+		fontSize: global.font_size.phone_medium,
+		minHeight: 100,
+		borderWidth: 1,
+		borderColor: "#E5E5EA",
+		borderRadius: 12,
+		padding: 10,
+	},
+	counter: {
+		alignSelf: "flex-end",
+		marginTop: 6,
+		opacity: 0.5,
+	},
+	modal_actions: {
+		flexDirection: "row",
+		justifyContent: "flex-end",
+		marginTop: 15,
+	},
+	btn_secondary: {
+		padding: 10,
+		marginRight: 10,
+	},
+	btn_primary: {
+		padding: 10,
+		backgroundColor: "#111",
+		borderRadius: 8,
+	},
+
 });
 
 export default styles;

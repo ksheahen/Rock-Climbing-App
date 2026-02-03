@@ -1,6 +1,6 @@
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, Modal, TextInput } from "react-native";
 import Icon from "react-native-remix-icon";
 import styles from "./Location.styles.ts";
 
@@ -16,11 +16,14 @@ function Location({
 	editToggle,
 }: LocationComponentProps) {
 	const [selectedType, setSelectedType] = useState(selectedProp || "");
-	const [isPickerVisible, setIsPickerVisible] = useState(false);
+	const [modalVisible, setModalVisible] = useState(false);
+	const [draft, setDraft] = useState(selectedProp || "");
+	const [description, setDescription] = useState(selectedProp || "");
 
 	// Sync internal state with prop whenever the prop changes
 	useEffect(() => {
 		setSelectedType(selectedProp);
+		setDraft(selectedProp);
 	}, [selectedProp]);
 
 	// notify parent whenever the state changes
@@ -29,6 +32,24 @@ function Location({
 			onSelectedChange(selectedType);
 		}
 	}, [selectedType, onSelectedChange]);
+
+
+	const openModal = () => {
+		if (!editToggle) return; // don't open in view-only mode
+		setDraft(description);
+		setModalVisible(true);
+	};
+
+	const save = () => {
+		setDescription(draft);
+		setModalVisible(false);
+		onSelectedChange?.(draft); // notify parent
+	};
+
+	const cancel = () => {
+		setModalVisible(false);
+		setDraft(description);
+	};
 
 	return (
 		<View>
@@ -40,7 +61,7 @@ function Location({
 				{editToggle ? (
 					<Pressable
 						style={styles.dropdown_container}
-						onPress={() => setIsPickerVisible(!isPickerVisible)}
+						onPress={() => setModalVisible(true)}
 					>
 						<Text style={styles.dropdown}>{selectedType}</Text>
 						<View style={styles.icon_container}>
@@ -54,19 +75,36 @@ function Location({
 				)}
 			</View>
 
-			{/* conditionally render the picker */}
-			{editToggle && isPickerVisible && (
-				<View style={styles.picker_container}>
-					<Picker
-						selectedValue={selectedType}
-						onValueChange={(e) => setSelectedType(e)}
-						itemStyle={styles.picker}
-					>
-						<Picker.Item label="Test" value="" />
-						<Picker.Item label="No" value="No" />
-					</Picker>
+			{/* Modal */}
+			<Modal visible={modalVisible} animationType="slide" transparent>
+				<View style={styles.modal_backdrop}>
+					<View style={styles.modal_card}>
+						<Text style={styles.modal_title}>Description</Text>
+
+						<TextInput
+							value={draft}
+							onChangeText={setDraft}
+							style={styles.modal_input}
+							multiline
+							maxLength={150}
+							textAlignVertical="top"
+						/>
+
+						<Text style={styles.counter}>{draft.length}/150</Text>
+
+						<View style={styles.modal_actions}>
+							<Pressable onPress={cancel} style={styles.btn_secondary}>
+								<Text>Cancel</Text>
+							</Pressable>
+
+							<Pressable onPress={save} style={styles.btn_primary}>
+								<Text style={{ color: "white" }}>Save</Text>
+							</Pressable>
+						</View>
+					</View>
 				</View>
-			)}
+			</Modal>
+
 		</View>
 	);
 }
