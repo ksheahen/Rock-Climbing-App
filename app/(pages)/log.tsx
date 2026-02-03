@@ -25,7 +25,7 @@ function LogAscent() {
   const [selectedGrade, setSelectedGrade] = useState("4a/V0");
   const [selectedRating, setSelectedRating] = useState(0);
   const [selectedDateTime, setSelectedDateTime] = useState(
-    new Date().toISOString()
+    new Date().toISOString(),
   );
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedMedia, setSelectedMedia] = useState("");
@@ -71,7 +71,7 @@ function LogAscent() {
         climb.datetime,
         climb.description,
         climb.media,
-      ]
+      ],
     );
 
     console.log("Climb saved to database");
