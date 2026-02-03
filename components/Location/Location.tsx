@@ -15,7 +15,7 @@ function Location({
 	onSelectedChange,
 	editToggle,
 }: LocationComponentProps) {
-	const [selectedType, setSelectedType] = useState(selectedProp || "Yes");
+	const [selectedType, setSelectedType] = useState(selectedProp || "");
 	const [isPickerVisible, setIsPickerVisible] = useState(false);
 
 	// Sync internal state with prop whenever the prop changes
@@ -62,7 +62,7 @@ function Location({
 						onValueChange={(e) => setSelectedType(e)}
 						itemStyle={styles.picker}
 					>
-						<Picker.Item label="Yes" value="Yes" />
+						<Picker.Item label="Test" value="" />
 						<Picker.Item label="No" value="No" />
 					</Picker>
 				</View>
