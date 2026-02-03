@@ -2,6 +2,8 @@ import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
 import { Pressable, Text, View, Modal, TextInput } from "react-native";
 import Icon from "react-native-remix-icon";
+import MapView, { Marker } from "react-native-maps";
+import * as ExpoLocation from "expo-location";
 import styles from "./Location.styles.ts";
 
 interface LocationComponentProps {
@@ -10,15 +12,12 @@ interface LocationComponentProps {
 	editToggle: boolean;
 }
 
-function Location({
-	selectedProp,
-	onSelectedChange,
-	editToggle,
-}: LocationComponentProps) {
+function Location({ selectedProp, onSelectedChange, editToggle }: LocationComponentProps) {
 	const [selectedType, setSelectedType] = useState(selectedProp || "");
 	const [modalVisible, setModalVisible] = useState(false);
 	const [draft, setDraft] = useState(selectedProp || "");
 	const [description, setDescription] = useState(selectedProp || "");
+	const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
 	// Sync internal state with prop whenever the prop changes
 	useEffect(() => {
@@ -33,6 +32,23 @@ function Location({
 		}
 	}, [selectedType, onSelectedChange]);
 
+	// fetch location when modal opens
+	useEffect(() => {
+		if (modalVisible) {
+			(async () => {
+				const { status } = await ExpoLocation.requestForegroundPermissionsAsync();
+				if (status !== "granted") return;
+
+				const loc = await ExpoLocation.getCurrentPositionAsync({
+					accuracy: ExpoLocation.Accuracy.Highest,
+				});
+				setUserLocation({
+					latitude: loc.coords.latitude,
+					longitude: loc.coords.longitude,
+				});
+			})();
+		}
+	}, [modalVisible]);
 
 	const openModal = () => {
 		if (!editToggle) return; // don't open in view-only mode
@@ -56,16 +72,11 @@ function Location({
 			<View style={styles.container}>
 				<Text style={styles.title}>Location</Text>
 
-				{/* when editToggle = true, show everthing */}
-				{/* when editToggle = false, show only view mode*/}
 				{editToggle ? (
-					<Pressable
-						style={styles.dropdown_container}
-						onPress={() => setModalVisible(true)}
-					>
+					<Pressable style={styles.dropdown_container} onPress={openModal}>
 						<Text style={styles.dropdown}>{selectedType}</Text>
 						<View style={styles.icon_container}>
-							<Icon name="arrow-drop-down-line" size="24"></Icon>
+							<Icon name="arrow-drop-down-line" size={24} />
 						</View>
 					</Pressable>
 				) : (
@@ -92,6 +103,21 @@ function Location({
 
 						<Text style={styles.counter}>{draft.length}/150</Text>
 
+						{/* Map */}
+						{userLocation && (
+							<MapView
+								style={{ width: "100%", height: 200, marginVertical: 10 }}
+								initialRegion={{
+									latitude: userLocation.latitude,
+									longitude: userLocation.longitude,
+									latitudeDelta: 0.01,
+									longitudeDelta: 0.01,
+								}}
+							>
+								<Marker coordinate={userLocation} title="You are here" />
+							</MapView>
+						)}
+
 						<View style={styles.modal_actions}>
 							<Pressable onPress={cancel} style={styles.btn_secondary}>
 								<Text>Cancel</Text>
@@ -104,7 +130,6 @@ function Location({
 					</View>
 				</View>
 			</Modal>
-
 		</View>
 	);
 }
