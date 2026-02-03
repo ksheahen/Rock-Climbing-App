@@ -1,8 +1,9 @@
+
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
 import { Pressable, Text, View, Modal, TextInput } from "react-native";
 import Icon from "react-native-remix-icon";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, MapPressEvent } from "react-native-maps";
 import * as ExpoLocation from "expo-location";
 import styles from "./Location.styles.ts";
 
@@ -18,6 +19,7 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 	const [draft, setDraft] = useState(selectedProp || "");
 	const [description, setDescription] = useState(selectedProp || "");
 	const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+	const [selectedCoords, setSelectedCoords] = useState<{ latitude: number; longitude: number } | null>(null);
 
 	// Sync internal state with prop whenever the prop changes
 	useEffect(() => {
@@ -53,11 +55,13 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 	const openModal = () => {
 		if (!editToggle) return; // don't open in view-only mode
 		setDraft(description);
+		setSelectedCoords(null); // reset any previous selection
 		setModalVisible(true);
 	};
 
 	const save = () => {
 		setDescription(draft);
+		setSelectedType(draft);
 		setModalVisible(false);
 		onSelectedChange?.(draft); // notify parent
 	};
@@ -65,6 +69,25 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 	const cancel = () => {
 		setModalVisible(false);
 		setDraft(description);
+		setSelectedCoords(null);
+	};
+
+	// User taps on map to select a location
+	const handleMapPress = async (event: MapPressEvent) => {
+		const { coordinate } = event.nativeEvent;
+		setSelectedCoords(coordinate);
+
+		// Reverse geocode to get nearest street/place
+		const [place] = await ExpoLocation.reverseGeocodeAsync({
+			latitude: coordinate.latitude,
+			longitude: coordinate.longitude,
+		});
+
+		if (place) {
+			const locationName =
+				place.name || place.street || place.city || place.region || "Unknown location";
+			setDraft(locationName);
+		}
 	};
 
 	return (
@@ -105,6 +128,7 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 
 						{/* Map */}
 						{userLocation && (
+
 							<MapView
 								style={{ width: "100%", height: 200, marginVertical: 10 }}
 								initialRegion={{
@@ -113,8 +137,13 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 									latitudeDelta: 0.01,
 									longitudeDelta: 0.01,
 								}}
+								onPress={handleMapPress}
 							>
-								<Marker coordinate={userLocation} title="You are here" />
+								{/* Marker at user location */}
+								<Marker coordinate={userLocation} title="You are here" pinColor="blue" />
+
+								{/* Marker at selected location (generic title) */}
+								{selectedCoords && <Marker coordinate={selectedCoords} />}
 							</MapView>
 						)}
 
