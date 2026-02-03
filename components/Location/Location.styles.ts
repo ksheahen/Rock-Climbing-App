@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
 		backgroundColor: global.colors.background_2,
 		borderRadius: global.border.border_radius,
 		padding: global.padding.small,
+		paddingHorizontal: 10,
 	},
 	dropdown: { fontSize: global.font_size.phone_medium },
 	icon_container: {},
