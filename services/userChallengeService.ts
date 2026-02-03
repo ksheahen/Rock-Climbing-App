@@ -1,7 +1,7 @@
 import {
-  UserChallenge,
-  UserChallengeInsert,
-  UserChallengeUpdate,
+    UserChallenge,
+    UserChallengeInsert,
+    UserChallengeUpdate,
 } from "../types/UserChallenge.ts";
 import { table } from "./supabaseHelper.ts";
 

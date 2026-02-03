@@ -1,8 +1,8 @@
 import {
-  SprayWallProblem,
-  SprayWallProblemInsert,
-  SprayWallProblemUpdate,
-} from "../types/SprayWallProblem";
+    SprayWallProblem,
+    SprayWallProblemInsert,
+    SprayWallProblemUpdate,
+} from "../types/SprayWallProblem.ts";
 import { table } from "./supabaseHelper.ts";
 
 // Fetch a single problem by UUID

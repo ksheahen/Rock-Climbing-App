@@ -1,8 +1,8 @@
 import {
-  UserAchievement,
-  UserAchievementInsert,
-  UserAchievementUpdate,
-} from "../types/UserAchievement";
+    UserAchievement,
+    UserAchievementInsert,
+    UserAchievementUpdate,
+} from "../types/UserAchievement.ts";
 import { table } from "./supabaseHelper.ts";
 
 // Create a user achievement

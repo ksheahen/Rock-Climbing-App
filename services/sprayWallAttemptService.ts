@@ -1,7 +1,7 @@
 import {
-  SprayWallAttempt,
-  SprayWallAttemptInsert,
-  SprayWallAttemptUpdate,
+    SprayWallAttempt,
+    SprayWallAttemptInsert,
+    SprayWallAttemptUpdate,
 } from "../types/SprayWallAttempt.ts";
 import { table } from "./supabaseHelper.ts";
 

@@ -1,5 +1,9 @@
 import { StyleSheet } from "react-native";
-import { BORDERRADIUS, COLORS, FONT_SIZES, PADDING } from "../../theme";
+<<<<<<<< HEAD:components/Header/Header.styles.ts
+import { BORDERRADIUS, COLORS, PADDING } from "../../theme";
+========
+import { BORDERRADIUS, COLORS, PADDING,FONT_SIZES} from "./global-styles";
+>>>>>>>> main:app/styles/log-page-header.ts
 
 export const styles = StyleSheet.create({
   container: {
