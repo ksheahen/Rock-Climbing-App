@@ -1,4 +1,3 @@
-
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
 import { Pressable, Text, View, Modal, TextInput } from "react-native";
@@ -21,7 +20,7 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 	const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 	const [selectedCoords, setSelectedCoords] = useState<{ latitude: number; longitude: number } | null>(null);
 
-	// Sync internal state with prop whenever the prop changes
+	// sync internal state with prop whenever the prop changes
 	useEffect(() => {
 		setSelectedType(selectedProp);
 		setDraft(selectedProp);
@@ -72,12 +71,12 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 		setSelectedCoords(null);
 	};
 
-	// User taps on map to select a location
+	// user taps on map to select a location
 	const handleMapPress = async (event: MapPressEvent) => {
 		const { coordinate } = event.nativeEvent;
 		setSelectedCoords(coordinate);
 
-		// Reverse geocode to get nearest street/place
+		// reverse geocode to get nearest street/place
 		const [place] = await ExpoLocation.reverseGeocodeAsync({
 			latitude: coordinate.latitude,
 			longitude: coordinate.longitude,
@@ -97,14 +96,15 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 
 				{editToggle ? (
 					<Pressable style={styles.dropdown_container} onPress={openModal}>
-						<Text style={styles.dropdown}>{selectedType}</Text>
-						<View style={styles.icon_container}>
-							<Icon name="arrow-drop-down-line" size={24} />
-						</View>
+						<Text style={styles.dropdown}>
+							{selectedType ? selectedType : "Set Location"}
+						</Text>
 					</Pressable>
 				) : (
 					<View style={styles.dropdown_container}>
-						<Text style={styles.dropdown}>{selectedType}</Text>
+						<Text style={styles.dropdown}>
+							{selectedType ? selectedType : "Set Location"}
+						</Text>
 					</View>
 				)}
 			</View>
@@ -113,24 +113,20 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 			<Modal visible={modalVisible} animationType="slide" transparent>
 				<View style={styles.modal_backdrop}>
 					<View style={styles.modal_card}>
-						<Text style={styles.modal_title}>Description</Text>
-
 						<TextInput
 							value={draft}
 							onChangeText={setDraft}
-							style={styles.modal_input}
+							style={styles.modal_title}
 							multiline
 							maxLength={150}
 							textAlignVertical="top"
-						/>
-
-						<Text style={styles.counter}>{draft.length}/150</Text>
+							placeholder="Set Location"
+							placeholderTextColor="#000000" />
 
 						{/* Map */}
 						{userLocation && (
-
 							<MapView
-								style={{ width: "100%", height: 200, marginVertical: 10 }}
+								style={{ width: "100%", height: 350 }}
 								initialRegion={{
 									latitude: userLocation.latitude,
 									longitude: userLocation.longitude,
@@ -140,10 +136,10 @@ function Location({ selectedProp, onSelectedChange, editToggle }: LocationCompon
 								onPress={handleMapPress}
 							>
 								{/* Marker at user location */}
-								<Marker coordinate={userLocation} title="You are here" pinColor="blue" />
+								<Marker coordinate={userLocation} title="Current Location" pinColor="white" />
 
 								{/* Marker at selected location (generic title) */}
-								{selectedCoords && <Marker coordinate={selectedCoords} />}
+								{selectedCoords && <Marker coordinate={selectedCoords} pinColor="black" />}
 							</MapView>
 						)}
 

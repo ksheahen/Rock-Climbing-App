@@ -45,15 +45,7 @@ const styles = StyleSheet.create({
 	},
 	modal_title: {
 		fontSize: global.font_size.phone_large,
-		marginBottom: 12,
-	},
-	modal_input: {
-		fontSize: global.font_size.phone_medium,
-		minHeight: 100,
-		borderWidth: 1,
-		borderColor: "#E5E5EA",
-		borderRadius: 12,
-		padding: 10,
+		marginBottom: 20,
 	},
 	counter: {
 		alignSelf: "flex-end",
@@ -63,7 +55,7 @@ const styles = StyleSheet.create({
 	modal_actions: {
 		flexDirection: "row",
 		justifyContent: "flex-end",
-		marginTop: 15,
+		marginTop: 20,
 	},
 	btn_secondary: {
 		padding: 10,
