@@ -62,13 +62,12 @@ export function ProfileInfo() {
       <View style={styles.headerRow}>
         <View style={styles.avatarPlaceholder} />
         <View style={{ flexDirection: "row", gap: 10 }}>
-          {/* Temporary way to reset login/signout page to appear on sync */}
-          {/* <Pressable
+          <Pressable
             style={styles.editButton}
             onPress={() => supabase.auth.signOut()}
           >
             <Text style={styles.editButtonText}>Sign Out</Text>
-          </Pressable> */}
+          </Pressable>
           <Pressable
             style={styles.editButton}
             onPress={() => router.navigate("/edit-profile")}

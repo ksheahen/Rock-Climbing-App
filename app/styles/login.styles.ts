@@ -37,6 +37,16 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     marginTop: 10,
   },
+  // TODO: Adjust Padding/Spacing to accomdate addition of back button
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 20,
+    backgroundColor: global.colors.background_1,
+  },
 });
 
 export default styles;
