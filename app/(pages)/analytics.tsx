@@ -22,7 +22,7 @@ const Analytics = () => {
     const loadClimbs = async () => {
       try {
         const rows = await db.getAllAsync(
-          `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`,
+          `SELECT * FROM log_climb4 ORDER BY id DESC LIMIT 50`,
           [],
         );
         if (!mounted) return;
@@ -45,7 +45,7 @@ const Analytics = () => {
       const loadClimbsOnFocus = async () => {
         try {
           const rows = await db.getAllAsync(
-            `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`,
+            `SELECT * FROM log_climb4 ORDER BY id DESC LIMIT 50`,
             [],
           );
           if (!mounted) return;

@@ -13,7 +13,7 @@ function RootLayout() {
       databaseName="climb.db"
       onInit={async (db) => {
         await db.execAsync(`
-        CREATE TABLE IF NOT EXISTS log_climb3 (
+        CREATE TABLE IF NOT EXISTS log_climb4 (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         category TEXT NOT NULL,
         type TEXT NOT NULL,
@@ -23,7 +23,8 @@ function RootLayout() {
         rating INTEGER,
         datetime TEXT, 
         description TEXT,
-        media TEXT
+        media TEXT,
+	location TEXT
         );
         PRAGMA journal_mode=WAL;
         `); // Write Ahead Logging, allows concurrency
