@@ -35,9 +35,9 @@ const Index = () => {
       setLoading(true);
       setError(null);
 
-      // Query all climbs from log_climb3 table, ordered by id descending (most recent first)
+      // Query all climbs from log_climb3 table, ordered by datetime descending (most recent first)
       const result = await db.getAllAsync<LocalClimb>(
-        `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`,
+        `SELECT * FROM log_climb3 ORDER BY datetime DESC, id DESC LIMIT 50`,
       );
 
       setClimbs(result);
