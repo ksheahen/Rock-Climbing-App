@@ -5,6 +5,7 @@ import DateTime from "@/components/DateTime/DateTime";
 import Description from "@/components/Description/Description";
 import Difficulty from "@/components/Difficulty/Difficulty";
 import Header from "@/components/Header/Header";
+import Location from "@/components/Location/Location";
 import Line from "@/components/Line/Line";
 import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
@@ -29,6 +30,7 @@ function LogAscent() {
   );
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedMedia, setSelectedMedia] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
   const editToggle = true;
   const router = useRouter();
 
@@ -42,6 +44,7 @@ function LogAscent() {
   console.log("Local Storage 'datetime'  -", selectedDateTime);
   console.log("Local Storage 'desc'      -", selectedDescription);
   console.log("Local Storage 'media'     -", selectedMedia);
+  console.log("Local Storage 'location'  -", selectedLocation);
   console.log("----------------------------");
 
   // SEND -------------
@@ -56,11 +59,12 @@ function LogAscent() {
       datetime: selectedDateTime,
       description: selectedDescription,
       media: selectedMedia,
+      location: selectedLocation,
     };
 
-    // Insert into existing log_climb3 table
+    // Insert into existing log_climb4 table
     await db.runAsync(
-      `INSERT INTO log_climb3 (category, type, complete, attempt, grade, rating, datetime, description, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO log_climb4 (category, type, complete, attempt, grade, rating, datetime, description, media, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         climb.category,
         climb.type,
@@ -71,6 +75,7 @@ function LogAscent() {
         climb.datetime,
         climb.description,
         climb.media,
+        climb.location,
       ],
     );
 
@@ -84,7 +89,19 @@ function LogAscent() {
       <Header
         leftText="Cancel"
         rightText="Save"
-        onLeftPress={() => console.log("Cancel pressed")}
+        onLeftPress={() => {
+          setSelectedCategory("Indoor");
+          setSelectedType("Boulder");
+          setSelectedComplete("Yes");
+          setSelectedAttempt("1");
+          setSelectedGrade("4a/V0");
+          setSelectedRating(0);
+          setSelectedDateTime(new Date().toISOString());
+          setSelectedDescription("");
+          setSelectedMedia("");
+          setSelectedLocation("");
+          router.push("/");
+        }}
         onRightPress={handleSubmit}
       />
 
@@ -137,6 +154,12 @@ function LogAscent() {
         <DateTime
           selectedProp={selectedDateTime}
           onSelectedChange={setSelectedDateTime}
+          editToggle={editToggle}
+        />
+        <Line />
+        <Location
+          selectedProp={selectedLocation}
+          onSelectedChange={setSelectedLocation}
           editToggle={editToggle}
         />
         <Line />

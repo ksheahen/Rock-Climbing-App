@@ -35,6 +35,7 @@ describe("Log Ascent Tests", () => {
         datetime: "",
         description: "",
         media: "",
+        location: "",
       },
     ]);
 
@@ -57,8 +58,8 @@ describe("Log Ascent Tests", () => {
 
     await waitFor(() => {
       expect(mockDbRunAsync).toHaveBeenCalledWith(
-        `INSERT INTO log_climb3 (category, type, complete, attempt, grade, rating, datetime, description, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        ["Indoor", "Boulder", "Yes", "1", "4a/V0", 0, "", "", ""],
+        `INSERT INTO log_climb4 (category, type, complete, attempt, grade, rating, datetime, description, media, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ["Indoor", "Boulder", "Yes", "1", "4a/V0", 0, "", "", "", ""],
       );
     });
   });
@@ -66,14 +67,14 @@ describe("Log Ascent Tests", () => {
   it("simulates an UPDATE call for edit", () => {
     // simulate component behavior that triggers the UPDATE
     mockDbRunAsync(
-      `UPDATE log_climb3 
-        SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?
+      `UPDATE log_climb4 
+        SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?, location = ?
         WHERE id = ?`,
-      ["Outdoor", "Boulder", "Yes", "1", "4a/V0", 0, "", "", "", "1"],
+      ["Outdoor", "Boulder", "Yes", "1", "4a/V0", 0, "", "", "", "1", ""],
     );
 
     expect(mockDbRunAsync).toHaveBeenCalledWith(
-      expect.stringContaining("UPDATE log_climb3"),
+      expect.stringContaining("UPDATE log_climb4"),
       expect.arrayContaining(["Outdoor", "1"]),
     );
   });
