@@ -35,9 +35,9 @@ const Index = () => {
       setLoading(true);
       setError(null);
 
-      // Query all climbs from log_climb3 table, ordered by id descending (most recent first)
+      // Query all climbs from log_climb3 table, ordered by datetime descending (most recent first)
       const result = await db.getAllAsync<LocalClimb>(
-        `SELECT * FROM log_climb3 ORDER BY id DESC LIMIT 50`,
+        `SELECT * FROM log_climb3 ORDER BY datetime DESC, id DESC LIMIT 50`
       );
 
       setClimbs(result);
@@ -54,7 +54,7 @@ const Index = () => {
   useFocusEffect(
     useCallback(() => {
       fetchClimbs();
-    }, [fetchClimbs]),
+    }, [fetchClimbs])
   );
 
   // Convert climbs to SessionData format for UI
@@ -146,7 +146,7 @@ const Index = () => {
     // Filter by grade
     if (filters.grades.length > 0) {
       filtered = filtered.filter((session) =>
-        filters.grades.includes(session.grade),
+        filters.grades.includes(session.grade)
       );
     }
 
@@ -154,15 +154,15 @@ const Index = () => {
     if (filters.tries.length > 0) {
       filtered = filtered.filter((session) =>
         filters.tries.some((filterTries) =>
-          matchesTries(session.tries, filterTries),
-        ),
+          matchesTries(session.tries, filterTries)
+        )
       );
     }
 
     // Filter by stars
     if (filters.stars.length > 0) {
       filtered = filtered.filter((session) =>
-        filters.stars.includes(session.stars),
+        filters.stars.includes(session.stars)
       );
     }
 

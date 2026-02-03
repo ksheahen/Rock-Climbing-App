@@ -9,10 +9,10 @@ import Line from "@/components/Line/Line";
 import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import Type from "@/components/Type/Type";
+import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { useRouter } from "expo-router";
 import styles from "../styles/log.styles";
 
 function LogAscent() {
@@ -24,7 +24,9 @@ function LogAscent() {
   const [selectedAttempt, setSelectedAttempt] = useState("1");
   const [selectedGrade, setSelectedGrade] = useState("4a/V0");
   const [selectedRating, setSelectedRating] = useState(0);
-  const [selectedDateTime, setSelectedDateTime] = useState("");
+  const [selectedDateTime, setSelectedDateTime] = useState(
+    new Date().toISOString()
+  );
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedMedia, setSelectedMedia] = useState("");
   const editToggle = true;
@@ -69,7 +71,7 @@ function LogAscent() {
         climb.datetime,
         climb.description,
         climb.media,
-      ],
+      ]
     );
 
     console.log("Climb saved to database");
