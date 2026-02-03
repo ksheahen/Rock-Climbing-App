@@ -89,7 +89,19 @@ function LogAscent() {
 			<Header
 				leftText="Cancel"
 				rightText="Save"
-				onLeftPress={() => console.log("Cancel pressed")}
+				onLeftPress={() => {
+					setSelectedCategory("Indoor");
+					setSelectedType("Boulder");
+					setSelectedComplete("Yes");
+					setSelectedAttempt("1");
+					setSelectedGrade("4a/V0");
+					setSelectedRating(0);
+					setSelectedDateTime(new Date().toISOString());
+					setSelectedDescription("");
+					setSelectedMedia("");
+					setSelectedLocation("");
+					router.push("/");
+				}}
 				onRightPress={handleSubmit}
 			/>
 
