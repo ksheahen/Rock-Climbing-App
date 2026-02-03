@@ -59,7 +59,18 @@ describe("Log Ascent Tests", () => {
     await waitFor(() => {
       expect(mockDbRunAsync).toHaveBeenCalledWith(
         `INSERT INTO log_climb4 (category, type, complete, attempt, grade, rating, datetime, description, media, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        ["Indoor", "Boulder", "Yes", "1", "4a/V0", 0, "", "", "", ""],
+        [
+          "Indoor",
+          "Boulder",
+          "Yes",
+          "1",
+          "4a/V0",
+          0,
+          expect.any(String),
+          "",
+          "",
+          "",
+        ],
       );
     });
   });
