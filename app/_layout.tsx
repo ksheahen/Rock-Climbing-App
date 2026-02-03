@@ -24,7 +24,7 @@ function RootLayout() {
         datetime TEXT, 
         description TEXT,
         media TEXT,
-	location TEXT,
+	location TEXT
         );
         PRAGMA journal_mode=WAL;
         `); // Write Ahead Logging, allows concurrency
