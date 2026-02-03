@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: 60,
-    paddingBottom: 20,
     backgroundColor: global.colors.background_1,
   },
 });
