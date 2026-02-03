@@ -52,7 +52,8 @@ export function ProfileInfo() {
         user.email?.split("@")[0] || profile?.email || "username",
       );
     } else if (!user) {
-      setDisplayName("Kathryn");
+      // TODO: Remove Static Data / Fix this in user onboarding
+      setDisplayName("");
       setInstagramHandle("");
     }
   };

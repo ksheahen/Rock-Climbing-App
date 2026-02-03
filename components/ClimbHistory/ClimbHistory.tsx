@@ -20,7 +20,7 @@ function ClimbHistory({
 }: ClimbHistoryProps) {
   const router = useRouter();
   const handleRedirect = (id: number) => {
-    router.push(`/individual-climb-page?id=${id}`);
+    router.push(`/individual-climb-page?id=${id}&from=profile`);
   };
 
   // Helps format date and time for logs
