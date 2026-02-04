@@ -13,7 +13,7 @@ function ClimbHistory() {
 
 	const loadClimbs = async () => {
 		const results = (await db.getAllAsync(
-			`SELECT * FROM log_climb3 ORDER BY id DESC`,
+			`SELECT * FROM log_climb5 ORDER BY id DESC`,
 		)) as ClimbData[];
 		setClimbs(results);
 	};
@@ -30,7 +30,7 @@ function ClimbHistory() {
 
 	const handleDelete = async (id: number) => {
 		try {
-			await db.runAsync(`DELETE FROM log_climb3 WHERE id = ?`, [id]);
+			await db.runAsync(`DELETE FROM log_climb5 WHERE id = ?`, [id]);
 			setClimbs((prev) => prev.filter((c) => c.id !== id));
 		} catch (error) {
 			console.error("Failed to delete climb:", error);

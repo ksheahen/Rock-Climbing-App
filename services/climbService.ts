@@ -138,7 +138,7 @@ export const syncLocalClimbsSQLite = async (
 
 		// Only fetch unsynced climbs
 		const localClimbsRaw = await db.getAllAsync(
-			"SELECT * FROM log_climb3 WHERE synced = 0",
+			"SELECT * FROM log_climb5 WHERE synced = 0",
 		);
 
 		if (localClimbsRaw.length === 0) {
@@ -153,7 +153,7 @@ export const syncLocalClimbsSQLite = async (
 			// Generate UUID if missing
 			if (!row.uuid) {
 				row.uuid = uuid.v4().toString();
-				await db.runAsync("UPDATE log_climb3 SET uuid = ? WHERE id = ?", [
+				await db.runAsync("UPDATE log_climb5 SET uuid = ? WHERE id = ?", [
 					row.uuid,
 					row.id,
 				]);
@@ -162,7 +162,7 @@ export const syncLocalClimbsSQLite = async (
 			// Handle deletions
 			if (row.deleted === 1) {
 				await table("climb").delete().eq("climb_id", row.uuid);
-				await db.runAsync("DELETE FROM log_climb3 WHERE uuid = ?", [row.uuid]);
+				await db.runAsync("DELETE FROM log_climb5 WHERE uuid = ?", [row.uuid]);
 				continue;
 			}
 
@@ -183,7 +183,7 @@ export const syncLocalClimbsSQLite = async (
 			});
 
 			if (!error) {
-				await db.runAsync("UPDATE log_climb3 SET synced = 1 WHERE uuid = ?", [
+				await db.runAsync("UPDATE log_climb5 SET synced = 1 WHERE uuid = ?", [
 					row.uuid,
 				]);
 			} else {
