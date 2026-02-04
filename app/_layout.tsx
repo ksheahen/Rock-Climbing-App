@@ -15,61 +15,49 @@ function RootLayout() {
         databaseName="climb.db"
         onInit={async (db) => {
           await db.execAsync(`
-        CREATE TABLE IF NOT EXISTS log_climb5 (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        uuid TEXT UNIQUE,
-        category TEXT NOT NULL,
-        type TEXT NOT NULL,
-        complete TEXT NOT NULL,
-        attempt TEXT NOT NULL, 
-        grade TEXT,
-        rating INTEGER,
-        datetime TEXT, 
-        description TEXT,
-        media TEXT,
-	location TEXT,
-        deleted INTEGER DEFAULT 0,
-        synced INTEGER DEFAULT 0 
-        );
-        PRAGMA journal_mode=WAL;
-        `);
+            CREATE TABLE IF NOT EXISTS log_climb5 (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, 
+              uuid TEXT UNIQUE,
+              category TEXT NOT NULL,
+              type TEXT NOT NULL,
+              complete TEXT NOT NULL,
+              attempt TEXT NOT NULL, 
+              grade TEXT,
+              rating INTEGER,
+              datetime TEXT, 
+              description TEXT,
+              media TEXT,
+              location TEXT,
+              deleted INTEGER DEFAULT 0,
+              synced INTEGER DEFAULT 0 
+            );
+            PRAGMA journal_mode=WAL;
+          `);
+          
           // Check existing columns
           const columns = await db.getAllAsync(
-            ,
-          
-          	"PRAGMA table_info(log_climb5);",
-					);
+            "PRAGMA table_info(log_climb5);"
+          );
           const existingCols = columns.map((c: any) => c.name);
           
-            / Add uuid column if missing (no UNIQUE here)
+          // Add uuid column if missing (no UNIQUE here)
           if (!existingCols.includes("uuid")) {
-						await db.execAsync(`ALTER TABLE log_climb5 ADD COLUMN uuid TEXT;`);
+            await db.execAsync(`ALTER TABLE log_climb5 ADD COLUMN uuid TEXT;`);
           }
           
-            / Add deleted colum
-              n if missing,
-            
+          // Add deleted column if missing
           if (!existingCols.includes("deleted")) {
-						await db.execAsync(
-          		`ALTER TABLE log_climb5 ADD COLUMN deleted INTEGER DEFAULT 0;`,
-          	);
-            
-              ,
-            
-          
-        	/						await db.execAsync(
-      							);
-        	}
+            await db.execAsync(
+              `ALTER TABLE log_climb5 ADD COLUMN deleted INTEGER DEFAULT 0;`
+            );
+          }
         }}
-        
-          /* this makes apple's status bar black */}
+      >
+        {/* this makes apple's status bar black */}
         <StatusBar barStyle="dark-content" />
-      	<Stack screenOptions={{ headerShown: false }}>
-    			<Stack.Screen name="(ages)" options={{ headerShown: false }} />
-  			</Stack>
-			</SQLiteProvider>
-		</GestureHandlerRootView>
-	);
-}
-
-export default RootLayout;
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(pages)" options={{ headerShown: false }} />
+        </Stack>
+      </SQLiteProvider>
+    </GestureHandlerRootView>
+  );
