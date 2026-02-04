@@ -14,6 +14,7 @@ import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
+import uuid from "react-native-uuid";
 import styles from "../styles/log.styles";
 
 function LogAscent() {
@@ -61,6 +62,8 @@ function LogAscent() {
 			media: selectedMedia,
 			location: selectedLocation,
 		};
+
+		 const newId = uuid.v4().toString();
 
 		// Insert into existing log_climb4 table
 		await db.runAsync(
