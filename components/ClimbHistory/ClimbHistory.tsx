@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import { ScrollView, View } from "react-native";
 import styles from "./ClimbHistory.styles";
 
-export function ClimbHistory() {
+function ClimbHistory() {
 	const db = useSQLiteContext();
 	const router = useRouter();
 
@@ -51,3 +51,4 @@ export function ClimbHistory() {
 		</ScrollView>
 	);
 }
+export default ClimbHistory;
