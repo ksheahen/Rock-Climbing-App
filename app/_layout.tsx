@@ -33,22 +33,22 @@ function RootLayout() {
             );
             PRAGMA journal_mode=WAL;
           `);
-          
+
           // Check existing columns
           const columns = await db.getAllAsync(
-            "PRAGMA table_info(log_climb5);"
+            "PRAGMA table_info(log_climb5);",
           );
           const existingCols = columns.map((c: any) => c.name);
-          
+
           // Add uuid column if missing (no UNIQUE here)
           if (!existingCols.includes("uuid")) {
             await db.execAsync(`ALTER TABLE log_climb5 ADD COLUMN uuid TEXT;`);
           }
-          
+
           // Add deleted column if missing
           if (!existingCols.includes("deleted")) {
             await db.execAsync(
-              `ALTER TABLE log_climb5 ADD COLUMN deleted INTEGER DEFAULT 0;`
+              `ALTER TABLE log_climb5 ADD COLUMN deleted INTEGER DEFAULT 0;`,
             );
           }
         }}
@@ -61,3 +61,6 @@ function RootLayout() {
       </SQLiteProvider>
     </GestureHandlerRootView>
   );
+}
+
+export default RootLayout;
