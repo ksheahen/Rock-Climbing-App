@@ -16,6 +16,96 @@ import {
 import { LocalClimb } from "../../types/LocalClimb";
 import styles from "../styles/index.styles";
 
+// Extract V-grade number from grade string (e.g., "6a/V3" -> 3)
+const getVGradePoints = (grade: string): number => {
+  if (!grade) return 0;
+  const match = grade.match(/V(\d+)/);
+  return match ? parseInt(match[1], 10) : 0;
+};
+
+// Check if a date is within the current week (Sunday to Saturday)
+const isWithinCurrentWeek = (dateString: string): boolean => {
+  if (!dateString) return false;
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return false;
+
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7); // Next Sunday
+
+    return date >= startOfWeek && date < endOfWeek;
+  } catch {
+    return false;
+  }
+};
+
+// Check if two dates are the same day
+const isSameDay = (date1: Date, date2: Date): boolean => {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+};
+
+// Get the start of the current week (Sunday)
+const getStartOfWeek = (): Date => {
+  const now = new Date();
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - now.getDay());
+  startOfWeek.setHours(0, 0, 0, 0);
+  return startOfWeek;
+};
+
+const DAY_LETTERS = ["S", "M", "T", "W", "T", "F", "S"];
+
+// Check if a climb's datetime matches a specific date (using same logic as day selector)
+const climbMatchesDate = (climb: LocalClimb, targetDate: Date): boolean => {
+  if (!climb.datetime) return false;
+  try {
+    const climbDate = new Date(climb.datetime);
+    if (isNaN(climbDate.getTime())) return false;
+    return isSameDay(climbDate, targetDate);
+  } catch {
+    return false;
+  }
+};
+
+// Check if any climb exists on a specific date
+const hasClimbOnDate = (climbs: LocalClimb[], targetDate: Date): boolean => {
+  return climbs.some((climb) => climbMatchesDate(climb, targetDate));
+};
+
+// Calculate climbing streak (consecutive days with climbs)
+const calculateStreak = (climbs: LocalClimb[]): number => {
+  if (climbs.length === 0) return 0;
+
+  // Start from today and count backwards
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let streak = 0;
+  let currentDate = new Date(today);
+
+  // Check if today has a climb, if not start from yesterday
+  if (!hasClimbOnDate(climbs, currentDate)) {
+    currentDate.setDate(currentDate.getDate() - 1);
+  }
+
+  // Count consecutive days with climbs
+  while (hasClimbOnDate(climbs, currentDate)) {
+    streak++;
+    currentDate.setDate(currentDate.getDate() - 1);
+  }
+
+  return streak;
+};
+
 const Index = () => {
   const db = useSQLiteContext();
   const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -37,7 +127,7 @@ const Index = () => {
 
       // Query all climbs from log_climb3 table, ordered by datetime descending (most recent first)
       const result = await db.getAllAsync<LocalClimb>(
-        `SELECT * FROM log_climb3 ORDER BY datetime DESC, id DESC LIMIT 50`,
+        `SELECT * FROM log_climb3 ORDER BY datetime DESC, id DESC LIMIT 50`
       );
 
       setClimbs(result);
@@ -54,8 +144,18 @@ const Index = () => {
   useFocusEffect(
     useCallback(() => {
       fetchClimbs();
-    }, [fetchClimbs]),
+    }, [fetchClimbs])
   );
+
+  // Calculate weekly V Points from climbs
+  const weeklyVPoints = useMemo(() => {
+    return climbs
+      .filter((climb) => isWithinCurrentWeek(climb.datetime))
+      .reduce((total, climb) => total + getVGradePoints(climb.grade), 0);
+  }, [climbs]);
+
+  // Calculate climbing streak
+  const streakCount = useMemo(() => calculateStreak(climbs), [climbs]);
 
   // Convert climbs to SessionData format for UI
   const allSessionsData: SessionData[] = useMemo(() => {
@@ -111,15 +211,44 @@ const Index = () => {
     });
   }, [climbs]);
 
-  const days: DayData[] = [
-    { day: "S", date: "20", status: "red" },
-    { day: "S", date: "21", status: "green" },
-    { day: "M", date: "22", status: "green" },
-    { day: "T", date: "23", status: "selected" },
-    { day: "W", date: "24", status: "default" },
-    { day: "T", date: "25", status: "default" },
-    { day: "F", date: "26", status: "default" },
-  ];
+  // Generate dynamic week days with status based on climbs
+  const days: DayData[] = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const startOfWeek = getStartOfWeek();
+
+    return DAY_LETTERS.map((dayLetter, index) => {
+      // Calculate the date for this day of the week
+      const dayDate = new Date(startOfWeek);
+      dayDate.setDate(startOfWeek.getDate() + index);
+
+      // Check if this day is today
+      const isToday = isSameDay(dayDate, today);
+
+      // Check if this day is in the future
+      const isFuture = dayDate > today;
+
+      // Check if any climbs exist on this day (using shared helper)
+      const hasClimbs = hasClimbOnDate(climbs, dayDate);
+
+      // Determine status
+      let status: DayData["status"];
+      if (isToday) {
+        status = "selected";
+      } else if (isFuture) {
+        status = "default";
+      } else {
+        // Past day: green if has climbs, red if no climbs
+        status = hasClimbs ? "green" : "red";
+      }
+
+      return {
+        day: dayLetter,
+        date: dayDate.getDate().toString(),
+        status,
+      };
+    });
+  }, [climbs]);
 
   // Helper function to match tries filter
   const matchesTries = (tries: string, filterValue: string): boolean => {
@@ -146,7 +275,7 @@ const Index = () => {
     // Filter by grade
     if (filters.grades.length > 0) {
       filtered = filtered.filter((session) =>
-        filters.grades.includes(session.grade),
+        filters.grades.includes(session.grade)
       );
     }
 
@@ -154,15 +283,15 @@ const Index = () => {
     if (filters.tries.length > 0) {
       filtered = filtered.filter((session) =>
         filters.tries.some((filterTries) =>
-          matchesTries(session.tries, filterTries),
-        ),
+          matchesTries(session.tries, filterTries)
+        )
       );
     }
 
     // Filter by stars
     if (filters.stars.length > 0) {
       filtered = filtered.filter((session) =>
-        filters.stars.includes(session.stars),
+        filters.stars.includes(session.stars)
       );
     }
 
@@ -227,8 +356,11 @@ const Index = () => {
   return (
     <>
       <View style={styles.container}>
-        <HomeHeader streakCount={2} onFilterPress={handleFilterPress} />
-        <PointsDisplay points={104} subtitle="This week" />
+        <HomeHeader
+          streakCount={streakCount}
+          onFilterPress={handleFilterPress}
+        />
+        <PointsDisplay points={weeklyVPoints} subtitle="This week" />
         <DaySelector days={days} onDayPress={handleDayPress} />
         {filteredSessions.length === 0 ? (
           <View style={{ padding: 20, alignItems: "center" }}>
