@@ -91,7 +91,7 @@ function IndividualClimbPage() {
 		try {
 			if (paramsid != null) {
 				const result = await db.getAllAsync(
-					`SELECT * FROM log_climb4 WHERE id = ?`,
+					`SELECT * FROM log_climb5 WHERE id = ?`,
 					[paramsid],
 				);
 				if (result.length > 0) {
@@ -155,7 +155,7 @@ function IndividualClimbPage() {
 
 			// update the db
 			const result = await db.runAsync(
-				`UPDATE log_climb4 
+				`UPDATE log_climb5 
          SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?, location = ?
          WHERE id = ?`,
 				[
@@ -207,7 +207,7 @@ function IndividualClimbPage() {
 
 	const deletePress = async () => {
 		try {
-			const result = await db.runAsync(`DELETE FROM log_climb4 WHERE id = ?`, [
+			const result = await db.runAsync(`DELETE FROM log_climb5 WHERE id = ?`, [
 				paramsid,
 			]);
 			console.log(`Deleted log ${paramsid} from db`, result);

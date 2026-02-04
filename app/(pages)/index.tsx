@@ -3,15 +3,15 @@ import { useSQLiteContext } from "expo-sqlite";
 import React, { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 import {
-  AnalyticsPreview,
-  DayData,
-  DaySelector,
-  FilterModal,
-  FilterOptions,
-  HomeHeader,
-  PointsDisplay,
-  RecentSessions,
-  SessionData,
+    AnalyticsPreview,
+    DayData,
+    DaySelector,
+    FilterModal,
+    FilterOptions,
+    HomeHeader,
+    PointsDisplay,
+    RecentSessions,
+    SessionData,
 } from "../../components";
 import { LocalClimb } from "../../types/LocalClimb";
 import styles from "../styles/index.styles";
@@ -50,9 +50,9 @@ const Index = () => {
 			setLoading(true);
 			setError(null);
 
-			// Query all climbs from log_climb4 table, ordered by datetime descending (most recent first)
+			// Query all climbs from log_climb5 table, ordered by datetime descending (most recent first)
 			const result = await db.getAllAsync<LocalClimb>(
-				`SELECT * FROM log_climb4 ORDER BY datetime DESC, id DESC LIMIT 50`,
+				`SELECT * FROM log_climb5 ORDER BY datetime DESC, id DESC LIMIT 50`,
 			);
 
 			setClimbs(result);

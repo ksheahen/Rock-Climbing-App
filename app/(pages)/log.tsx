@@ -63,11 +63,10 @@ function LogAscent() {
 			location: selectedLocation,
 		};
 
-		 const newId = uuid.v4().toString();
-
-		// Insert into existing log_climb4 table
+		const newId = uuid.v4().toString();
+		// Insert into existing log_climb5 table
 		await db.runAsync(
-			`INSERT INTO log_climb4 
+			`INSERT INTO log_climb5 
     (uuid, category, type, complete, attempt, grade, rating, datetime, description, media, location, deleted, synced) 
    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)`,
 			[
