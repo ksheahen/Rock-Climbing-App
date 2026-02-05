@@ -29,13 +29,19 @@ function ClimbHistory() {
 	};
 
 	const handleDelete = async (id: number) => {
-		try {
-			await db.runAsync(`DELETE FROM log_climb5 WHERE id = ?`, [id]);
-			setClimbs((prev) => prev.filter((c) => c.id !== id));
-		} catch (error) {
-			console.error("Failed to delete climb:", error);
-		}
-	};
+	try {
+		await db.runAsync(
+			`UPDATE log_climb5
+       		SET deleted = 1,
+           	synced = 0
+       		WHERE id = ?`,
+			[id],
+		);
+		setClimbs((prev) => prev.filter((c) => c.id !== id));
+	} catch (error) {
+		console.error("Failed to delete climb:", error);
+	}
+};
 
 	return (
 		<ScrollView style={styles.container}>
