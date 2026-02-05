@@ -29,6 +29,7 @@ test("loads existing climb and renders fields", async () => {
       datetime: "2025-11-29",
       description: "Test",
       media: "",
+      location: "",
     },
   ]);
   (useSQLiteContext as jest.Mock).mockReturnValue({
