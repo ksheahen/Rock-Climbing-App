@@ -5,8 +5,8 @@ import DateTime from "@/components/DateTime/DateTime";
 import Description from "@/components/Description/Description";
 import Difficulty from "@/components/Difficulty/Difficulty";
 import Header from "@/components/Header/Header";
-import Location from "@/components/Location/Location";
 import Line from "@/components/Line/Line";
+import Location from "@/components/Location/Location";
 import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import Type from "@/components/Type/Type";
@@ -14,6 +14,7 @@ import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
+import uuid from "react-native-uuid";
 import styles from "../styles/log.styles";
 
 function LogAscent() {
@@ -39,54 +40,60 @@ function LogAscent() {
   const editToggle = true;
   const router = useRouter();
 
-  console.log("----------------------------");
-  console.log("Local Storage 'category'  -", selectedCategory);
-  console.log("Local Storage 'type'      -", selectedType);
-  console.log("Local Storage 'complete'  -", selectedComplete);
-  console.log("Local Storage 'attempt'   -", selectedAttempt);
-  console.log("Local Storage 'grade'     -", selectedGrade);
-  console.log("Local Storage 'rating'    -", selectedRating);
-  console.log("Local Storage 'datetime'  -", selectedDateTime);
-  console.log("Local Storage 'desc'      -", selectedDescription);
-  console.log("Local Storage 'media'     -", selectedMedia);
-  console.log("Local Storage 'location'  -", selectedLocation);
-  console.log("----------------------------");
+	console.log("----------------------------");
+	console.log("Local Storage 'category'  -", selectedCategory);
+	console.log("Local Storage 'type'      -", selectedType);
+	console.log("Local Storage 'complete'  -", selectedComplete);
+	console.log("Local Storage 'attempt'   -", selectedAttempt);
+	console.log("Local Storage 'grade'     -", selectedGrade);
+	console.log("Local Storage 'rating'    -", selectedRating);
+	console.log("Local Storage 'datetime'  -", selectedDateTime);
+	console.log("Local Storage 'desc'      -", selectedDescription);
+	console.log("Local Storage 'media'     -", selectedMedia);
+	console.log("Local Storage 'location'  -", selectedLocation);
+	console.log("----------------------------");
 
-  // SEND -------------
-  const handleSubmit = async () => {
-    const climb = {
-      category: selectedCategory,
-      type: selectedType,
-      complete: selectedComplete,
-      attempt: selectedAttempt,
-      grade: selectedGrade,
-      rating: selectedRating,
-      datetime: selectedDateTime,
-      description: selectedDescription,
-      media: selectedMedia,
-      location: selectedLocation,
-    };
+	// SEND -------------
+	const handleSubmit = async () => {
+		const climb = {
+			category: selectedCategory,
+			type: selectedType,
+			complete: selectedComplete,
+			attempt: selectedAttempt,
+			grade: selectedGrade,
+			rating: selectedRating,
+			datetime: selectedDateTime,
+			description: selectedDescription,
+			media: selectedMedia,
+			location: selectedLocation,
+		};
 
-    // Insert into existing log_climb4 table
-    await db.runAsync(
-      `INSERT INTO log_climb4 (category, type, complete, attempt, grade, rating, datetime, description, media, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        climb.category,
-        climb.type,
-        climb.complete,
-        climb.attempt,
-        climb.grade,
-        climb.rating,
-        climb.datetime,
-        climb.description,
-        climb.media,
-        climb.location,
-      ],
-    );
+		const newId = uuid.v4().toString();
+		// Insert into existing log_climb5 table
+		await db.runAsync(
+			`INSERT INTO log_climb5 
+    (uuid, category, type, complete, attempt, grade, rating, datetime, description, media, location, deleted, synced) 
+   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)`,
+			[
+				newId,
+				climb.category,
+				climb.type,
+				climb.complete,
+				climb.attempt,
+				climb.grade,
+				climb.rating,
+				climb.datetime,
+				climb.description,
+				climb.media,
+				climb.location,
+				0,
+				0,
+			],
+		);
 
-    console.log("Climb saved to database");
-    router.push("/profile");
-  };
+		console.log("Climb saved to database");
+		router.push("/profile");
+	};
 
   return (
     <View style={styles.container}>
@@ -110,15 +117,15 @@ function LogAscent() {
         onRightPress={handleSubmit}
       />
 
-      {/* Scrollable Inputs */}
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Log Ascent</Text>
-        </View>
+			{/* Scrollable Inputs */}
+			<ScrollView
+				style={styles.scroll}
+				contentContainerStyle={styles.scrollContent}
+				showsVerticalScrollIndicator={false}
+			>
+				<View style={styles.titleContainer}>
+					<Text style={styles.title}>Log Ascent</Text>
+				</View>
 
         <Category
           selectedProp={selectedCategory}
