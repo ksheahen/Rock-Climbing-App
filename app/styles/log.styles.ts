@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
     backgroundColor: global.colors.background_1,
     display: "flex",
     gap: global.gap.medium,
+    // borderColor: "red",
+    // borderStyle: "solid",
+    // borderWidth: 10,
   },
   titleContainer: {
     alignItems: "center",

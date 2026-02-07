@@ -3,14 +3,15 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: global.margin.page_top,
+    marginTop: 60,
+    marginBottom: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: global.colors.background_1,
   },
   button: {
-    backgroundColor: global.colors.background_3,
+    backgroundColor: global.colors.background_2,
     borderRadius: global.border.border_radius,
     paddingHorizontal: 12,
     paddingVertical: 5,

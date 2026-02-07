@@ -15,8 +15,8 @@ export const styles = StyleSheet.create({
     width: "65%",
     minHeight: 60,
     borderWidth: 2,
-    borderColor: "#E5E5EA",
-    borderRadius: 16,
+    borderColor: global.colors.background_2,
+    borderRadius: global.border.border_radius,
     paddingHorizontal: global.padding.medium,
     paddingVertical: global.padding.small,
     justifyContent: "center",
@@ -43,11 +43,11 @@ export const styles = StyleSheet.create({
   },
   modal_title: {
     fontSize: global.font_size.phone_large,
-    marginBottom: 12,
+    marginBottom: 20,
   },
   modal_input: {
     fontSize: global.font_size.phone_medium,
-    minHeight: 100,
+    minHeight: 330,
     borderWidth: 1,
     borderColor: "#E5E5EA",
     borderRadius: 12,
@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
   modal_actions: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginTop: 15,
+    marginTop: 20,
   },
   btn_secondary: {
     padding: 10,
