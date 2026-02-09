@@ -1,6 +1,6 @@
 # Rock Climbing App | Team Git Rich
 
-Class: CSCE 4901.001
+Class: CSCE 4901 and 4902 Section 001
 
 Team members:
 
