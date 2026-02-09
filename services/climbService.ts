@@ -19,7 +19,6 @@ export type ClimbInsertExtended = ClimbInsert & {
   rating: number | null;
   description: string | null;
   datetime: string | null;
- 
 };
 
 const LOCAL_CLIMBS_KEY = "@local_climbs";
@@ -31,7 +30,6 @@ export const saveClimbLocally = async (climb: ClimbInsert) => {
   climbs.push(climb);
   await AsyncStorage.setItem(LOCAL_CLIMBS_KEY, JSON.stringify(climbs));
 };
-
 
 export const getClimbById = async (climbId: string): Promise<Climb | null> => {
   const { data, error } = await table("climb")
@@ -103,8 +101,6 @@ export const deleteClimb = async (climbId: string): Promise<boolean> => {
   return true;
 };
 
-
-
 type LocalPickerMedia = { uri: string; type: "image" | "video" };
 
 type SQLiteClimbRow = {
@@ -112,20 +108,22 @@ type SQLiteClimbRow = {
   uuid: string | null;
   category: string | null;
   type: string | null;
-  complete: string | null; 
-  attempt: string | null; 
+  complete: string | null;
+  attempt: string | null;
   grade: string | null;
   rating: number | null;
   datetime: string | null;
   description: string | null;
-  media: string | null; 
+  media: string | null;
   location: string | null;
-  deleted: number; 
-  synced: number; 
+  deleted: number;
+  synced: number;
 };
 
 function parseCompleted(v: any): boolean {
-  const s = String(v ?? "").toLowerCase().trim();
+  const s = String(v ?? "")
+    .toLowerCase()
+    .trim();
   return s === "yes" || s === "true" || s === "1";
 }
 
@@ -164,7 +162,6 @@ function guessContentType(type: "image" | "video", uri: string) {
   return "video/mp4";
 }
 
-
 function buildStoragePath(params: {
   userId: string;
   climbId: string;
@@ -188,18 +185,15 @@ async function uploadToStorage(params: {
   const arrayBuffer = await res.arrayBuffer();
   const fileData = new Uint8Array(arrayBuffer);
 
-  const { error } = await supabase.storage.from(params.bucket).upload(
-    params.storagePath,
-    fileData,
-    {
+  const { error } = await supabase.storage
+    .from(params.bucket)
+    .upload(params.storagePath, fileData, {
       contentType: params.contentType,
-      upsert: true, 
-    },
-  );
+      upsert: true,
+    });
 
   if (error) throw error;
 }
-
 
 async function ensureMediaRow(params: { file_url: string; type: string }) {
   const { data: inserted, error: insErr } = await table("media")
@@ -209,22 +203,22 @@ async function ensureMediaRow(params: { file_url: string; type: string }) {
 
   if (!insErr && inserted?.media_id) return inserted.media_id as string;
 
-
   const { data: existing, error: selErr } = await table("media")
     .select("media_id")
     .eq("file_url", params.file_url)
     .maybeSingle();
 
   if (selErr || !existing?.media_id) {
-   
     throw insErr ?? selErr ?? new Error("Failed to ensure media row");
   }
 
   return existing.media_id as string;
 }
 
-
-async function ensureClimbMediaLink(params: { climbId: string; mediaId: string }) {
+async function ensureClimbMediaLink(params: {
+  climbId: string;
+  mediaId: string;
+}) {
   const { error } = await table("climb_media").insert({
     climb_id: params.climbId,
     media_id: params.mediaId,
@@ -246,8 +240,6 @@ async function createSessionForSync(userId: string): Promise<string | null> {
   return newSession.session_id;
 }
 
-
-
 export const syncLocalClimbsSQLite = async (
   db: ReturnType<typeof useSQLiteContext>,
 ) => {
@@ -265,7 +257,9 @@ export const syncLocalClimbsSQLite = async (
       "SELECT * FROM log_climb5 WHERE synced = 0",
     )) as any[];
 
-    console.log(`[syncLocalClimbsSQLite] Found ${localClimbsRaw.length} offline climbs`);
+    console.log(
+      `[syncLocalClimbsSQLite] Found ${localClimbsRaw.length} offline climbs`,
+    );
 
     if (localClimbsRaw.length === 0) {
       Alert.alert("Nothing to sync", "All climbs are already synced.");
@@ -294,7 +288,7 @@ export const syncLocalClimbsSQLite = async (
 
       const climbId = row.uuid as string;
 
-      // Handle deletion tombstones 
+      // Handle deletion tombstones
       if (row.deleted === 1) {
         await table("climb").delete().eq("climb_id", climbId);
         await db.runAsync("DELETE FROM log_climb5 WHERE uuid = ?", [climbId]);
@@ -304,7 +298,7 @@ export const syncLocalClimbsSQLite = async (
       // 1) Upsert CLIMB (NO media field!)
       const climbPayload: any = {
         climb_id: climbId,
-        acct_id: user.id,          
+        acct_id: user.id,
         session_id: sessionId,
         type: (row.type ?? "boulder").toLowerCase(),
         grade: row.grade || "Unknown",
@@ -356,11 +350,16 @@ export const syncLocalClimbsSQLite = async (
       }
 
       // 3) Mark as synced locally
-      await db.runAsync("UPDATE log_climb5 SET synced = 1 WHERE uuid = ?", [climbId]);
+      await db.runAsync("UPDATE log_climb5 SET synced = 1 WHERE uuid = ?", [
+        climbId,
+      ]);
       syncedCount += 1;
     }
 
-    Alert.alert("Sync complete", `Offline climbs synced successfully (${syncedCount}).`);
+    Alert.alert(
+      "Sync complete",
+      `Offline climbs synced successfully (${syncedCount}).`,
+    );
   } catch (err) {
     console.error("[syncLocalClimbsSQLite] Sync failed:", err);
     Alert.alert("Sync failed", "Please try again later.");
