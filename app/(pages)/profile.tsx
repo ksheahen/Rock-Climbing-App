@@ -121,7 +121,7 @@ function ProfilePage() {
       const loadClimbs = async () => {
         try {
           const rows = await db.getAllAsync(
-            `SELECT * FROM log_climb3 ORDER BY datetime DESC`,
+            `SELECT * FROM log_climb5 ORDER BY datetime DESC`,
             [],
           );
           if (!mounted) return;

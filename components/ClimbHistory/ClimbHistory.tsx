@@ -1,86 +1,60 @@
-import { global } from "@/theme";
-import { LocalClimb } from "@/types/LocalClimb";
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-remix-icon";
-import Line from "../Line/Line";
+import { ClimbCard, ClimbData } from "@/components/ClimbCard/ClimbCard";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+import { useCallback, useState } from "react";
+import { ScrollView, View } from "react-native";
 import styles from "./ClimbHistory.styles";
 
-interface ClimbHistoryProps {
-  climbs?: LocalClimb[];
-  dates?: "day" | "week" | "month" | "all";
-}
-
-// Pass in log data to this component. If you want it filtered, filter the data before sending it through.
-// This displays the individual logs grouped by date on the profile
-function ClimbHistory({
-  climbs = [] as LocalClimb[],
-  dates = "day",
-}: ClimbHistoryProps) {
+function ClimbHistory() {
+  const db = useSQLiteContext();
   const router = useRouter();
+
+  const [climbs, setClimbs] = useState<ClimbData[]>([]);
+
+  const loadClimbs = async () => {
+    const results = (await db.getAllAsync(
+      `SELECT * FROM log_climb5 ORDER BY id DESC`,
+    )) as ClimbData[];
+    setClimbs(results);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadClimbs();
+    }, []),
+  );
+
   const handleRedirect = (id: number) => {
     router.push(`/individual-climb-page?id=${id}&from=profile`);
   };
 
-  // Helps format date and time for logs
-  const formatDateTime = (iso?: string) => {
-    if (!iso) return { date: "", time: "" };
-    const d = new Date(iso);
-    if (isNaN(d.getTime())) return { date: "", time: "" };
-    return {
-      date: d.toLocaleDateString(),
-      time: d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }),
-    };
-  };
-
-  const renderStars = (count: number) => {
-    return Array.from({ length: 3 }, (_, i) => (
-      <Ionicons
-        key={i}
-        name="star"
-        size={12}
-        color={i < count ? global.colors.yellow : global.colors.background_2}
-      />
-    ));
+  const handleDelete = async (id: number) => {
+    try {
+      await db.runAsync(
+        `UPDATE log_climb5
+       		SET deleted = 1,
+           	synced = 0
+       		WHERE id = ?`,
+        [id],
+      );
+      setClimbs((prev) => prev.filter((c) => c.id !== id));
+    } catch (error) {
+      console.error("Failed to delete climb:", error);
+    }
   };
 
   return (
     <ScrollView style={styles.container}>
-      {climbs.map((climb, index) => {
-        const { date, time } = formatDateTime(climb.datetime);
-        const prevClimb = index > 0 ? climbs[index - 1] : null;
-        const prevDate = prevClimb
-          ? formatDateTime(prevClimb.datetime).date
-          : null;
-        const showDate = date !== prevDate;
-
-        return (
-          <View key={climb.id}>
-            {showDate && (
-              <>
-                <Text style={styles.date}>{date}</Text>
-                <Line />
-              </>
-            )}
-            <View style={styles.mini_container}>
-              <TouchableOpacity onPress={() => handleRedirect(climb.id)}>
-                <Text style={styles.time}>{time}</Text>
-                <View style={styles.gradeRow}>
-                  <Icon name="check-line" size="18" />
-                  <Text style={styles.grade}>{climb.grade}</Text>
-                  <Text style={styles.stars}> {renderStars(climb.rating)}</Text>
-                </View>
-                <View style={styles.tries}>
-                  <Text>{climb.attempt} Tries</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        );
-      })}
+      {climbs.map((climb) => (
+        <View key={climb.id} style={{ marginBottom: 12 }}>
+          <ClimbCard
+            climb={climb}
+            onPress={() => handleRedirect(climb.id)}
+            onDelete={() => handleDelete(climb.id)}
+          />
+        </View>
+      ))}
     </ScrollView>
   );
 }
-
 export default ClimbHistory;

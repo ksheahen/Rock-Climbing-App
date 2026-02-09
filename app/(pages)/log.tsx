@@ -6,6 +6,7 @@ import Description from "@/components/Description/Description";
 import Difficulty from "@/components/Difficulty/Difficulty";
 import Header from "@/components/Header/Header";
 import Line from "@/components/Line/Line";
+import Location from "@/components/Location/Location";
 import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import Type from "@/components/Type/Type";
@@ -13,6 +14,7 @@ import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
+import uuid from "react-native-uuid";
 import styles from "../styles/log.styles";
 
 function LogAscent() {
@@ -29,6 +31,7 @@ function LogAscent() {
   );
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedMedia, setSelectedMedia] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
   const editToggle = true;
   const router = useRouter();
 
@@ -42,6 +45,7 @@ function LogAscent() {
   console.log("Local Storage 'datetime'  -", selectedDateTime);
   console.log("Local Storage 'desc'      -", selectedDescription);
   console.log("Local Storage 'media'     -", selectedMedia);
+  console.log("Local Storage 'location'  -", selectedLocation);
   console.log("----------------------------");
 
   // SEND -------------
@@ -56,12 +60,17 @@ function LogAscent() {
       datetime: selectedDateTime,
       description: selectedDescription,
       media: selectedMedia,
+      location: selectedLocation,
     };
 
-    // Insert into existing log_climb3 table
+    const newId = uuid.v4().toString();
+    // Insert into existing log_climb5 table
     await db.runAsync(
-      `INSERT INTO log_climb3 (category, type, complete, attempt, grade, rating, datetime, description, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO log_climb5 
+    (uuid, category, type, complete, attempt, grade, rating, datetime, description, media, location, deleted, synced) 
+   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)`,
       [
+        newId,
         climb.category,
         climb.type,
         climb.complete,
@@ -71,6 +80,9 @@ function LogAscent() {
         climb.datetime,
         climb.description,
         climb.media,
+        climb.location,
+        0,
+        0,
       ],
     );
 
@@ -84,7 +96,19 @@ function LogAscent() {
       <Header
         leftText="Cancel"
         rightText="Save"
-        onLeftPress={() => console.log("Cancel pressed")}
+        onLeftPress={() => {
+          setSelectedCategory("Indoor");
+          setSelectedType("Boulder");
+          setSelectedComplete("Yes");
+          setSelectedAttempt("1");
+          setSelectedGrade("4a/V0");
+          setSelectedRating(0);
+          setSelectedDateTime(new Date().toISOString());
+          setSelectedDescription("");
+          setSelectedMedia("");
+          setSelectedLocation("");
+          router.push("/");
+        }}
         onRightPress={handleSubmit}
       />
 
@@ -137,6 +161,12 @@ function LogAscent() {
         <DateTime
           selectedProp={selectedDateTime}
           onSelectedChange={setSelectedDateTime}
+          editToggle={editToggle}
+        />
+        <Line />
+        <Location
+          selectedProp={selectedLocation}
+          onSelectedChange={setSelectedLocation}
           editToggle={editToggle}
         />
         <Line />

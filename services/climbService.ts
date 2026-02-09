@@ -3,6 +3,7 @@ import { supabase } from "@/services/supabaseClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSQLiteContext } from "expo-sqlite";
 import { Alert } from "react-native";
+import uuid from "react-native-uuid";
 import { Climb, ClimbInsert, ClimbUpdate } from "../types/Climb.ts";
 import { SessionInsert } from "../types/Session.ts";
 import { table } from "./supabaseHelper.ts";
@@ -135,55 +136,62 @@ export const syncLocalClimbsSQLite = async (
       return;
     }
 
-    const localClimbsRaw = await db.getAllAsync("SELECT * FROM log_climb3");
-    const localClimbs = localClimbsRaw as SQLiteClimbRow[];
+    // Only fetch unsynced climbs
+    const localClimbsRaw = await db.getAllAsync(
+      "SELECT * FROM log_climb5 WHERE synced = 0",
+    );
 
-    if (localClimbs.length === 0) {
-      Alert.alert("Nothing to sync", "No offline climbs found.");
+    if (localClimbsRaw.length === 0) {
+      Alert.alert("Nothing to sync", "All climbs are already synced.");
       return;
     }
-
-    console.log(
-      `[syncLocalClimbsSQLite] Found ${localClimbs.length} offline climbs`,
-    );
 
     const sessionId = await createSessionForSync(user.id);
     if (!sessionId) return;
 
-    console.log(`[syncLocalClimbsSQLite] Using session_id: ${sessionId}`);
+    for (const row of localClimbsRaw as any[]) {
+      // Generate UUID if missing
+      if (!row.uuid) {
+        row.uuid = uuid.v4().toString();
+        await db.runAsync("UPDATE log_climb5 SET uuid = ? WHERE id = ?", [
+          row.uuid,
+          row.id,
+        ]);
+      }
 
-    for (const row of localClimbs) {
-      const climbToInsert: ClimbInsertExtended = {
+      // Handle deletions
+      if (row.deleted === 1) {
+        await table("climb").delete().eq("climb_id", row.uuid);
+        await db.runAsync("DELETE FROM log_climb5 WHERE uuid = ?", [row.uuid]);
+        continue;
+      }
+
+      // Upsert into Supabase
+      const { error } = await table("climb").upsert({
+        climb_id: row.uuid,
         acct_id: user.id,
         session_id: sessionId,
-        category: row.category || "Uncategorized",
         type: row.type || "boulder",
-        completed: row.completed === "Yes",
-        attempts: parseInt(row.attempts || "0", 10),
-        grade: row.grade || "Unknown", //added this bc of an error
-        // difficulty: row.grade || "Unknown",
+        grade: row.grade || "Unknown",
+        attempts: parseInt(row.attempt || "0", 10),
         rating: row.rating ?? null,
         description: row.description || null,
-        datetime: row.datetime || new Date().toISOString(),
+        datetime: row.datetime || null,
         media: row.media || null,
-      };
+        completed: row.complete === "Yes",
+        category: row.category || "Indoor",
+      });
 
-      const { data, error } = await table("climb")
-        .insert(climbToInsert)
-        .select()
-        .maybeSingle();
-
-      if (error) {
-        console.error("[syncLocalClimbsSQLite] Failed to sync climb:", error);
+      if (!error) {
+        await db.runAsync("UPDATE log_climb5 SET synced = 1 WHERE uuid = ?", [
+          row.uuid,
+        ]);
       } else {
-        console.log("[syncLocalClimbsSQLite] Synced climb:", data);
+        console.error("[syncLocalClimbsSQLite] Upsert failed:", error);
       }
     }
 
-    Alert.alert(
-      "Sync complete",
-      `Synced ${localClimbs.length} climbs successfully.`,
-    );
+    Alert.alert("Sync complete", "Offline climbs synced successfully.");
   } catch (err) {
     console.error("[syncLocalClimbsSQLite] Sync failed:", err);
     Alert.alert("Sync failed", "Please try again later.");

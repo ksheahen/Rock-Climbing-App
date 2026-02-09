@@ -15,6 +15,21 @@ import {
 } from "../../components";
 import { LocalClimb } from "../../types/LocalClimb";
 import styles from "../styles/index.styles";
+type LocalClimb = {
+  id: number;
+  uuid?: string;
+  category: string;
+  type: string;
+  complete: string;
+  attempt: string;
+  grade: string;
+  rating: number | null;
+  datetime: string | null;
+  description: string | null;
+  media: string | null;
+  deleted?: number;
+  synced?: number;
+};
 
 // Extract V-grade number from grade string (e.g., "6a/V3" -> 3)
 const getVGradePoints = (grade: string): number => {
@@ -125,9 +140,9 @@ const Index = () => {
       setLoading(true);
       setError(null);
 
-      // Query all climbs from log_climb3 table, ordered by datetime descending (most recent first)
+      // Query all climbs from log_climb5 table, ordered by datetime descending (most recent first)
       const result = await db.getAllAsync<LocalClimb>(
-        `SELECT * FROM log_climb3 ORDER BY datetime DESC, id DESC LIMIT 50`,
+        `SELECT * FROM log_climb5 ORDER BY datetime DESC, id DESC LIMIT 50`,
       );
 
       setClimbs(result);

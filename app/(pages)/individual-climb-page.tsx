@@ -6,6 +6,7 @@ import DateTime from "@/components/DateTime/DateTime";
 import Description from "@/components/Description/Description";
 import Difficulty from "@/components/Difficulty/Difficulty";
 import Line from "@/components/Line/Line";
+import Location from "@/components/Location/Location";
 import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import SettingsButton from "@/components/SettingsButton/SettingsButton";
@@ -57,6 +58,7 @@ function IndividualClimbPage() {
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedMedia, setSelectedMedia] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
   const [editToggle, setEditToggle] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -70,6 +72,7 @@ function IndividualClimbPage() {
   console.log("Local Storage 'datetime'  -", selectedDateTime);
   console.log("Local Storage 'desc'      -", selectedDescription);
   console.log("Local Storage 'media'     -", selectedMedia);
+  console.log("Local Storage 'location'  -", selectedLocation);
   console.log("----------------------------");
 
   // derive media items from stored JSON string
@@ -89,7 +92,7 @@ function IndividualClimbPage() {
     try {
       if (paramsid != null) {
         const result = await db.getAllAsync(
-          `SELECT * FROM log_climb3 WHERE id = ?`,
+          `SELECT * FROM log_climb5 WHERE id = ?`,
           [paramsid],
         );
         if (result.length > 0) {
@@ -103,6 +106,7 @@ function IndividualClimbPage() {
             datetime: string;
             description: string;
             media: string;
+            location: string;
           };
           // update local state with db values
           setSelectedCategory(climbData.category);
@@ -114,6 +118,7 @@ function IndividualClimbPage() {
           setSelectedDateTime(climbData.datetime);
           setSelectedDescription(climbData.description);
           setSelectedMedia(climbData.media);
+          setSelectedLocation(climbData.location);
         }
       }
     } catch (error: any) {
@@ -135,6 +140,7 @@ function IndividualClimbPage() {
         datetime: selectedDateTime,
         description: selectedDescription,
         media: selectedMedia,
+        location: selectedLocation,
       };
       // check
       console.log("DB Storage 'category'   -", climb.category);
@@ -146,11 +152,12 @@ function IndividualClimbPage() {
       console.log("DB Storage 'datetime'   - ", climb.datetime);
       console.log("DB Storage 'desc'       - ", climb.description);
       console.log("DB Storage 'media'      - ", climb.media);
+      console.log("DB Storage 'location'   - ", climb.location);
 
       // update the db
       const result = await db.runAsync(
-        `UPDATE log_climb3 
-         SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?
+        `UPDATE log_climb5 
+         SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?, location = ?
          WHERE id = ?`,
         [
           climb.category,
@@ -162,6 +169,7 @@ function IndividualClimbPage() {
           climb.datetime,
           climb.description,
           climb.media,
+          climb.location,
           paramsid,
         ],
       );
@@ -200,7 +208,7 @@ function IndividualClimbPage() {
 
   const deletePress = async () => {
     try {
-      const result = await db.runAsync(`DELETE FROM log_climb3 WHERE id = ?`, [
+      const result = await db.runAsync(`DELETE FROM log_climb5 WHERE id = ?`, [
         paramsid,
       ]);
       console.log(`Deleted log ${paramsid} from db`, result);
@@ -315,6 +323,12 @@ function IndividualClimbPage() {
           editToggle={editToggle}
         />
         <Line />
+        <Location
+          selectedProp={selectedLocation}
+          onSelectedChange={setSelectedLocation}
+          editToggle={editToggle}
+        />
+        <Line />
         <Description
           selectedProp={selectedDescription}
           onSelectedChange={setSelectedDescription}
@@ -337,6 +351,7 @@ function IndividualClimbPage() {
           </>
         )}
       </ScrollView>
+
       {/* modal is visible only when modalVisible = true */}
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         {/* overlay */}
