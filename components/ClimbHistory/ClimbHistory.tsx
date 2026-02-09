@@ -4,6 +4,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
 import { ScrollView, View } from "react-native";
 import styles from "./ClimbHistory.styles";
+import { load } from "dotenv";
 
 function ClimbHistory() {
   const db = useSQLiteContext();
@@ -13,7 +14,7 @@ function ClimbHistory() {
 
   const loadClimbs = async () => {
     const results = (await db.getAllAsync(
-      `SELECT * FROM log_climb5 ORDER BY id DESC`,
+      `SELECT * FROM log_climb5 WHERE deleted = 0 ORDER BY id DESC`,
     )) as ClimbData[];
     setClimbs(results);
   };

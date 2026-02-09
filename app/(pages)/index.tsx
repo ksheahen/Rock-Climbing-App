@@ -142,7 +142,7 @@ const Index = () => {
 
       // Query all climbs from log_climb5 table, ordered by datetime descending (most recent first)
       const result = await db.getAllAsync<LocalClimb>(
-        `SELECT * FROM log_climb5 ORDER BY datetime DESC, id DESC LIMIT 50`,
+        `SELECT * FROM log_climb5 WHERE deleted = 0 ORDER BY datetime DESC, id DESC LIMIT 50`,
       );
 
       setClimbs(result);

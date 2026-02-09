@@ -208,9 +208,13 @@ function IndividualClimbPage() {
 
   const deletePress = async () => {
     try {
-      const result = await db.runAsync(`DELETE FROM log_climb5 WHERE id = ?`, [
-        paramsid,
-      ]);
+      const result = await db.runAsync(
+        `UPDATE log_climb5 
+          SET deleted = 1, 
+              synced = 0 
+          WHERE id = ?`,
+        [paramsid],
+      );
       console.log(`Deleted log ${paramsid} from db`, result);
       setModalVisible(false); // this doesnt really matter
       handleRedirect();
@@ -224,7 +228,6 @@ function IndividualClimbPage() {
     <View style={styles.container}>
       <View style={styles.leftright_container}>
         <View style={styles.left}>
-          {/* TODO: Removing the /profile url fixes the profile problem, but messes up navigation when viewing from the home page */}
           <BackButton url={fromPage === "profile" ? "/profile" : undefined} />
         </View>
         <View style={styles.right}>
