@@ -1,10 +1,11 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import ButtonComponent from "@/components/Button/Button";
 import EmailComponent from "@/components/Email/Email";
 import PasswordComponent from "@/components/Password/Password";
 import { global } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 
@@ -64,7 +65,7 @@ const LoginBtn = () => {
           setPassword={handleEmailChange}
           displayText="Password"
         />
-        <ButtonComponent onPress={() => nav.navigate("/login")} title="Login" />
+        <ButtonComponent onPress={() => nav.navigate("/login")} title="Create Account" />
       </View>
     </View>
   );
@@ -85,12 +86,17 @@ const GetStarted = () => {
 
 // Main Onboarding Page Function
 const OnboardingPage = () => {
+  const nav = useRouter();
+
   return (
     <Onboarding
       showSkip={false}
-      showDone={false}
+      showDone={true}
+      onDone={() => nav.navigate("/")}
       DotComponent={Square}
       bottomBarColor={global.colors.background_1}
+      bottomBarHeight={100}
+      bottomBarHighlight={false}
       pages={[
         {
           backgroundColor: "#fff",
@@ -131,4 +137,5 @@ const OnboardingPage = () => {
     />
   );
 };
+
 export default OnboardingPage;

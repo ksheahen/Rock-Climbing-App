@@ -95,7 +95,7 @@ function TabLayout() {
         }}
       />
 
-      <Tabs.Screen name="onboarding" />
+      {/* <Tabs.Screen name="onboarding" /> */}
     </Tabs>
   );
 }

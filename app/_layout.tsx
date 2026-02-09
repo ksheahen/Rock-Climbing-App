@@ -3,12 +3,53 @@
 // can use the same database.
 // we access this database using the sqlite db hook.
 
-import { Stack } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Stack, useRouter } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
-import { StatusBar } from "react-native";
+import { useEffect, useState } from "react";
+import { Button, StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function RootLayout() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [ShowOnboarding, setShowOnboarding] = useState(false);
+  const router = useRouter();
+
+  // TEMPORARY
+  const clearAppData = async () => {
+    try {
+      await AsyncStorage.clear(); // Clear all AsyncStorage data
+      // setShowOnboarding(false);
+      console.log("App data cleared!");
+    } catch (error) {
+      console.error("Failed to clear app data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const checkOnboardingStatus = async () => {
+      try {
+        const hasSeenOnboarding =
+          await AsyncStorage.getItem("hasSeenOnboarding");
+
+        if (!hasSeenOnboarding) {
+          setShowOnboarding(true);
+        } else {
+          setShowOnboarding(false);
+        }
+      } catch (error) {
+        console.error("Error checking onboarding status:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    checkOnboardingStatus();
+  }, []);
+
+  // Shows a loading screen while checking for onboarding status
+  if (isLoading) {
+    return null;
+  }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SQLiteProvider
@@ -56,8 +97,17 @@ function RootLayout() {
         {/* this makes apple's status bar black */}
         <StatusBar barStyle="dark-content" />
         <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(pages)" options={{ headerShown: false }} />
+          {ShowOnboarding ? (
+            <Stack.Screen
+              name="(auth)/onboarding"
+              options={{ headerShown: false }}
+            />
+          ) : (
+            <Stack.Screen name="(pages)" options={{ headerShown: false }} />
+          )}
         </Stack>
+        {/* TEMPORARY */}
+        {/* <Button title="Reset App Data" onPress={clearAppData} /> */}
       </SQLiteProvider>
     </GestureHandlerRootView>
   );
