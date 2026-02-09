@@ -34,7 +34,7 @@ export type { DayData, DaySelectorProps } from "./DaySelector/DaySelector";
 export { FilterModal } from "./FilterModal/FilterModal";
 export type {
   FilterModalProps,
-  FilterOptions
+  FilterOptions,
 } from "./FilterModal/FilterModal";
 export { PointsDisplay } from "./PointsDisplay/PointsDisplay";
 export type { PointsDisplayProps } from "./PointsDisplay/PointsDisplay";
@@ -54,4 +54,3 @@ export { Difficulty } from "./Difficulty/Difficulty";
 export { default as Media } from "./Media/Media";
 export { Rating } from "./Rating/Rating";
 export { Type } from "./Type/Type";
-
