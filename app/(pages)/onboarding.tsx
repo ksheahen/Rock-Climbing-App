@@ -1,12 +1,23 @@
 import ButtonComponent from "@/components/Button/Button";
+import EmailComponent from "@/components/Email/Email";
+import PasswordComponent from "@/components/Password/Password";
+import { global } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
-import { Button } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
-import React from "react";
-import { Image, View, Text } from "react-native";
+import React, { useState } from "react";
+import { Image, Text, View } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 
-const Square = ({ isLight, selected }) => {
+const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
+const color = (isLight: any) => backgroundColor(!isLight);
+
+const Square = ({
+  isLight,
+  selected,
+}: {
+  isLight: boolean;
+  selected: boolean;
+}) => {
   let backgroundColor;
   if (isLight) {
     backgroundColor = selected ? "rgba(0, 0, 0, 0.8)" : "rgba(0, 0, 0, 0.3)";
@@ -25,18 +36,41 @@ const Square = ({ isLight, selected }) => {
   );
 };
 
-const backgroundColor = (isLight) => (isLight ? "blue" : "lightblue");
-const color = (isLight) => backgroundColor(!isLight);
-
+// Login Button for Last Page
 const LoginBtn = () => {
   const nav = useRouter();
-  // Calling the login page has the back button, so it navigates out of the onboarding
-  // might have to take a diff approach or set a specific navigation to remove the back btn
+  const [email, setEmail] = useState("");
+
+  function handleEmailChange(text: string) {
+    setEmail(text);
+  }
+
   return (
-    <ButtonComponent onPress={() => nav.navigate("/login")} title="Login" />
+    <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <Text>Create an account below</Text>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          paddingBottom: 120,
+          paddingLeft: 40,
+          paddingRight: 40,
+          backgroundColor: global.colors.background_1,
+        }}
+      >
+        <EmailComponent email={email} setEmail={handleEmailChange} />
+        <PasswordComponent
+          password={email}
+          setPassword={handleEmailChange}
+          displayText="Password"
+        />
+        <ButtonComponent onPress={() => nav.navigate("/login")} title="Login" />
+      </View>
+    </View>
   );
 };
 
+// Getting Start Button and Text
 const GetStarted = () => {
   const nav = useRouter();
   return (
@@ -49,12 +83,14 @@ const GetStarted = () => {
   );
 };
 
+// Main Onboarding Page Function
 const OnboardingPage = () => {
   return (
     <Onboarding
       showSkip={false}
       showDone={false}
       DotComponent={Square}
+      bottomBarColor={global.colors.background_1}
       pages={[
         {
           backgroundColor: "#fff",
@@ -71,23 +107,23 @@ const OnboardingPage = () => {
         {
           backgroundColor: "#fff",
           image: <Ionicons ellipse />,
-          title: "2nd Onboarding",
-          subtitle: "2nd page",
+          title: "Track your climbs",
+          subtitle: "Tap the + icon to add a log",
           canSwipeBackward: true,
           canSwipeForward: true,
         },
         {
           backgroundColor: "#fff",
           image: <Ionicons ellipse />,
-          title: "3rd onboarding",
-          subtitle: "3rd",
+          title: "See Your Progress",
+          subtitle: "View your climbs on your profile",
           canSwipeBackward: true,
           canSwipeForward: true,
         },
         {
           backgroundColor: "#fff",
           image: <Ionicons ellipse />,
-          title: "4th onboarding",
+          title: "Start Climbing Today",
           subtitle: <LoginBtn />,
           canSwipeBackward: true,
         },
