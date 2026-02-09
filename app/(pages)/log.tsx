@@ -38,7 +38,6 @@ function LogAscent() {
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedMedia, setSelectedMedia] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-
   const editToggle = true;
   const router = useRouter();
 

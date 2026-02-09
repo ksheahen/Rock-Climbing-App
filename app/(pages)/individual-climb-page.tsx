@@ -84,6 +84,7 @@ function IndividualClimbPage() {
   // get the id from params of the request
   const searchParams = useSearchParams();
   const paramsid = searchParams.get("id");
+  const fromPage = searchParams.get("from");
   console.log("Request Id      - ", paramsid);
 
   // LOAD -------------
@@ -207,9 +208,13 @@ function IndividualClimbPage() {
 
   const deletePress = async () => {
     try {
-      const result = await db.runAsync(`DELETE FROM log_climb5 WHERE id = ?`, [
-        paramsid,
-      ]);
+      const result = await db.runAsync(
+        `UPDATE log_climb5 
+          SET deleted = 1, 
+              synced = 0 
+          WHERE id = ?`,
+        [paramsid],
+      );
       console.log(`Deleted log ${paramsid} from db`, result);
       setModalVisible(false); // this doesnt really matter
       handleRedirect();
@@ -223,7 +228,7 @@ function IndividualClimbPage() {
     <View style={styles.container}>
       <View style={styles.leftright_container}>
         <View style={styles.left}>
-          <BackButton url="/profile" />
+          <BackButton url={fromPage === "profile" ? "/profile" : undefined} />
         </View>
         <View style={styles.right}>
           <SettingsButton
