@@ -84,6 +84,7 @@ function IndividualClimbPage() {
   // get the id from params of the request
   const searchParams = useSearchParams();
   const paramsid = searchParams.get("id");
+  const fromPage = searchParams.get("from");
   console.log("Request Id      - ", paramsid);
 
   // LOAD -------------
@@ -223,7 +224,8 @@ function IndividualClimbPage() {
     <View style={styles.container}>
       <View style={styles.leftright_container}>
         <View style={styles.left}>
-          <BackButton url="/profile" />
+          {/* TODO: Removing the /profile url fixes the profile problem, but messes up navigation when viewing from the home page */}
+          <BackButton url={fromPage === "profile" ? "/profile" : undefined} />
         </View>
         <View style={styles.right}>
           <SettingsButton

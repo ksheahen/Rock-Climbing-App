@@ -25,7 +25,7 @@ function ClimbHistory() {
   );
 
   const handleRedirect = (id: number) => {
-    router.push(`/individual-climb-page?id=${id}`);
+    router.push(`/individual-climb-page?id=${id}&from=profile`);
   };
 
   const handleDelete = async (id: number) => {
