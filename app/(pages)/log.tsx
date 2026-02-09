@@ -22,7 +22,9 @@ function LogAscent() {
 
   // local storage
   const [selectedCategory, setSelectedCategory] = useState("Indoor");
-  const [selectedType, setSelectedType] = useState<"Boulder" | "Route">("Boulder");
+  const [selectedType, setSelectedType] = useState<"Boulder" | "Route">(
+    "Boulder",
+  );
   const [selectedComplete, setSelectedComplete] = useState("Yes");
   const [selectedAttempt, setSelectedAttempt] = useState("1");
 
@@ -40,60 +42,60 @@ function LogAscent() {
   const editToggle = true;
   const router = useRouter();
 
-	console.log("----------------------------");
-	console.log("Local Storage 'category'  -", selectedCategory);
-	console.log("Local Storage 'type'      -", selectedType);
-	console.log("Local Storage 'complete'  -", selectedComplete);
-	console.log("Local Storage 'attempt'   -", selectedAttempt);
-	console.log("Local Storage 'grade'     -", selectedGrade);
-	console.log("Local Storage 'rating'    -", selectedRating);
-	console.log("Local Storage 'datetime'  -", selectedDateTime);
-	console.log("Local Storage 'desc'      -", selectedDescription);
-	console.log("Local Storage 'media'     -", selectedMedia);
-	console.log("Local Storage 'location'  -", selectedLocation);
-	console.log("----------------------------");
+  console.log("----------------------------");
+  console.log("Local Storage 'category'  -", selectedCategory);
+  console.log("Local Storage 'type'      -", selectedType);
+  console.log("Local Storage 'complete'  -", selectedComplete);
+  console.log("Local Storage 'attempt'   -", selectedAttempt);
+  console.log("Local Storage 'grade'     -", selectedGrade);
+  console.log("Local Storage 'rating'    -", selectedRating);
+  console.log("Local Storage 'datetime'  -", selectedDateTime);
+  console.log("Local Storage 'desc'      -", selectedDescription);
+  console.log("Local Storage 'media'     -", selectedMedia);
+  console.log("Local Storage 'location'  -", selectedLocation);
+  console.log("----------------------------");
 
-	// SEND -------------
-	const handleSubmit = async () => {
-		const climb = {
-			category: selectedCategory,
-			type: selectedType,
-			complete: selectedComplete,
-			attempt: selectedAttempt,
-			grade: selectedGrade,
-			rating: selectedRating,
-			datetime: selectedDateTime,
-			description: selectedDescription,
-			media: selectedMedia,
-			location: selectedLocation,
-		};
+  // SEND -------------
+  const handleSubmit = async () => {
+    const climb = {
+      category: selectedCategory,
+      type: selectedType,
+      complete: selectedComplete,
+      attempt: selectedAttempt,
+      grade: selectedGrade,
+      rating: selectedRating,
+      datetime: selectedDateTime,
+      description: selectedDescription,
+      media: selectedMedia,
+      location: selectedLocation,
+    };
 
-		const newId = uuid.v4().toString();
-		// Insert into existing log_climb5 table
-		await db.runAsync(
-			`INSERT INTO log_climb5 
+    const newId = uuid.v4().toString();
+    // Insert into existing log_climb5 table
+    await db.runAsync(
+      `INSERT INTO log_climb5 
     (uuid, category, type, complete, attempt, grade, rating, datetime, description, media, location, deleted, synced) 
    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)`,
-			[
-				newId,
-				climb.category,
-				climb.type,
-				climb.complete,
-				climb.attempt,
-				climb.grade,
-				climb.rating,
-				climb.datetime,
-				climb.description,
-				climb.media,
-				climb.location,
-				0,
-				0,
-			],
-		);
+      [
+        newId,
+        climb.category,
+        climb.type,
+        climb.complete,
+        climb.attempt,
+        climb.grade,
+        climb.rating,
+        climb.datetime,
+        climb.description,
+        climb.media,
+        climb.location,
+        0,
+        0,
+      ],
+    );
 
-		console.log("Climb saved to database");
-		router.push("/profile");
-	};
+    console.log("Climb saved to database");
+    router.push("/profile");
+  };
 
   return (
     <View style={styles.container}>
@@ -117,15 +119,15 @@ function LogAscent() {
         onRightPress={handleSubmit}
       />
 
-			{/* Scrollable Inputs */}
-			<ScrollView
-				style={styles.scroll}
-				contentContainerStyle={styles.scrollContent}
-				showsVerticalScrollIndicator={false}
-			>
-				<View style={styles.titleContainer}>
-					<Text style={styles.title}>Log Ascent</Text>
-				</View>
+      {/* Scrollable Inputs */}
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Log Ascent</Text>
+        </View>
 
         <Category
           selectedProp={selectedCategory}

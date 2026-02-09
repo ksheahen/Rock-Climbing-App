@@ -17,7 +17,6 @@ function Difficulty({
   editToggle,
   climbType,
 }: GradeComponentProps) {
- 
   const BOULDER_GRADES = [
     "4a/V0",
     "4b/V0",
@@ -46,7 +45,6 @@ function Difficulty({
     "9a/V17",
   ];
 
-  
   const ROUTE_GRADES = [
     "5c/5.8",
     "6a/5.9",
@@ -137,4 +135,3 @@ function Difficulty({
 }
 
 export default Difficulty;
-
