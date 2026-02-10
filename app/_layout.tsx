@@ -1,13 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
-import { useEffect, useState } from "react";
-import { Button, StatusBar, Text } from "react-native";
+import { Button, StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function RootLayout() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // TEMPORARY
   const clearAppData = async () => {
@@ -21,38 +18,6 @@ function RootLayout() {
       console.error("Failed to clear app data:", error);
     }
   };
-
-  // useEffect(() => {
-  //   const checkOnboardingStatus = async () => {
-  //     try {
-  //       const hasSeenOnboarding =
-  //         await AsyncStorage.getItem("hasSeenOnboarding");
-  //       console.log("hasSeenOnboarding:", hasSeenOnboarding);
-
-  //       if (!hasSeenOnboarding) {
-  //         setShowOnboarding(true);
-  //       } else {
-  //         setShowOnboarding(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error checking onboarding status:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   checkOnboardingStatus();
-  // }, []);
-
-  // // Shows a loading screen while checking for onboarding status
-  // if (isLoading) {
-  //   return (
-  //     <GestureHandlerRootView
-  //       style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-  //     >
-  //       <Text>Loading...</Text>
-  //     </GestureHandlerRootView>
-  //   );
-  // }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

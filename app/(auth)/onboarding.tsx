@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 import React, { useRef } from "react";
 import { Image, Text, View } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
+import { Video } from "expo-av";
 
 const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
 const color = (isLight: any) => backgroundColor(!isLight);
@@ -131,7 +132,15 @@ const OnboardingPage = () => {
         },
         {
           backgroundColor: "#fff",
-          image: <Ionicons ellipse />,
+          image: (
+            <Video
+              source={require("../../assets/log_tutorial.mp4")}
+              style={{ width: 600, height: 450 }}
+              isLooping
+              isMuted
+              shouldPlay
+            />
+          ),
           title: "Track your climbs",
           subtitle: "Tap the + icon to add a log",
           canSwipeBackward: true,
@@ -139,7 +148,15 @@ const OnboardingPage = () => {
         },
         {
           backgroundColor: "#fff",
-          image: <Ionicons ellipse />,
+          image: (
+            <Video
+              source={require("../../assets/profile_tutorial.mp4")}
+              style={{ width: 600, height: 450 }}
+              isLooping
+              isMuted
+              shouldPlay
+            />
+          ),
           title: "See Your Progress",
           subtitle: "View your climbs on your profile",
           canSwipeBackward: true,
