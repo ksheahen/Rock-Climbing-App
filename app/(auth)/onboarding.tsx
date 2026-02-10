@@ -1,12 +1,11 @@
 import ButtonComponent from "@/components/Button/Button";
 import { global } from "@/theme";
-import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Video } from "expo-av";
 import { useRouter } from "expo-router";
 import React, { useRef } from "react";
 import { Image, Text, View } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-import { Video } from "expo-av";
 
 const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
 const color = (isLight: any) => backgroundColor(!isLight);
@@ -67,15 +66,17 @@ const GetStarted = ({ goToNext }: { goToNext: () => void }) => {
   const nav = useRouter();
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
-      <ButtonComponent onPress={goToNext} title="Get Started" />
+      <View style={{ idth: 250 }}>
+        <ButtonComponent onPress={goToNext} title="Get Started" />
+      </View>
       <Text>
-        Already have an account? Login{" "}
-        <Text
+        Already have an account? Login here.
+        {/* <Text
           onPress={() => nav.navigate("/login")}
           style={{ color: "#007AFF", textDecorationLine: "underline" }}
         >
           here.
-        </Text>
+        </Text> */}
       </Text>
     </View>
   );
@@ -128,7 +129,6 @@ const OnboardingPage = () => {
           ),
           title: "Rock Climbing",
           subtitle: <GetStarted goToNext={goToNext} />,
-          canSwipeForward: true,
         },
         {
           backgroundColor: "#fff",
@@ -143,8 +143,6 @@ const OnboardingPage = () => {
           ),
           title: "Track your climbs",
           subtitle: "Tap the + icon to add a log",
-          canSwipeBackward: true,
-          canSwipeForward: true,
         },
         {
           backgroundColor: "#fff",
@@ -159,15 +157,17 @@ const OnboardingPage = () => {
           ),
           title: "See Your Progress",
           subtitle: "View your climbs on your profile",
-          canSwipeBackward: true,
-          canSwipeForward: true,
         },
         {
           backgroundColor: "#fff",
-          image: <Ionicons ellipse />,
+          image: (
+            <Image
+              source={require("../../assets/icon.png")}
+              style={{ height: 150, width: 150 }}
+            />
+          ),
           title: "Start Climbing Today",
           subtitle: "Create your account today",
-          canSwipeBackward: true,
         },
       ]}
     />

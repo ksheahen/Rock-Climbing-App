@@ -5,7 +5,6 @@ import { Button, StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function RootLayout() {
-
   // TEMPORARY
   const clearAppData = async () => {
     try {
@@ -70,7 +69,7 @@ function RootLayout() {
           <Stack.Screen name="(pages)" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         </Stack>
-        <Button title="Reset App Data" onPress={clearAppData} />
+        {/* <Button title="Reset App Data" onPress={clearAppData} /> */}
       </SQLiteProvider>
     </GestureHandlerRootView>
   );
