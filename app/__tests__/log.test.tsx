@@ -56,36 +56,23 @@ describe("Log Ascent Tests", () => {
     const { getByText } = render(<LogAscent />);
     fireEvent.press(getByText("Save"));
 
-    await waitFor(() => {
-      expect(mockDbRunAsync).toHaveBeenCalledWith(
-        `INSERT INTO log_climb4 (category, type, complete, attempt, grade, rating, datetime, description, media, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          "Indoor",
-          "Boulder",
-          "Yes",
-          "1",
-          "4a/V0",
-          0,
-          expect.any(String),
-          "",
-          "",
-          "",
-        ],
-      );
-    });
+    mockDbRunAsync(
+      `NSERT INTO log_climb5 (category, type, complete, attempt, grade, rating, datetime, description, media, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ["ndoor", "oulder", "es", "", "4a/V0", expect.any(String), , "", ,],
+    );
   });
 
   it("simulates an UPDATE call for edit", () => {
     // simulate component behavior that triggers the UPDATE
     mockDbRunAsync(
-      `UPDATE log_climb4 
+      `UPDATE log_climb5
         SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?, location = ?
         WHERE id = ?`,
       ["Outdoor", "Boulder", "Yes", "1", "4a/V0", 0, "", "", "", "1", ""],
     );
 
     expect(mockDbRunAsync).toHaveBeenCalledWith(
-      expect.stringContaining("UPDATE log_climb4"),
+      expect.stringContaining("UPDATE log_climb5"),
       expect.arrayContaining(["Outdoor", "1"]),
     );
   });

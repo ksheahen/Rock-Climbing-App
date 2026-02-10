@@ -7,6 +7,7 @@ import ButtonComponent from "../../components/Button/Button";
 import EmailComponent from "../../components/Email/Email";
 import PasswordComponent from "../../components/Password/Password";
 import styles from "../styles/signup.styles";
+import BackButton from "@/components/BackButton/BackButton";
 
 // Refreshes session automatically if the app is in the foreground
 AppState.addEventListener("change", (state) => {
@@ -127,6 +128,9 @@ export default function Signup() {
   return (
     <>
       <StatusBar barStyle="dark-content" />
+      <View style={styles.header}>
+        <BackButton />
+      </View>
       <SafeAreaView style={styles.container}>
         <Image source={logo} alt="logo" style={styles.logo} />
 

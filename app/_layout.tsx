@@ -1,41 +1,77 @@
-// initialize our database here
-// so that all children of the application
-// can use the same database.
-// we access this database using the sqlite db hook.
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
-import { StatusBar } from "react-native";
+import { Button, StatusBar } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function RootLayout() {
+  // TEMPORARY
+  const clearAppData = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log("App data cleared!");
+      const keys = await AsyncStorage.getAllKeys();
+      const items = await AsyncStorage.multiGet(keys);
+      console.log("AsyncStorage contents after clearing:", items);
+    } catch (error) {
+      console.error("Failed to clear app data:", error);
+    }
+  };
+
   return (
-    <SQLiteProvider
-      databaseName="climb.db"
-      onInit={async (db) => {
-        await db.execAsync(`
-        CREATE TABLE IF NOT EXISTS log_climb4 (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        category TEXT NOT NULL,
-        type TEXT NOT NULL,
-        complete TEXT NOT NULL,
-        attempt TEXT NOT NULL, 
-        grade TEXT,
-        rating INTEGER,
-        datetime TEXT, 
-        description TEXT,
-        media TEXT,
-	location TEXT
-        );
-        PRAGMA journal_mode=WAL;
-        `); // Write Ahead Logging, allows concurrency
-      }}
-    >
-      {/* this makes apple's status bar black */}
-      <StatusBar barStyle="dark-content" />
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(pages)" options={{ headerShown: false }} />
-      </Stack>
-    </SQLiteProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SQLiteProvider
+        databaseName="climb.db"
+        onInit={async (db) => {
+          await db.execAsync(`
+            CREATE TABLE IF NOT EXISTS log_climb5 (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, 
+              uuid TEXT UNIQUE,
+              category TEXT NOT NULL,
+              type TEXT NOT NULL,
+              complete TEXT NOT NULL,
+              attempt TEXT NOT NULL, 
+              grade TEXT,
+              rating INTEGER,
+              datetime TEXT, 
+              description TEXT,
+              media TEXT,
+              location TEXT,
+              deleted INTEGER DEFAULT 0,
+              synced INTEGER DEFAULT 0 
+            );
+            PRAGMA journal_mode=WAL;
+          `);
+
+          // Check existing columns
+          const columns = await db.getAllAsync(
+            "PRAGMA table_info(log_climb5);",
+          );
+          const existingCols = columns.map((c: any) => c.name);
+
+          // Add uuid column if missing (no UNIQUE here)
+          if (!existingCols.includes("uuid")) {
+            await db.execAsync(`ALTER TABLE log_climb5 ADD COLUMN uuid TEXT;`);
+          }
+
+          // Add deleted column if missing
+          if (!existingCols.includes("deleted")) {
+            await db.execAsync(
+              `ALTER TABLE log_climb5 ADD COLUMN deleted INTEGER DEFAULT 0;`,
+            );
+          }
+        }}
+      >
+        {/* this makes apple's status bar black */}
+        <StatusBar barStyle="dark-content" />
+
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(pages)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        </Stack>
+        {/* <Button title="Reset App Data" onPress={clearAppData} /> */}
+      </SQLiteProvider>
+    </GestureHandlerRootView>
   );
 }
 

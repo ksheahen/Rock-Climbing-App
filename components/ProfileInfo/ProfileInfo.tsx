@@ -52,7 +52,8 @@ export function ProfileInfo() {
         user.email?.split("@")[0] || profile?.email || "username",
       );
     } else if (!user) {
-      setDisplayName("Kathryn");
+      // TODO: Remove Static Data / Fix this in user onboarding
+      setDisplayName("");
       setInstagramHandle("");
     }
   };
@@ -62,7 +63,7 @@ export function ProfileInfo() {
       <View style={styles.headerRow}>
         <View style={styles.avatarPlaceholder} />
         <View style={{ flexDirection: "row", gap: 10 }}>
-          {/* Temporary way to reset login/signout page to appear on sync */}
+          {/* Temporary Sign out button */}
           {/* <Pressable
             style={styles.editButton}
             onPress={() => supabase.auth.signOut()}

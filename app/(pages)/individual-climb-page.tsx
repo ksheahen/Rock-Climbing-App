@@ -5,8 +5,8 @@ import Complete from "@/components/Complete/Complete";
 import DateTime from "@/components/DateTime/DateTime";
 import Description from "@/components/Description/Description";
 import Difficulty from "@/components/Difficulty/Difficulty";
-import Location from "@/components/Location/Location";
 import Line from "@/components/Line/Line";
+import Location from "@/components/Location/Location";
 import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import SettingsButton from "@/components/SettingsButton/SettingsButton";
@@ -84,6 +84,7 @@ function IndividualClimbPage() {
   // get the id from params of the request
   const searchParams = useSearchParams();
   const paramsid = searchParams.get("id");
+  const fromPage = searchParams.get("from");
   console.log("Request Id      - ", paramsid);
 
   // LOAD -------------
@@ -91,7 +92,7 @@ function IndividualClimbPage() {
     try {
       if (paramsid != null) {
         const result = await db.getAllAsync(
-          `SELECT * FROM log_climb4 WHERE id = ?`,
+          `SELECT * FROM log_climb5 WHERE id = ?`,
           [paramsid],
         );
         if (result.length > 0) {
@@ -155,7 +156,7 @@ function IndividualClimbPage() {
 
       // update the db
       const result = await db.runAsync(
-        `UPDATE log_climb4 
+        `UPDATE log_climb5 
          SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?, location = ?
          WHERE id = ?`,
         [
@@ -207,9 +208,13 @@ function IndividualClimbPage() {
 
   const deletePress = async () => {
     try {
-      const result = await db.runAsync(`DELETE FROM log_climb4 WHERE id = ?`, [
-        paramsid,
-      ]);
+      const result = await db.runAsync(
+        `UPDATE log_climb5 
+          SET deleted = 1, 
+              synced = 0 
+          WHERE id = ?`,
+        [paramsid],
+      );
       console.log(`Deleted log ${paramsid} from db`, result);
       setModalVisible(false); // this doesnt really matter
       handleRedirect();
@@ -223,7 +228,7 @@ function IndividualClimbPage() {
     <View style={styles.container}>
       <View style={styles.leftright_container}>
         <View style={styles.left}>
-          <BackButton url="/profile" />
+          <BackButton url={fromPage === "profile" ? "/profile" : undefined} />
         </View>
         <View style={styles.right}>
           <SettingsButton
@@ -349,6 +354,7 @@ function IndividualClimbPage() {
           </>
         )}
       </ScrollView>
+
       {/* modal is visible only when modalVisible = true */}
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         {/* overlay */}

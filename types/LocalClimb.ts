@@ -1,4 +1,4 @@
-// Local climb type matching current log_climb3 SQLite schema
+// Local climb type matching current log_climb5 SQLite schema
 // Using existing schema - will refactor with team later
 export interface LocalClimb {
   id: number;
