@@ -1,14 +1,23 @@
-// initialize our database here
-// so that all children of the application
-// can use the same database.
-// we access this database using the sqlite db hook.
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
-import { StatusBar } from "react-native";
+import { Button, StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function RootLayout() {
+  // TEMPORARY
+  const clearAppData = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log("App data cleared!");
+      const keys = await AsyncStorage.getAllKeys();
+      const items = await AsyncStorage.multiGet(keys);
+      console.log("AsyncStorage contents after clearing:", items);
+    } catch (error) {
+      console.error("Failed to clear app data:", error);
+    }
+  };
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SQLiteProvider
@@ -55,9 +64,12 @@ function RootLayout() {
       >
         {/* this makes apple's status bar black */}
         <StatusBar barStyle="dark-content" />
+
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(pages)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         </Stack>
+        {/* <Button title="Reset App Data" onPress={clearAppData} /> */}
       </SQLiteProvider>
     </GestureHandlerRootView>
   );

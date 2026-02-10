@@ -1,6 +1,6 @@
-import { router, useFocusEffect } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 import {
   AnalyticsPreview,
@@ -15,6 +15,7 @@ import {
 } from "../../components";
 import { LocalClimb } from "../../types/LocalClimb";
 import styles from "../styles/index.styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 type LocalClimb = {
   id: number;
   uuid?: string;
@@ -133,6 +134,20 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [climbs, setClimbs] = useState<LocalClimb[]>([]);
+
+  // This is for checking if the user is opening the app for the first time:
+  // If true, push them to the onboarding page
+  // Otherwise, continue as normal
+  const router = useRouter();
+  useEffect(() => {
+    const checkOnboarding = async () => {
+      const hasSeenOnboarding = await AsyncStorage.getItem("hasSeenOnboarding");
+      if (!hasSeenOnboarding) {
+        router.replace("/onboarding");
+      }
+    };
+    checkOnboarding();
+  }, []);
 
   // Fetch climbs from SQLite - runs every time the page comes into focus
   const fetchClimbs = useCallback(async () => {
