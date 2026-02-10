@@ -8,6 +8,7 @@ import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
+import Login from "./login";
 
 const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
 const color = (isLight: any) => backgroundColor(!isLight);
@@ -65,7 +66,10 @@ const LoginBtn = () => {
           setPassword={handleEmailChange}
           displayText="Password"
         />
-        <ButtonComponent onPress={() => nav.navigate("/login")} title="Create Account" />
+        <ButtonComponent
+          onPress={() => nav.navigate("/login")}
+          title="Create Account"
+        />
       </View>
     </View>
   );
@@ -88,11 +92,26 @@ const GetStarted = () => {
 const OnboardingPage = () => {
   const nav = useRouter();
 
+  const handleOnboardingComplete = async () => {
+    try {
+      await AsyncStorage.setItem("hasSeenOnboarding", "true");
+      console.log("Onboarding complete. Flag set in AsyncStorage.");
+      const keys = await AsyncStorage.getAllKeys();
+      const items = await AsyncStorage.multiGet(keys);
+      console.log("asyncStorage contents: ", items);
+      nav.replace("/signup");
+    } catch (error) {
+      console.error("Error setting onboarding flag:", error);
+    }
+  };
+
+  console.log("onboarding page rendered");
+
   return (
     <Onboarding
       showSkip={false}
       showDone={true}
-      onDone={() => nav.navigate("/")}
+      onDone={handleOnboardingComplete}
       DotComponent={Square}
       bottomBarColor={global.colors.background_1}
       bottomBarHeight={100}

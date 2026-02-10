@@ -1,55 +1,59 @@
-// initialize our database here
-// so that all children of the application
-// can use the same database.
-// we access this database using the sqlite db hook.
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { Button, StatusBar } from "react-native";
+import { Button, StatusBar, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function RootLayout() {
   const [isLoading, setIsLoading] = useState(true);
-  const [ShowOnboarding, setShowOnboarding] = useState(false);
-  const router = useRouter();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // TEMPORARY
   const clearAppData = async () => {
     try {
-      await AsyncStorage.clear(); // Clear all AsyncStorage data
-      // setShowOnboarding(false);
+      await AsyncStorage.clear();
       console.log("App data cleared!");
+      const keys = await AsyncStorage.getAllKeys();
+      const items = await AsyncStorage.multiGet(keys);
+      console.log("AsyncStorage contents after clearing:", items);
     } catch (error) {
       console.error("Failed to clear app data:", error);
     }
   };
 
-  useEffect(() => {
-    const checkOnboardingStatus = async () => {
-      try {
-        const hasSeenOnboarding =
-          await AsyncStorage.getItem("hasSeenOnboarding");
+  // useEffect(() => {
+  //   const checkOnboardingStatus = async () => {
+  //     try {
+  //       const hasSeenOnboarding =
+  //         await AsyncStorage.getItem("hasSeenOnboarding");
+  //       console.log("hasSeenOnboarding:", hasSeenOnboarding);
 
-        if (!hasSeenOnboarding) {
-          setShowOnboarding(true);
-        } else {
-          setShowOnboarding(false);
-        }
-      } catch (error) {
-        console.error("Error checking onboarding status:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    checkOnboardingStatus();
-  }, []);
+  //       if (!hasSeenOnboarding) {
+  //         setShowOnboarding(true);
+  //       } else {
+  //         setShowOnboarding(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking onboarding status:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   checkOnboardingStatus();
+  // }, []);
 
-  // Shows a loading screen while checking for onboarding status
-  if (isLoading) {
-    return null;
-  }
+  // // Shows a loading screen while checking for onboarding status
+  // if (isLoading) {
+  //   return (
+  //     <GestureHandlerRootView
+  //       style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+  //     >
+  //       <Text>Loading...</Text>
+  //     </GestureHandlerRootView>
+  //   );
+  // }
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SQLiteProvider
@@ -96,18 +100,12 @@ function RootLayout() {
       >
         {/* this makes apple's status bar black */}
         <StatusBar barStyle="dark-content" />
+
         <Stack screenOptions={{ headerShown: false }}>
-          {ShowOnboarding ? (
-            <Stack.Screen
-              name="(auth)/onboarding"
-              options={{ headerShown: false }}
-            />
-          ) : (
-            <Stack.Screen name="(pages)" options={{ headerShown: false }} />
-          )}
+          <Stack.Screen name="(pages)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         </Stack>
-        {/* TEMPORARY */}
-        {/* <Button title="Reset App Data" onPress={clearAppData} /> */}
+        <Button title="Reset App Data" onPress={clearAppData} />
       </SQLiteProvider>
     </GestureHandlerRootView>
   );
