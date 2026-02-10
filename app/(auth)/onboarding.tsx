@@ -1,14 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import ButtonComponent from "@/components/Button/Button";
-import EmailComponent from "@/components/Email/Email";
-import PasswordComponent from "@/components/Password/Password";
 import { global } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useRef } from "react";
 import { Image, Text, View } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-import Login from "./login";
 
 const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
 const color = (isLight: any) => backgroundColor(!isLight);
@@ -65,11 +62,11 @@ const LoginBtn = () => {
 };
 
 // Getting Start Button and Text
-const GetStarted = () => {
+const GetStarted = ({ goToNext }: { goToNext: () => void }) => {
   const nav = useRouter();
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
-      <ButtonComponent onPress={() => nav.navigate("/")} title="Get Started" />
+      <ButtonComponent onPress={goToNext} title="Get Started" />
       <Text>
         Already have an account? Login{" "}
         <Text
@@ -86,6 +83,7 @@ const GetStarted = () => {
 // Main Onboarding Page Function
 const OnboardingPage = () => {
   const nav = useRouter();
+  const onboardingRef = useRef<any>(null);
 
   const handleOnboardingComplete = async () => {
     try {
@@ -94,9 +92,15 @@ const OnboardingPage = () => {
       const keys = await AsyncStorage.getAllKeys();
       const items = await AsyncStorage.multiGet(keys);
       console.log("asyncStorage contents: ", items);
-      nav.replace("/(pages)");
+      nav.replace("/signup");
     } catch (error) {
       console.error("Error setting onboarding flag:", error);
+    }
+  };
+
+  const goToNext = () => {
+    if (onboardingRef.current) {
+      onboardingRef.current.goToPage(1, true);
     }
   };
 
@@ -104,6 +108,7 @@ const OnboardingPage = () => {
 
   return (
     <Onboarding
+      ref={onboardingRef}
       showSkip={false}
       showDone={true}
       onDone={handleOnboardingComplete}
@@ -121,7 +126,7 @@ const OnboardingPage = () => {
             />
           ),
           title: "Rock Climbing",
-          subtitle: <GetStarted />,
+          subtitle: <GetStarted goToNext={goToNext} />,
           canSwipeForward: true,
         },
         {
@@ -144,7 +149,7 @@ const OnboardingPage = () => {
           backgroundColor: "#fff",
           image: <Ionicons ellipse />,
           title: "Start Climbing Today",
-          subtitle: <LoginBtn />,
+          subtitle: "Create your account today",
           canSwipeBackward: true,
         },
       ]}
