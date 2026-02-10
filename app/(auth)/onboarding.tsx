@@ -41,15 +41,10 @@ const Square = ({
 // Login Button for Last Page
 const LoginBtn = () => {
   const nav = useRouter();
-  const [email, setEmail] = useState("");
-
-  function handleEmailChange(text: string) {
-    setEmail(text);
-  }
 
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
-      <Text>Create an account below</Text>
+      <Text>Create your account to get started!</Text>
       <View
         style={{
           alignItems: "center",
@@ -60,14 +55,8 @@ const LoginBtn = () => {
           backgroundColor: global.colors.background_1,
         }}
       >
-        <EmailComponent email={email} setEmail={handleEmailChange} />
-        <PasswordComponent
-          password={email}
-          setPassword={handleEmailChange}
-          displayText="Password"
-        />
         <ButtonComponent
-          onPress={() => nav.navigate("/login")}
+          onPress={() => nav.navigate("/signup")}
           title="Create Account"
         />
       </View>
@@ -81,9 +70,15 @@ const GetStarted = () => {
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
       <ButtonComponent onPress={() => nav.navigate("/")} title="Get Started" />
-      <View style={{}}>
-        <Text>Already have an account? Login here.</Text>
-      </View>
+      <Text>
+        Already have an account? Login{" "}
+        <Text
+          onPress={() => nav.navigate("/login")}
+          style={{ color: "#007AFF", textDecorationLine: "underline" }}
+        >
+          here.
+        </Text>
+      </Text>
     </View>
   );
 };
@@ -99,7 +94,7 @@ const OnboardingPage = () => {
       const keys = await AsyncStorage.getAllKeys();
       const items = await AsyncStorage.multiGet(keys);
       console.log("asyncStorage contents: ", items);
-      nav.replace("/signup");
+      nav.replace("/(pages)");
     } catch (error) {
       console.error("Error setting onboarding flag:", error);
     }
