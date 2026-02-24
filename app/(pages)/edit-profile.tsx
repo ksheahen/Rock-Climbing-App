@@ -1,3 +1,4 @@
+import { supabase } from "@/services/supabaseClient";
 import { useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
@@ -10,25 +11,31 @@ import {
 } from "react-native";
 import { getUserById, updateUser } from "../../services/userService";
 import type { User } from "../../types/User";
-import { useSession } from "../context/SessionContext";
 import styles from "../styles/edit-profile";
 
 function EditProfilePage() {
   const navigation = useNavigation();
-  const session = useSession();
 
+  const [userId, setUserId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (!session?.user) return;
-
     async function fetchUser() {
       setLoading(true);
       try {
-        const userData: User | null = await getUserById(session!.user.id);
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) {
+          setLoading(false);
+          return;
+        }
+        setUserId(user.id);
+
+        const userData: User | null = await getUserById(user.id);
         if (!userData) throw new Error("User not found");
 
         setName(userData.name);
@@ -41,10 +48,10 @@ function EditProfilePage() {
     }
 
     fetchUser();
-  }, [session]);
+  }, []);
 
   const handleSave = async () => {
-    if (!session?.user) return;
+    if (!userId) return;
 
     if (!name.trim() || !email.trim()) {
       Alert.alert("Validation Error", "Name and email cannot be empty.");
@@ -53,7 +60,7 @@ function EditProfilePage() {
 
     setSaving(true);
     try {
-      const updatedUser = await updateUser(session.user.id, { name, email });
+      const updatedUser = await updateUser(userId, { name, email });
       if (!updatedUser) throw new Error("Failed to update user.");
 
       Alert.alert("Success", "Profile updated!", [

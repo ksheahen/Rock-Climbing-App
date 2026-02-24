@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { useNavigationState, useRouter } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-remix-icon";
@@ -10,9 +10,16 @@ interface BackButtonProps {
 
 function BackButton({ url }: BackButtonProps) {
   const router = useRouter();
+  const navIndex = useNavigationState((state) => state.index);
+
   const handleRedirect = () => {
-    if (url) router.push(url as any);
-    else router.back();
+    if (url) {
+      router.push(url as any);
+    } else if (navIndex > 0) {
+      router.back();
+    } else {
+      router.replace("/");
+    }
   };
 
   return (

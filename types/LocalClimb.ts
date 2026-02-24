@@ -1,7 +1,6 @@
-// Local climb type matching current log_climb5 SQLite schema
-// Using existing schema - will refactor with team later
 export interface LocalClimb {
   id: number;
+  uuid?: string;
   category: string;
   type: string;
   complete: string;
@@ -11,6 +10,9 @@ export interface LocalClimb {
   datetime: string;
   description: string;
   media: string;
+  location?: string;
+  deleted?: number;
+  synced?: number;
 }
 
 export type LocalClimbInsert = Omit<LocalClimb, "id">;

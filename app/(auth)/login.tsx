@@ -1,22 +1,13 @@
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, AppState, Image, StatusBar, Text, View } from "react-native";
+import { Alert, Image, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonComponent from "../../components/Button/Button";
 import EmailComponent from "../../components/Email/Email";
 import PasswordComponent from "../../components/Password/Password";
 import styles from "../styles/login.styles";
 import BackButton from "@/components/BackButton/BackButton";
-
-// Refreshes session automtically if the app is in the foreground
-AppState.addEventListener("change", (state) => {
-  if (state === "active") {
-    supabase.auth.startAutoRefresh();
-  } else {
-    supabase.auth.stopAutoRefresh();
-  }
-});
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -51,7 +42,29 @@ export default function Login() {
     if (error) setError(null);
   }
 
-  // Sign In with Email
+  async function handleForgotPassword() {
+    if (!email) {
+      setEmailError(true);
+      setError("Enter your email above, then tap Forgot Password");
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "rockclimbingapp://login",
+    });
+
+    if (error) {
+      Alert.alert("Error", error.message);
+    } else {
+      Alert.alert(
+        "Check your email",
+        "A password reset link has been sent to " + email,
+      );
+    }
+    setLoading(false);
+  }
+
   async function signInWithEmail() {
     if (!email) {
       setEmailError(true);
@@ -75,29 +88,32 @@ export default function Login() {
 
       const errorMessage = (error.message || "").toLowerCase();
 
-      // Set Password Error to True
+      let hasEmailErr = false;
+      let hasPasswordErr = false;
+
       if (
         errorMessage.includes("password") ||
         errorMessage.includes("invalid") ||
         errorMessage.includes("credentials")
       ) {
-        setPasswordError(true);
+        hasPasswordErr = true;
       }
 
-      // Set Email Error to True
       if (
         errorMessage.includes("email") ||
         errorMessage.includes("user") ||
         errorMessage.includes("not found")
       ) {
-        setEmailError(true);
+        hasEmailErr = true;
       }
 
-      // If auth fails mark both as invalid
-      if (!emailError && !passwordError) {
-        setEmailError(true);
-        setPasswordError(true);
+      if (!hasEmailErr && !hasPasswordErr) {
+        hasEmailErr = true;
+        hasPasswordErr = true;
       }
+
+      setEmailError(hasEmailErr);
+      setPasswordError(hasPasswordErr);
     } else {
       router.navigate("/profile");
     }
@@ -140,7 +156,7 @@ export default function Login() {
           </Text>
         )}
         <View style={styles.forgotPasswordContainer}>
-          <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
+          <Text onPress={handleForgotPassword}> Forgot Password?</Text>
         </View>
         <ButtonComponent
           title={login}

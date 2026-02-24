@@ -16,21 +16,6 @@ import {
 import { LocalClimb } from "../../types/LocalClimb";
 import styles from "../styles/index.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-type LocalClimb = {
-  id: number;
-  uuid?: string;
-  category: string;
-  type: string;
-  complete: string;
-  attempt: string;
-  grade: string;
-  rating: number | null;
-  datetime: string | null;
-  description: string | null;
-  media: string | null;
-  deleted?: number;
-  synced?: number;
-};
 
 // Extract V-grade number from grade string (e.g., "6a/V3" -> 3)
 const getVGradePoints = (grade: string): number => {
@@ -407,7 +392,7 @@ const Index = () => {
             onSessionPress={handleSessionPress}
           />
         )}
-        <AnalyticsPreview onPress={handleAnalyticsPress} />
+        <AnalyticsPreview onPress={handleAnalyticsPress} climbs={climbs} />
       </View>
       <FilterModal
         visible={filterModalVisible}

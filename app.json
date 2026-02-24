@@ -13,6 +13,7 @@
       "bundleIdentifier": "com.anonymous.Rock-Climbing-App"
     },
     "android": {
+      "package": "com.anonymous.RockClimbingApp",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE"
       },

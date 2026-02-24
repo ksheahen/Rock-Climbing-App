@@ -1,22 +1,13 @@
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, AppState, Image, StatusBar, Text, View } from "react-native";
+import { Alert, Image, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonComponent from "../../components/Button/Button";
 import EmailComponent from "../../components/Email/Email";
 import PasswordComponent from "../../components/Password/Password";
 import styles from "../styles/signup.styles";
 import BackButton from "@/components/BackButton/BackButton";
-
-// Refreshes session automatically if the app is in the foreground
-AppState.addEventListener("change", (state) => {
-  if (state === "active") {
-    supabase.auth.startAutoRefresh();
-  } else {
-    supabase.auth.stopAutoRefresh();
-  }
-});
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -95,7 +86,6 @@ export default function Signup() {
       setError(error.message);
       const errorMessage = (error.message || "").toLowerCase();
 
-      // If error message includes passowrd, set the password error to true
       if (
         errorMessage.includes("password") ||
         errorMessage.includes("weak") ||
@@ -105,7 +95,6 @@ export default function Signup() {
         setConfirmPasswordError(true);
       }
 
-      // If the error message includes email, set the email error to true
       if (
         errorMessage.includes("email") ||
         errorMessage.includes("user") ||
@@ -113,15 +102,16 @@ export default function Signup() {
       ) {
         setEmailError(true);
       }
-    } else if (!data?.session) {
-      Alert.alert("Please check your inbox for email verification!");
-    } else {
-      setError("Unexpected error occurred during signup");
+
+      setLoading(false);
+      return;
     }
 
-    if (!error) {
-      router.navigate("/login");
+    if (!data?.session) {
+      Alert.alert("Please check your inbox for email verification!");
     }
+
+    router.navigate("/login");
     setLoading(false);
   }
 
