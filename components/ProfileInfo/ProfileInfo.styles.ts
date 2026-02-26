@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: global.padding.large,
     alignItems: "flex-start",
-   paddingTop: global.margin.page_top,
+    paddingTop: global.margin.page_top,
   },
   avatarPlaceholder: {
     width: 100,

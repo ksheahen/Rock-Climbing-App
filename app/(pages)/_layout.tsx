@@ -21,7 +21,12 @@ function TabLayout() {
           title: "Home",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="home-line" size={30} color={global.colors.text_1} padding={10}/>
+            <Icon
+              name="home-line"
+              size={30}
+              color={global.colors.text_1}
+              padding={10}
+            />
           ),
         }}
       />
@@ -37,7 +42,7 @@ function TabLayout() {
               name="bar-chart-2-line"
               size={30}
               color={global.colors.text_1}
-	      padding={10}
+              padding={10}
             />
           ),
         }}
@@ -52,7 +57,7 @@ function TabLayout() {
               name="add-circle-line"
               size={30}
               color={global.colors.text_1}
-	      padding={10}
+              padding={10}
             />
           ),
         }}
@@ -68,7 +73,7 @@ function TabLayout() {
               name="account-circle-line"
               size={30}
               color={global.colors.text_1}
-	      padding={10}
+              padding={10}
             />
           ),
         }}
@@ -81,7 +86,12 @@ function TabLayout() {
           title: "Edit profile page",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="circle-line" size={30} color={global.colors.text_1} padding={10}/>
+            <Icon
+              name="circle-line"
+              size={30}
+              color={global.colors.text_1}
+              padding={10}
+            />
           ),
         }}
       />
@@ -93,7 +103,12 @@ function TabLayout() {
           title: "Individual climb page",
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Icon name="circle-line" size={30} color={global.colors.text_1} padding={10}/>
+            <Icon
+              name="circle-line"
+              size={30}
+              color={global.colors.text_1}
+              padding={10}
+            />
           ),
         }}
       />

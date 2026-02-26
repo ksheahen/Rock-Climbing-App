@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   dropdown: { fontSize: global.font_size.phone_medium },
-  icon_container: {
-  },
+  icon_container: {},
 });
 
 export default styles;

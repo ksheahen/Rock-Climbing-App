@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     paddingLeft: global.margin.page_border,
     paddingRight: global.margin.page_border,
     paddingBottom: global.margin.page_top,
-   },
+  },
   scroll_container: {
     display: "flex",
     gap: global.gap.medium,
