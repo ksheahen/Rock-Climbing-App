@@ -1,14 +1,18 @@
 import ButtonComponent from "@/components/Button/Button";
 import { global } from "@/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Video } from "expo-av";
+import { Video, ResizeMode } from "expo-av";
 import { useRouter } from "expo-router";
 import React, { useRef } from "react";
-import { Image, Text, View } from "react-native";
+import { Dimensions, Image, Text, View } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 
 const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
 const color = (isLight: any) => backgroundColor(!isLight);
+
+const { width, height } = Dimensions.get("window");
+const videoWidth = Math.min(width * 0.9, 600);
+const videoHeight = Math.min(height * 0.5, 450);
 
 const Square = ({
   isLight,
@@ -66,7 +70,7 @@ const GetStarted = ({ goToNext }: { goToNext: () => void }) => {
   const nav = useRouter();
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
-      <View style={{ idth: 250 }}>
+      <View style={{ width: 250 }}>
         <ButtonComponent onPress={goToNext} title="Get Started" />
       </View>
       <Text>
@@ -116,7 +120,7 @@ const OnboardingPage = () => {
       onDone={handleOnboardingComplete}
       DotComponent={Square}
       bottomBarColor={global.colors.background_1}
-      bottomBarHeight={100}
+      bottomBarHeight={height - 800}
       bottomBarHighlight={false}
       pages={[
         {
@@ -133,13 +137,16 @@ const OnboardingPage = () => {
         {
           backgroundColor: "#fff",
           image: (
-            <Video
-              source={require("../../assets/log_tutorial.mp4")}
-              style={{ width: 600, height: 450 }}
-              isLooping
-              isMuted
-              shouldPlay
-            />
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Video
+                source={require("../../assets/log_tutorial.mp4")}
+                style={{ width: videoWidth, height: videoHeight }}
+                isLooping
+                isMuted
+                shouldPlay
+                resizeMode={ResizeMode.CONTAIN}
+              />
+            </View>
           ),
           title: "Track your climbs",
           subtitle: "Tap the + icon to add a log",
@@ -147,13 +154,16 @@ const OnboardingPage = () => {
         {
           backgroundColor: "#fff",
           image: (
-            <Video
-              source={require("../../assets/profile_tutorial.mp4")}
-              style={{ width: 600, height: 450 }}
-              isLooping
-              isMuted
-              shouldPlay
-            />
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Video
+                source={require("../../assets/profile_tutorial.mp4")}
+                style={{ width: videoWidth, height: videoHeight }}
+                isLooping
+                isMuted
+                shouldPlay
+                resizeMode={ResizeMode.CONTAIN}
+              />
+            </View>
           ),
           title: "See Your Progress",
           subtitle: "View your climbs on your profile",
