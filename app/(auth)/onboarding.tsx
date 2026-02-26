@@ -1,7 +1,7 @@
 import ButtonComponent from "@/components/Button/Button";
 import { global } from "@/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Video, ResizeMode } from "expo-av";
+import { ResizeMode, Video } from "expo-av";
 import { useRouter } from "expo-router";
 import React, { useRef } from "react";
 import { Dimensions, Image, Text, View } from "react-native";
@@ -82,6 +82,22 @@ const GetStarted = ({ goToNext }: { goToNext: () => void }) => {
           here.
         </Text> */}
       </Text>
+    </View>
+  );
+};
+
+const SignUp = () => {
+  return (
+    <View>
+      {/* Outline of last onboarding page */}
+      <Text>Create an account today: </Text>
+      <Text>Display Name</Text>
+      <Text>Instagram Handle</Text>
+      <Text>Email</Text>
+      <Text>Password</Text>
+      <Text>Confirm Pass</Text>
+      <Text>PFP Selection</Text>
+      <Text>Signup Button</Text>
     </View>
   );
 };
@@ -177,7 +193,7 @@ const OnboardingPage = () => {
             />
           ),
           title: "Start Climbing Today",
-          subtitle: "Create your account today",
+          subtitle: <SignUp />,
         },
       ]}
     />
