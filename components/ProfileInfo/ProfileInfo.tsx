@@ -66,7 +66,7 @@ export function ProfileInfo() {
           {/* Temporary Achievements button */}
           <Pressable
             style={styles.editButton}
-            onPress={() => router.navigate("/achievements")}
+            onPress={() => router.navigate("/(pages)/achievements")}
           >
             <Text style={styles.editButtonText}>Achievements</Text>
           </Pressable>

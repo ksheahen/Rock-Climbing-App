@@ -47,6 +47,7 @@ function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="log"
         options={{
