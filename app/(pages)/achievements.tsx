@@ -1,26 +1,23 @@
-import { StyleSheet, Text, View } from "react-native";
+import BackButton from "@/components/BackButton/BackButton";
+import { ScrollView, Text, View } from "react-native";
+import styles from "../styles/achievements";
 
 function AchievementsPage() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Basic Page</Text>
-      <Text>This is a simple starter screen.</Text>
-    </View>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {/* Header */}
+      <View style={styles.header}>
+        <BackButton url="/profile" />
+        <Text style={styles.headerTitle}>Achievements</Text>
+        <View style={styles.placeholder} />
+      </View>
+
+      {/* Line Chart */}
+      <View style={styles.content}>
+        <Text>CONTENT</Text>
+      </View>
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "700",
-    marginBottom: 8,
-  },
-});
 
 export default AchievementsPage;
