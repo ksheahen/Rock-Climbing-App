@@ -86,7 +86,7 @@ export function ProfileInfo() {
             }}
             onPress={handleSyncPress}
           >
-            <MaterialIcons name="sync" size={24} color="black" />
+            <MaterialIcons name="sync" size={20} color="black" />
           </Pressable>
         </View>
       </View>
