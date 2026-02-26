@@ -78,7 +78,7 @@ export function ProfileInfo() {
           </Pressable>
           <Pressable
             style={{
-              padding: 8,
+              paddingHorizontal: 10,
               backgroundColor: "#F7F7FC",
               borderRadius: 8,
               justifyContent: "center",
@@ -86,7 +86,7 @@ export function ProfileInfo() {
             }}
             onPress={handleSyncPress}
           >
-            <MaterialIcons name="sync" size={20} color="black" />
+            <MaterialIcons name="sync" size={16} color="black" />
           </Pressable>
         </View>
       </View>

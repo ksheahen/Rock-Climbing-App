@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: global.padding.large,
     alignItems: "flex-start",
-
    paddingTop: global.margin.page_top,
   },
   avatarPlaceholder: {
@@ -26,7 +25,6 @@ export const styles = StyleSheet.create({
   editButtonText: {
     color: global.colors.text_1,
     fontSize: global.font_size.phone_medium,
-    marginTop: 5,
   },
   name: {
     fontSize: global.font_size.phone_medium,
