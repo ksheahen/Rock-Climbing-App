@@ -97,6 +97,23 @@ function TabLayout() {
       />
 
       <Tabs.Screen
+        name="achievements"
+        options={{
+          href: null,
+          title: "Achievements",
+          tabBarShowLabel: false,
+          tabBarIcon: () => (
+            <Icon
+              name="circle-line"
+              size={30}
+              color={global.colors.text_1}
+              padding={10}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
         name="individual-climb-page"
         options={{
           href: null,

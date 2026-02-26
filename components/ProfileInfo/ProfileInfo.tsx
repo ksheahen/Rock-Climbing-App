@@ -63,13 +63,14 @@ export function ProfileInfo() {
       <View style={styles.headerRow}>
         <View style={styles.avatarPlaceholder} />
         <View style={{ flexDirection: "row", gap: 10 }}>
-          {/* Temporary Sign out button */}
-          {/* <Pressable
+          {/* Temporary Achievements button */}
+          <Pressable
             style={styles.editButton}
-            onPress={() => supabase.auth.signOut()}
+            onPress={() => router.navigate("/achievements")}
           >
-            <Text style={styles.editButtonText}>Sign Out</Text>
-          </Pressable> */}
+            <Text style={styles.editButtonText}>Achievements</Text>
+          </Pressable>
+          {/*  End of Achievements button  */}
           <Pressable
             style={styles.editButton}
             onPress={() => router.navigate("/edit-profile")}
