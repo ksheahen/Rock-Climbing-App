@@ -7,9 +7,8 @@ const styles = StyleSheet.create({
     backgroundColor: global.colors.background_1,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    alignItems: "stretch",
     paddingHorizontal: 20,
     paddingTop: 60,
     paddingBottom: 20,
@@ -25,6 +24,19 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 20,
+  },
+  backbtnContainer: {
+    width: "100%",
+  },
+  titleContainer: {
+    alignItems: "center",
+    paddingTop: global.padding.medium,
+    paddingBottom: global.padding.medium,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 600,
+    color: global.colors.text_1,
   },
 });
 

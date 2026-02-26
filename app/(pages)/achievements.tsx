@@ -7,9 +7,12 @@ function AchievementsPage() {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Header */}
       <View style={styles.header}>
-        <BackButton url="/profile" />
-        <Text style={styles.headerTitle}>Achievements</Text>
-        <View style={styles.placeholder} />
+        <View style={styles.backbtnContainer}>
+          <BackButton url="/profile" />
+        </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Achievements</Text>
+        </View>
       </View>
 
       {/* Line Chart */}
