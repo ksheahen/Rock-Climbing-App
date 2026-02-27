@@ -19,12 +19,18 @@ import styles from "../styles/log.styles";
 
 function LogAscent() {
   const db = useSQLiteContext();
+
   // local storage
   const [selectedCategory, setSelectedCategory] = useState("Indoor");
-  const [selectedType, setSelectedType] = useState("Boulder");
+  const [selectedType, setSelectedType] = useState<"Boulder" | "Route">(
+    "Boulder",
+  );
   const [selectedComplete, setSelectedComplete] = useState("Yes");
   const [selectedAttempt, setSelectedAttempt] = useState("1");
+
+  // Default grade starts as Boulder grade (since default Type is Boulder)
   const [selectedGrade, setSelectedGrade] = useState("4a/V0");
+
   const [selectedRating, setSelectedRating] = useState(0);
   const [selectedDateTime, setSelectedDateTime] = useState(
     new Date().toISOString(),
@@ -101,7 +107,7 @@ function LogAscent() {
           setSelectedType("Boulder");
           setSelectedComplete("Yes");
           setSelectedAttempt("1");
-          setSelectedGrade("4a/V0");
+          setSelectedGrade("4a/V0"); // default back to boulder grade
           setSelectedRating(0);
           setSelectedDateTime(new Date().toISOString());
           setSelectedDescription("");
@@ -128,54 +134,64 @@ function LogAscent() {
           editToggle={editToggle}
         />
         <Line />
+
         <Type
           selectedProp={selectedType}
-          onSelectedChange={setSelectedType}
+          onSelectedChange={(v) => setSelectedType(v as "Boulder" | "Route")}
           editToggle={editToggle}
         />
         <Line />
+
         <Complete
           selectedProp={selectedComplete}
           onSelectedChange={setSelectedComplete}
           editToggle={editToggle}
         />
         <Line />
+
         <Attempt
           selectedProp={selectedAttempt}
           onSelectedChange={setSelectedAttempt}
           editToggle={editToggle}
         />
         <Line />
+
         <Difficulty
           selectedProp={selectedGrade}
           onSelectedChange={setSelectedGrade}
           editToggle={editToggle}
+          climbType={selectedType}
         />
         <Line />
+
         <Rating
           selectedProp={selectedRating}
           onSelectedChange={setSelectedRating}
           editToggle={editToggle}
         />
         <Line />
+
         <DateTime
           selectedProp={selectedDateTime}
           onSelectedChange={setSelectedDateTime}
           editToggle={editToggle}
         />
         <Line />
+
         <Location
           selectedProp={selectedLocation}
           onSelectedChange={setSelectedLocation}
           editToggle={editToggle}
         />
         <Line />
+
         <Description
           selectedProp={selectedDescription}
           onSelectedChange={setSelectedDescription}
           editToggle={editToggle}
         />
         <Line />
+
         <Media
           selectedProp={selectedMedia}
           onSelectedChange={setSelectedMedia}

@@ -7,8 +7,8 @@ export const styles = StyleSheet.create({
   cardContainer: {
     width: SCREEN_WIDTH - 40,
     marginBottom: 16,
-    backgroundColor: global.colors.background_2,
-    borderRadius: global.border.border_radius,
+    backgroundColor: global.colors.background_3,
+    borderRadius: 10,
     overflow: "hidden",
   },
   media: {
@@ -27,5 +27,17 @@ export const styles = StyleSheet.create({
     fontSize: global.font_size.phone_large,
     fontWeight: "bold",
     color: global.colors.text_1,
+  },
+  dateandstars: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 2,
+  },
+  date: {
+    marginLeft: 8,
+  },
+  attempt: {
+    marginLeft: 2,
   },
 });

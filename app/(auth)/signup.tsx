@@ -129,7 +129,7 @@ export default function Signup() {
     <>
       <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
-        <BackButton url="/profile" />
+        <BackButton />
       </View>
       <SafeAreaView style={styles.container}>
         <Image source={logo} alt="logo" style={styles.logo} />

@@ -1,3 +1,6 @@
+import global from "@/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { format } from "date-fns";
 import { ResizeMode, Video } from "expo-av";
 import React from "react";
 import { Image, Pressable, Text, View } from "react-native";
@@ -45,7 +48,21 @@ export const ClimbCard: React.FC<ClimbCardProps> = ({
     }
   };
 
+  // Render the rating stars onto the card
+  const renderStars = (count: number) => {
+    return Array.from({ length: 3 }, (_, i) => (
+      <Ionicons
+        key={i}
+        name="star"
+        size={20}
+        color={i < count ? global.colors.yellow : global.colors.background_2}
+        style={{ marginHorizontal: 2 }}
+      />
+    ));
+  };
+
   const mediaItems = parseMediaItems(climb.media);
+  const formattedDate = format(new Date(climb.datetime), "M/d/yy");
 
   const renderRightActions = () => (
     <Pressable
@@ -100,10 +117,16 @@ export const ClimbCard: React.FC<ClimbCardProps> = ({
           )}
         </View>
         <View style={styles.info}>
-          <Text style={styles.grade}>{climb.grade}</Text>
-          <Text>{climb.attempt} tries</Text>
-          <Text>{climb.datetime}</Text>
-          <Text>{climb.rating} Stars</Text>
+          <View>
+            <Text style={styles.grade}>{climb.grade}</Text>
+            <Text style={styles.attempt}>{climb.attempt} tries</Text>
+          </View>
+          <View style={styles.dateandstars}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              {renderStars(climb.rating)}
+            </View>
+            <Text style={styles.date}>{formattedDate}</Text>
+          </View>
         </View>
       </Pressable>
     </Swipeable>

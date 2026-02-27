@@ -169,7 +169,9 @@ export const syncLocalClimbsSQLite = async (
           attempts: parseInt(row.attempt || "0", 10),
           rating: row.rating ?? null,
           description: row.description || null,
-          datetime: row.datetime || null,
+          datetime: row.datetime && row.datetime.trim() !== "" 
+            ? row.datetime 
+            : new Date().toISOString(),
           media: row.media || null,
           completed: row.complete === "Yes",
           category: row.category || "Indoor",
@@ -214,7 +216,9 @@ export const syncLocalClimbsSQLite = async (
             climb.attempts?.toString() || "0",
             climb.grade || "Unknown",
             climb.rating ?? 0,
-            climb.datetime ? new Date(climb.datetime).toISOString() : "",
+            climb.datetime && climb.datetime.trim() !== "" 
+              ? climb.datetime 
+              : new Date().toISOString(),
             climb.description || "",
             climb.media || "",
           ],
