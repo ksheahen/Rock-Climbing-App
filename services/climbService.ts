@@ -125,75 +125,117 @@ async function createSessionForSync(userId: string): Promise<string | null> {
 }
 
 export const syncLocalClimbsSQLite = async (
-	db: ReturnType<typeof useSQLiteContext>,
+  db: ReturnType<typeof useSQLiteContext>,
 ) => {
-	try {
-		const {
-			data: { user },
-		} = await supabase.auth.getUser();
-		if (!user) {
-			Alert.alert("Sync failed", "No logged-in user found.");
-			return;
-		}
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-		// Only fetch unsynced climbs
-		const localClimbsRaw = await db.getAllAsync(
-			"SELECT * FROM log_climb5 WHERE synced = 0",
-		);
+    if (!user) {
+      Alert.alert("Sync failed", "No logged-in user found.");
+      return;
+    }
 
-		if (localClimbsRaw.length === 0) {
-			Alert.alert("Nothing to sync", "All climbs are already synced.");
-			return;
-		}
+    const sessionId = await createSessionForSync(user.id);
+    if (!sessionId) return;
 
-		const sessionId = await createSessionForSync(user.id);
-		if (!sessionId) return;
+    const localClimbs: any[] = await db.getAllAsync(
+      "SELECT * FROM log_climb5 WHERE synced = 0",
+    );
 
-		for (const row of localClimbsRaw as any[]) {
-			// Generate UUID if missing
-			if (!row.uuid) {
-				row.uuid = uuid.v4().toString();
-				await db.runAsync("UPDATE log_climb5 SET uuid = ? WHERE id = ?", [
-					row.uuid,
-					row.id,
-				]);
-			}
+    for (const row of localClimbs) {
+      try {
+        if (!row.uuid) {
+          row.uuid = uuid.v4().toString();
+          await db.runAsync("UPDATE log_climb5 SET uuid = ? WHERE id = ?", [
+            row.uuid,
+            row.id,
+          ]);
+        }
 
-			// Handle deletions
-			if (row.deleted === 1) {
-				await table("climb").delete().eq("climb_id", row.uuid);
-				await db.runAsync("DELETE FROM log_climb5 WHERE uuid = ?", [row.uuid]);
-				continue;
-			}
+        if (row.deleted === 1) {
+          await table("climb").delete().eq("climb_id", row.uuid);
+          await db.runAsync("DELETE FROM log_climb5 WHERE uuid = ?", [row.uuid]);
+          continue;
+        }
 
-			// Upsert into Supabase
-			const { error } = await table("climb").upsert({
-				climb_id: row.uuid,
-				acct_id: user.id,
-				session_id: sessionId,
-				type: row.type || "boulder",
-				grade: row.grade || "Unknown",
-				attempts: parseInt(row.attempt || "0", 10),
-				rating: row.rating ?? null,
-				description: row.description || null,
-				datetime: row.datetime || null,
-				media: row.media || null,
-				completed: row.complete === "Yes",
-				category: row.category || "Indoor",
-			});
+        const { error } = await table("climb").upsert({
+          climb_id: row.uuid,
+          acct_id: user.id,
+          session_id: sessionId,
+          type: row.type || "boulder",
+          grade: row.grade || "Unknown",
+          attempts: parseInt(row.attempt || "0", 10),
+          rating: row.rating ?? null,
+          description: row.description || null,
+          datetime: row.datetime || null,
+          media: row.media || null,
+          completed: row.complete === "Yes",
+          category: row.category || "Indoor",
+        });
 
-			if (!error) {
-				await db.runAsync("UPDATE log_climb5 SET synced = 1 WHERE uuid = ?", [
-					row.uuid,
-				]);
-			} else {
-				console.error("[syncLocalClimbsSQLite] Upsert failed:", error);
-			}
-		}
+        if (!error) {
+          await db.runAsync("UPDATE log_climb5 SET synced = 1 WHERE uuid = ?", [
+            row.uuid,
+          ]);
+        } else {
+          console.error("[syncLocalClimbsSQLite] Upsert failed:", error);
+        }
+      } catch (err) {
+        console.error("[syncLocalClimbsSQLite] Push failed for row:", row, err);
+      }
+    }
 
-		Alert.alert("Sync complete", "Offline climbs synced successfully.");
-	} catch (err) {
-		console.error("[syncLocalClimbsSQLite] Sync failed:", err);
-		Alert.alert("Sync failed", "Please try again later.");
-	}
+    const { data: remoteClimbs, error: fetchError } = await table("climb")
+      .select("*")
+      .eq("acct_id", user.id);
+
+    if (fetchError) {
+      console.error("[syncLocalClimbsSQLite] Fetch failed:", fetchError);
+      Alert.alert(
+        "Sync partial",
+        "Local climbs synced, but could not fetch remote logs.",
+      );
+      return;
+    }
+
+    for (const climb of remoteClimbs) {
+      try {
+        await db.runAsync(
+          `INSERT OR REPLACE INTO log_climb5
+            (uuid, category, type, complete, attempt, grade, rating, datetime, description, media, synced)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+          [
+            climb.climb_id,
+            climb.category || "Indoor",
+            climb.type || "boulder",
+            climb.completed ? "Yes" : "No",
+            climb.attempts?.toString() || "0",
+            climb.grade || "Unknown",
+            climb.rating ?? 0,
+            climb.datetime ? new Date(climb.datetime).toISOString() : "",
+            climb.description || "",
+            climb.media || "",
+          ],
+        );
+      } catch (err) {
+        console.error(
+          "[syncLocalClimbsSQLite] Failed to insert remote climb:",
+          climb.climb_id,
+          err,
+        );
+      }
+    }
+
+    Alert.alert(
+      "Sync complete",
+      localClimbs.length > 0
+        ? "Local climbs pushed and remote climbs merged!"
+        : "No local climbs to push, remote climbs merged!",
+    );
+  } catch (err) {
+    console.error("[syncLocalClimbsSQLite] Sync failed:", err);
+    Alert.alert("Sync failed", "Please try again later.");
+  }
 };
