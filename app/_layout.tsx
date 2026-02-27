@@ -1,23 +1,10 @@
-import { supabase } from "@/services/supabaseClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
-import { useEffect } from "react";
-import { AppState, StatusBar } from "react-native";
+import { Button, StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function RootLayout() {
-  useEffect(() => {
-    const subscription = AppState.addEventListener("change", (state) => {
-      if (state === "active") {
-        supabase.auth.startAutoRefresh();
-      } else {
-        supabase.auth.stopAutoRefresh();
-      }
-    });
-    return () => subscription.remove();
-  }, []);
-
   // TEMPORARY
   const clearAppData = async () => {
     try {

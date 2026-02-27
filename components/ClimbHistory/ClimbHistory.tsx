@@ -1,17 +1,29 @@
 import { ClimbCard, ClimbData } from "@/components/ClimbCard/ClimbCard";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
+import { useCallback, useState } from "react";
 import { ScrollView, View } from "react-native";
 import styles from "./ClimbHistory.styles";
+import { load } from "dotenv";
 
-interface ClimbHistoryProps {
-  dates: "day" | "week" | "month" | "all";
-  climbs: ClimbData[];
-}
-
-function ClimbHistory({ climbs }: ClimbHistoryProps) {
+function ClimbHistory() {
   const db = useSQLiteContext();
   const router = useRouter();
+
+  const [climbs, setClimbs] = useState<ClimbData[]>([]);
+
+  const loadClimbs = async () => {
+    const results = (await db.getAllAsync(
+      `SELECT * FROM log_climb5 WHERE deleted = 0 ORDER BY id DESC`,
+    )) as ClimbData[];
+    setClimbs(results);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadClimbs();
+    }, []),
+  );
 
   const handleRedirect = (id: number) => {
     router.push(`/individual-climb-page?id=${id}&from=profile`);
@@ -26,6 +38,7 @@ function ClimbHistory({ climbs }: ClimbHistoryProps) {
        		WHERE id = ?`,
         [id],
       );
+      setClimbs((prev) => prev.filter((c) => c.id !== id));
     } catch (error) {
       console.error("Failed to delete climb:", error);
     }

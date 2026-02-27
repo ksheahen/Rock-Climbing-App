@@ -62,6 +62,19 @@ function IndividualClimbPage() {
   const [editToggle, setEditToggle] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
+  console.log("----------------------------");
+  console.log("Local Storage 'category'  -", selectedCategory);
+  console.log("Local Storage 'type'      -", selectedType);
+  console.log("Local Storage 'complete'  -", selectedComplete);
+  console.log("Local Storage 'attempt'   -", selectedAttempt);
+  console.log("Local Storage 'grade'     -", selectedGrade);
+  console.log("Local Storage 'rating'    -", selectedRating);
+  console.log("Local Storage 'datetime'  -", selectedDateTime);
+  console.log("Local Storage 'desc'      -", selectedDescription);
+  console.log("Local Storage 'media'     -", selectedMedia);
+  console.log("Local Storage 'location'  -", selectedLocation);
+  console.log("----------------------------");
+
   // derive media items from stored JSON string
   const mediaItems = useMemo(
     () => parseMediaItems(selectedMedia),
@@ -72,6 +85,7 @@ function IndividualClimbPage() {
   const searchParams = useSearchParams();
   const paramsid = searchParams.get("id");
   const fromPage = searchParams.get("from");
+  console.log("Request Id      - ", paramsid);
 
   // LOAD -------------
   const loadClimbs = async () => {
@@ -128,6 +142,18 @@ function IndividualClimbPage() {
         media: selectedMedia,
         location: selectedLocation,
       };
+      // check
+      console.log("DB Storage 'category'   -", climb.category);
+      console.log("DB Storage 'type'       - ", climb.type);
+      console.log("DB Storage 'complete'   - ", climb.complete);
+      console.log("DB Storage 'attempt'    - ", climb.attempt);
+      console.log("DB Storage 'grade'      - ", climb.grade);
+      console.log("DB Storage 'rating'     - ", climb.rating);
+      console.log("DB Storage 'datetime'   - ", climb.datetime);
+      console.log("DB Storage 'desc'       - ", climb.description);
+      console.log("DB Storage 'media'      - ", climb.media);
+      console.log("DB Storage 'location'   - ", climb.location);
+
       // update the db
       const result = await db.runAsync(
         `UPDATE log_climb5 
@@ -148,6 +174,7 @@ function IndividualClimbPage() {
         ],
       );
 
+      console.log("Updating logs in db", result);
       setEditToggle(false);
     } catch (error: any) {
       // TODO : Add a modal pop up for error
@@ -174,20 +201,22 @@ function IndividualClimbPage() {
   };
 
   const editPress = async () => {
+    console.log("edit pressed");
     setModalVisible(false);
     setEditToggle(true);
   };
 
   const deletePress = async () => {
     try {
-      await db.runAsync(
+      const result = await db.runAsync(
         `UPDATE log_climb5 
           SET deleted = 1, 
               synced = 0 
           WHERE id = ?`,
         [paramsid],
       );
-      setModalVisible(false);
+      console.log(`Deleted log ${paramsid} from db`, result);
+      setModalVisible(false); // this doesnt really matter
       handleRedirect();
     } catch (error: any) {
       // TODO : Add a modal pop up for error
@@ -283,7 +312,6 @@ function IndividualClimbPage() {
           selectedProp={selectedGrade}
           onSelectedChange={setSelectedGrade}
           editToggle={editToggle}
-          climbType={selectedType as "Boulder" | "Route"}
         />
         <Line />
         <Rating

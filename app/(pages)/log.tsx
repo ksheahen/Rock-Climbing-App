@@ -41,6 +41,19 @@ function LogAscent() {
   const editToggle = true;
   const router = useRouter();
 
+  console.log("----------------------------");
+  console.log("Local Storage 'category'  -", selectedCategory);
+  console.log("Local Storage 'type'      -", selectedType);
+  console.log("Local Storage 'complete'  -", selectedComplete);
+  console.log("Local Storage 'attempt'   -", selectedAttempt);
+  console.log("Local Storage 'grade'     -", selectedGrade);
+  console.log("Local Storage 'rating'    -", selectedRating);
+  console.log("Local Storage 'datetime'  -", selectedDateTime);
+  console.log("Local Storage 'desc'      -", selectedDescription);
+  console.log("Local Storage 'media'     -", selectedMedia);
+  console.log("Local Storage 'location'  -", selectedLocation);
+  console.log("----------------------------");
+
   // SEND -------------
   const handleSubmit = async () => {
     const climb = {
@@ -74,6 +87,8 @@ function LogAscent() {
         climb.description,
         climb.media,
         climb.location,
+        0,
+        0,
       ],
     );
 
