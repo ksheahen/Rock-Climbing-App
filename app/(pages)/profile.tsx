@@ -2,12 +2,14 @@ import { ProfileInfo } from "@/components";
 import ClimbHistory from "@/components/ClimbHistory/ClimbHistory";
 import Line from "@/components/Line/Line";
 import TimeframeFilter from "@/components/TimeframeFilter/TimeframeFilter";
+import AchievementsRow from "@/components/EarnedAcheivements/EarnedAcheivements";
 import { LocalClimb } from "@/types/LocalClimb";
 import { useFocusEffect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
 import { View } from "react-native";
 import styles from "../styles/profile.styles";
+
 
 // import { useFocusEffect } from "expo-router";
 // import { useCallback, useEffect, useState } from "react";
@@ -18,6 +20,14 @@ import styles from "../styles/profile.styles";
 // import type { User } from "../../types/User";
 // import { useSession } from "../context/SessionContext";
 
+type EarnedAchievement = {
+  achievement_id: string;
+  name: string;
+  description: string | null;
+  badge_icon: string | null;
+  earned_at: string;
+};
+
 function ProfilePage() {
   // const [loading, setLoading] = useState(true);
   // const [user, setUser] = useState<User | null>(null);
@@ -27,6 +37,7 @@ function ProfilePage() {
   );
   const db = useSQLiteContext();
   const [climbsArr, setClimbsArr] = useState<LocalClimb[]>([]);
+  const [achievements, setAchievements] = useState<EarnedAchievement[]>([]);
   // const session = useSession();
   // useEffect(() => {
   //   if (!session?.user) return;
@@ -126,6 +137,27 @@ function ProfilePage() {
           );
           if (!mounted) return;
           setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
+
+          const achievementRows = await db.getAllAsync(
+            `SELECT
+                a.achievement_id,
+                a.name,
+                a.description,
+                a.badge_icon,
+                ua.earned_at
+             FROM user_achievement ua
+             JOIN achievement a
+               ON a.achievement_id = ua.achievement_id
+             WHERE ua.deleted = 0
+             ORDER BY ua.earned_at DESC;`,
+            [],
+          );
+          if (!mounted) return;
+          setAchievements(
+            Array.isArray(achievementRows)
+              ? (achievementRows as EarnedAchievement[])
+              : [],
+          );
         } catch (err) {
           console.error("Failed to load climbs on focus", err);
         }
@@ -143,6 +175,8 @@ function ProfilePage() {
     <View style={styles.container}>
       <View style={styles.mainContent}>
         <ProfileInfo />
+        <Line />
+        <AchievementsRow achievements={achievements} />
         <Line />
         <TimeframeFilter dates={timeframe} onChange={setTimeframe} />
         {/* <Line /> */}
