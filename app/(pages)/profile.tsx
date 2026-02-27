@@ -18,6 +18,12 @@ import styles from "../styles/profile.styles";
 // import type { User } from "../../types/User";
 // import { useSession } from "../context/SessionContext";
 
+function safeDate(datetime: string | null | undefined): Date | null {
+  if (!datetime?.trim()) return null;
+  const d = new Date(datetime);
+  return isNaN(d.getTime()) ? null : d;
+}
+
 function ProfilePage() {
   // const [loading, setLoading] = useState(true);
   // const [user, setUser] = useState<User | null>(null);
@@ -88,32 +94,42 @@ function ProfilePage() {
   // }
 
   function filterClimbsByTimeframe(climbs: LocalClimb[], tf: typeof timeframe) {
-    const now = new Date();
+  const now = new Date();
 
-    return climbs.filter((c) => {
-      const climbDate = new Date(c.datetime);
-      switch (tf) {
-        case "day":
-          return (
-            climbDate.getFullYear() === now.getFullYear() &&
-            climbDate.getMonth() === now.getMonth() &&
-            climbDate.getDate() === now.getDate()
-          );
-        case "week": {
-          const weekAgo = new Date();
-          weekAgo.setDate(now.getDate() - 7);
-          return climbDate >= weekAgo && climbDate <= now;
-        }
-        case "month": {
-          const monthAgo = new Date(now);
-          monthAgo.setMonth(now.getMonth() - 1);
-          return climbDate >= monthAgo && climbDate <= now;
-        }
-        default:
-          return true;
+  return climbs.filter((c, idx) => {
+    if (!c.datetime) {
+      console.warn(`[filterClimbsByTimeframe] Row ${idx} has null/empty datetime:`, c);
+      return false; // skip rows without a valid datetime
+    }
+
+    const climbDate = new Date(c.datetime);
+    if (isNaN(climbDate.getTime())) {
+      console.warn(`[filterClimbsByTimeframe] Row ${idx} has invalid date:`, c);
+      return false;
+    }
+
+    switch (tf) {
+      case "day":
+        return (
+          climbDate.getFullYear() === now.getFullYear() &&
+          climbDate.getMonth() === now.getMonth() &&
+          climbDate.getDate() === now.getDate()
+        );
+      case "week": {
+        const weekAgo = new Date();
+        weekAgo.setDate(now.getDate() - 7);
+        return climbDate >= weekAgo && climbDate <= now;
       }
-    });
-  }
+      case "month": {
+        const monthAgo = new Date(now);
+        monthAgo.setMonth(now.getMonth() - 1);
+        return climbDate >= monthAgo && climbDate <= now;
+      }
+      default:
+        return true;
+    }
+  });
+}
 
   useFocusEffect(
     useCallback(() => {
@@ -125,6 +141,11 @@ function ProfilePage() {
             [],
           );
           if (!mounted) return;
+          const safeRows = (rows as LocalClimb[]).map((c) => ({
+          ...c,
+          datetime:
+            c.datetime && c.datetime.trim() !== "" ? c.datetime : null,
+        }));
           setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
         } catch (err) {
           console.error("Failed to load climbs on focus", err);
