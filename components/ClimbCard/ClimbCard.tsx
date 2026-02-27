@@ -36,7 +36,9 @@ export const ClimbCard: React.FC<ClimbCardProps> = ({
       if (!Array.isArray(parsed)) return [];
       return parsed.filter(
         (it: any) =>
-          it && typeof it.uri === "string" && (it.type === "image" || it.type === "video")
+          it &&
+          typeof it.uri === "string" &&
+          (it.type === "image" || it.type === "video"),
       );
     } catch {
       return [];
@@ -66,13 +68,23 @@ export const ClimbCard: React.FC<ClimbCardProps> = ({
       <Pressable style={styles.cardContainer} onPress={onPress}>
         <View style={styles.media}>
           {mediaItems.length === 0 ? (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Icon name="image-line" size={32} color="#8E8E93" />
             </View>
           ) : (
             mediaItems.map((m: any) =>
               m.type === "image" ? (
-                <Image key={m.uri} source={{ uri: m.uri }} style={styles.mediaItem} />
+                <Image
+                  key={m.uri}
+                  source={{ uri: m.uri }}
+                  style={styles.mediaItem}
+                />
               ) : (
                 <Video
                   key={m.uri}
@@ -83,7 +95,7 @@ export const ClimbCard: React.FC<ClimbCardProps> = ({
                   isMuted
                   useNativeControls
                 />
-              )
+              ),
             )
           )}
         </View>

@@ -5,32 +5,32 @@ import colors from "../../theme/index";
 
 // TODO: May need updating for security purposes
 interface PasswordProps {
-	password: string;
-	setPassword: (text: string) => void;
-	displayText: string;
-	inputStyle?: object;
+  password: string;
+  setPassword: (text: string) => void;
+  displayText: string;
+  inputStyle?: object;
 }
 
 function PasswordComponent({
-	password,
-	setPassword,
-	displayText,
-	inputStyle,
+  password,
+  setPassword,
+  displayText,
+  inputStyle,
 }: PasswordProps) {
-	return (
-		<View style={styles.passwordContainer}>
-			<MaterialIcons name="lock" size={20} />
-			<TextInput
-				style={[styles.input, inputStyle]}
-				onChangeText={(text) => setPassword(text)}
-				value={password}
-				placeholder={displayText}
-				placeholderTextColor={colors.colors.text_2}
-				autoCapitalize={"none"}
-				secureTextEntry={true}
-			/>
-		</View>
-	);
+  return (
+    <View style={styles.passwordContainer}>
+      <MaterialIcons name="lock" size={20} />
+      <TextInput
+        style={[styles.input, inputStyle]}
+        onChangeText={(text) => setPassword(text)}
+        value={password}
+        placeholder={displayText}
+        placeholderTextColor={colors.colors.text_2}
+        autoCapitalize={"none"}
+        secureTextEntry={true}
+      />
+    </View>
+  );
 }
 
 export default PasswordComponent;

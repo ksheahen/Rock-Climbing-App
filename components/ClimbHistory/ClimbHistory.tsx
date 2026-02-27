@@ -6,42 +6,42 @@ import { ScrollView, View, Text } from "react-native";
 import styles from "./ClimbHistory.styles";
 
 function ClimbHistory() {
-	const db = useSQLiteContext();
-	const router = useRouter();
+  const db = useSQLiteContext();
+  const router = useRouter();
 
-	const [climbs, setClimbs] = useState<ClimbData[]>([]);
+  const [climbs, setClimbs] = useState<ClimbData[]>([]);
 
-	const loadClimbs = async () => {
-		const results = (await db.getAllAsync(
-			`SELECT * FROM log_climb5 ORDER BY id DESC`,
-		)) as ClimbData[];
-		setClimbs(results);
-	};
+  const loadClimbs = async () => {
+    const results = (await db.getAllAsync(
+      `SELECT * FROM log_climb5 ORDER BY id DESC`,
+    )) as ClimbData[];
+    setClimbs(results);
+  };
 
-	useFocusEffect(
-		useCallback(() => {
-			loadClimbs();
-		}, []),
-	);
+  useFocusEffect(
+    useCallback(() => {
+      loadClimbs();
+    }, []),
+  );
 
-	const handleRedirect = (id: number) => {
-		router.push(`/individual-climb-page?id=${id}`);
-	};
+  const handleRedirect = (id: number) => {
+    router.push(`/individual-climb-page?id=${id}&from=profile`);
+  };
 
-	const handleDelete = async (id: number) => {
-	try {
-		await db.runAsync(
-			`UPDATE log_climb5
+  const handleDelete = async (id: number) => {
+    try {
+      await db.runAsync(
+        `UPDATE log_climb5
        		SET deleted = 1,
            	synced = 0
        		WHERE id = ?`,
-			[id],
-		);
-		setClimbs((prev) => prev.filter((c) => c.id !== id));
-	} catch (error) {
-		console.error("Failed to delete climb:", error);
-	}
-};
+        [id],
+      );
+      setClimbs((prev) => prev.filter((c) => c.id !== id));
+    } catch (error) {
+      console.error("Failed to delete climb:", error);
+    }
+  };
 
 	return (
 	<ScrollView style={styles.container}>
