@@ -1,10 +1,10 @@
 import { syncLocalClimbsSQLite } from "@/services/climbService";
 import { supabase } from "@/services/supabaseClient";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useRouter, useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { useEffect, useState } from "react";
-import { Alert, Pressable, Text, View } from "react-native";
+import { useState } from "react";
+import { Alert, Image, Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./ProfileInfo.styles";
 // import { useFocusEffect } from "expo-router";
@@ -62,7 +62,10 @@ export function ProfileInfo() {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <View style={styles.avatarPlaceholder} />
+        <Image
+          source={require("../../assets/pfp_4.png")}
+          style={styles.avatarPlaceholder}
+        />
         <View style={{ flexDirection: "row", gap: 10 }}>
           {/* Temporary Sign out button */}
           {/* <Pressable
