@@ -96,13 +96,13 @@ const GetStarted = ({ goToNext }: { goToNext: () => void }) => {
         <ButtonComponent onPress={goToNext} title="Get Started" />
       </View>
       <Text>
-        Already have an account? Login here.
-        {/* <Text
+        {"Already have an account? Login "}
+        <Text
           onPress={() => nav.navigate("/login")}
           style={{ color: "#007AFF", textDecorationLine: "underline" }}
         >
           here.
-        </Text> */}
+        </Text>
       </Text>
     </View>
   );
