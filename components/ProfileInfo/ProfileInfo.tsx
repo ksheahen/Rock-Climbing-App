@@ -1,12 +1,13 @@
 import { syncLocalClimbsSQLite } from "@/services/climbService";
 import { supabase } from "@/services/supabaseClient";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./ProfileInfo.styles";
+// import { useFocusEffect } from "expo-router";
 
 export function ProfileInfo() {
   const router = useRouter();
@@ -14,9 +15,9 @@ export function ProfileInfo() {
   const [displayName, setDisplayName] = useState<string>("");
   const [instagramHandle, setInstagramHandle] = useState<string>("");
 
-  useEffect(() => {
+  useFocusEffect(() => {
     fetchUserData();
-  }, []);
+  });
 
   const handleSyncPress = async () => {
     const {
