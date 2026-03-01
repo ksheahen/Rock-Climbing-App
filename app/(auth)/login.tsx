@@ -104,12 +104,12 @@ export default function Login() {
     setLoading(false);
   }
 
+  const canGoBack = router.canGoBack();
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <View style={styles.header}>
-        <BackButton />
-      </View>
+      <View style={styles.header}>{canGoBack && <BackButton />}</View>
       <SafeAreaView style={styles.container}>
         <Image source={logo} alt="logo" style={styles.logo} />
         <EmailComponent
