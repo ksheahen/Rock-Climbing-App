@@ -94,37 +94,27 @@ function ProfilePage() {
   //   }
   // }
 
-  function filterClimbsByTimeframe2(climbs: LocalClimb[], tf: typeof timeframe) {
-  const now = new Date();
-
-  return climbs.filter((c, idx) => {
-    if (!c.datetime) {
-      console.warn(`[filterClimbsByTimeframe] Row ${idx} has null/empty datetime:`, c);
-      return false; // skip rows without a valid datetime
-    }
-
-    const climbDate = new Date(c.datetime);
-    if (isNaN(climbDate.getTime())) {
-      console.warn(`[filterClimbsByTimeframe] Row ${idx} has invalid date:`, c);
-      return false;
-    }
-
-    switch (tf) {
-      case "day":
-        return (
-          climbDate.getFullYear() === now.getFullYear() &&
-          climbDate.getMonth() === now.getMonth() &&
-          climbDate.getDate() === now.getDate()
-        );
-      case "week": {
-        const weekAgo = new Date();
-        weekAgo.setDate(now.getDate() - 7);
-        return climbDate >= weekAgo && climbDate <= now;
   function filterClimbsByTimeframe(climbs: ClimbData[], tf: typeof timeframe) {
     const now = new Date();
 
-    return climbs.filter((c) => {
+    return climbs.filter((c, idx) => {
+      if (!c.datetime) {
+        console.warn(
+          `[filterClimbsByTimeframe] Row ${idx} has null/empty datetime:`,
+          c,
+        );
+        return false; // skip rows without a valid datetime
+      }
+
       const climbDate = new Date(c.datetime);
+      if (isNaN(climbDate.getTime())) {
+        console.warn(
+          `[filterClimbsByTimeframe] Row ${idx} has invalid date:`,
+          c,
+        );
+        return false;
+      }
+
       switch (tf) {
         case "day":
           return (
@@ -145,16 +135,8 @@ function ProfilePage() {
         default:
           return true;
       }
-      case "month": {
-        const monthAgo = new Date(now);
-        monthAgo.setMonth(now.getMonth() - 1);
-        return climbDate >= monthAgo && climbDate <= now;
-      }
-      default:
-        return true;
-    }
-  });
-}
+    });
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -166,11 +148,11 @@ function ProfilePage() {
             [],
           );
           if (!mounted) return;
-          const safeRows = (rows as LocalClimb[]).map((c) => ({
-          ...c,
-          datetime:
-            c.datetime && c.datetime.trim() !== "" ? c.datetime : null,
-        }));
+          const safeRows = (rows as ClimbData[]).map((c) => ({
+            ...c,
+            datetime:
+              c.datetime && c.datetime.trim() !== "" ? c.datetime : null,
+          }));
           setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
         } catch (err) {
           console.error("Failed to load climbs on focus", err);

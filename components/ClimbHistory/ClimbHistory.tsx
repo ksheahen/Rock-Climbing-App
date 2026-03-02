@@ -19,12 +19,12 @@ function ClimbHistory({ climbs, onDelete }: ClimbHistoryProps) {
 
   // const [climbs, setClimbs] = useState<ClimbData[]>([]);
 
-  const loadClimbs = async () => {
-    const results = (await db.getAllAsync(
-      `SELECT * FROM log_climb5 ORDER BY id DESC`,
-    )) as ClimbData[];
-    setClimbs(results);
-  };
+  // const loadClimbs = async () => {
+  //   const results = (await db.getAllAsync(
+  //     `SELECT * FROM log_climb5 ORDER BY id DESC`,
+  //   )) as ClimbData[];
+  //   setClimbs(results);
+  // };
 
   // useFocusEffect(
   //   useCallback(() => {
@@ -51,25 +51,27 @@ function ClimbHistory({ climbs, onDelete }: ClimbHistoryProps) {
   //   }
   // };
 
-	return (
-	<ScrollView style={styles.container}>
-  		{climbs.length === 0 ? (
-    		<View style={{ padding: 20, alignItems: "center" }}>
-      			<Text style={{ fontSize: 16, color: "#888" }}>No Current Activity</Text>
-    		</View>
-  		) : (
-    	climbs.map((climb) => (
-      		<View key={climb.id} style={{ marginBottom: 12 }}>
-        		<ClimbCard
-          			climb={climb}
-          			onPress={() => handleRedirect(climb.id)}
-          			onDelete={() => handleDelete(climb.id)}
-        	/>
-      		</View>
-    	))
-  		)}
-	</ScrollView>
-	);
+  return (
+    <ScrollView style={styles.container}>
+      {climbs.length === 0 ? (
+        <View style={{ padding: 20, alignItems: "center" }}>
+          <Text style={{ fontSize: 16, color: "#888" }}>
+            No Current Activity
+          </Text>
+        </View>
+      ) : (
+        climbs.map((climb) => (
+          <View key={climb.id} style={{ marginBottom: 12 }}>
+            <ClimbCard
+              climb={climb}
+              onPress={() => handleRedirect(climb.id)}
+              onDelete={() => onDelete(climb.id)}
+            />
+          </View>
+        ))
+      )}
+    </ScrollView>
+  );
 }
 
 export default ClimbHistory;
