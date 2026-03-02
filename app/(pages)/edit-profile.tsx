@@ -8,9 +8,8 @@ import {
   Pressable,
   Text,
   TextInput,
-  View,
-  Button,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { getUserById } from "../../services/userService";
 import type { User } from "../../types/User";
@@ -22,6 +21,7 @@ function EditProfilePage() {
   const [userID, setUserID] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [selectedPFP, setSelectedPFP] = useState("pfp_4.png");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -78,7 +78,7 @@ function EditProfilePage() {
 
       const { tableData, tableError } = await supabase
         .from("user")
-        .update({ name, email })
+        .update({ name, email, profile_picture: selectedPFP })
         .eq("user_id", userID)
         .single();
 
@@ -112,8 +112,9 @@ function EditProfilePage() {
     );
   }
 
-  const handlePFP = async () => {
+  const handlePFP = (filename: string) => {
     console.log("PFP");
+    setSelectedPFP(filename);
   };
 
   return (
@@ -122,31 +123,43 @@ function EditProfilePage() {
         <Text style={styles.heading}>Edit Profile</Text>
         <Text style={styles.label}>Profile Picture</Text>
         <View style={styles.avatarContainer}>
-          <TouchableOpacity onPress={handlePFP}>
+          <TouchableOpacity onPress={() => handlePFP("pfp_1.png")}>
             <Image
               source={require("../../assets/pfp_1.png")}
-              style={styles.avatar}
+              style={[
+                styles.avatar,
+                selectedPFP === "pfp_1.png" && styles.avatarSelected,
+              ]}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handlePFP}>
+          <TouchableOpacity onPress={() => handlePFP("pfp_2.png")}>
             <Image
               source={require("../../assets/pfp_2.png")}
-              style={styles.avatar}
+              style={[
+                styles.avatar,
+                selectedPFP === "pfp_2.png" && styles.avatarSelected,
+              ]}
             />
           </TouchableOpacity>
         </View>
 
         <View style={styles.avatarContainer}>
-          <TouchableOpacity onPress={handlePFP}>
+          <TouchableOpacity onPress={() => handlePFP("pfp_3.png")}>
             <Image
               source={require("../../assets/pfp_3.png")}
-              style={styles.avatar}
+              style={[
+                styles.avatar,
+                selectedPFP === "pfp_3.png" && styles.avatarSelected,
+              ]}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handlePFP}>
+          <TouchableOpacity onPress={() => handlePFP("pfp_4.png")}>
             <Image
               source={require("../../assets/pfp_4.png")}
-              style={styles.avatar}
+              style={[
+                styles.avatar,
+                selectedPFP === "pfp_4.png" && styles.avatarSelected,
+              ]}
             />
           </TouchableOpacity>
         </View>

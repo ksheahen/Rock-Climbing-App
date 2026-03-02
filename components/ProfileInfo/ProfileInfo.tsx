@@ -7,13 +7,13 @@ import { useState } from "react";
 import { Alert, Image, Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./ProfileInfo.styles";
-// import { useFocusEffect } from "expo-router";
 
 export function ProfileInfo() {
   const router = useRouter();
   const db = useSQLiteContext();
   const [displayName, setDisplayName] = useState<string>("");
   const [instagramHandle, setInstagramHandle] = useState<string>("");
+  const [profilePicture, setProfilePicture] = useState("pfp_4.png");
 
   useFocusEffect(() => {
     fetchUserData();
@@ -44,7 +44,7 @@ export function ProfileInfo() {
       // getting displayname and what not
       const { data: profile } = await supabase
         .from("user")
-        .select("name, email")
+        .select("name, email, profile_picture")
         .eq("user_id", user.id)
         .single();
 
@@ -52,18 +52,28 @@ export function ProfileInfo() {
       setInstagramHandle(
         user.email?.split("@")[0] || profile?.email || "username",
       );
+      setProfilePicture(profile?.profile_picture || "pfp_4.png");
     } else if (!user) {
-      // TODO: Remove Static Data / Fix this in user onboarding
       setDisplayName("");
       setInstagramHandle("");
+      setProfilePicture("pfp_4.png");
     }
+  };
+
+  const profilePictures: Record<string, any> = {
+    "pfp_1.png": require("../../assets/pfp_1.png"),
+    "pfp_2.png": require("../../assets/pfp_2.png"),
+    "pfp_3.png": require("../../assets/pfp_3.png"),
+    "pfp_4.png": require("../../assets/pfp_4.png"),
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Image
-          source={require("../../assets/pfp_4.png")}
+          source={
+            profilePictures[profilePicture] || profilePictures["pfp_4.png"]
+          }
           style={styles.avatarPlaceholder}
         />
         <View style={{ flexDirection: "row", gap: 10 }}>

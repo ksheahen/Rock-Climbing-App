@@ -76,6 +76,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 16,
   },
+  avatarSelected: {
+    borderWidth: 3,
+    borderColor: "#ffdb3d",
+  },
 });
 
 export default styles;
