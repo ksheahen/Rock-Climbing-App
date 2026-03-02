@@ -4,10 +4,13 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Image,
   Pressable,
   Text,
   TextInput,
   View,
+  Button,
+  TouchableOpacity,
 } from "react-native";
 import { getUserById } from "../../services/userService";
 import type { User } from "../../types/User";
@@ -73,7 +76,7 @@ function EditProfilePage() {
 
       if (error) throw error;
 
-      const { tableData, tableError} = await supabase
+      const { tableData, tableError } = await supabase
         .from("user")
         .update({ name, email })
         .eq("user_id", userID)
@@ -109,11 +112,44 @@ function EditProfilePage() {
     );
   }
 
+  const handlePFP = async () => {
+    console.log("PFP");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <Text style={styles.heading}>Edit Profile</Text>
+        <Text style={styles.label}>Profile Picture</Text>
+        <View style={styles.avatarContainer}>
+          <TouchableOpacity onPress={handlePFP}>
+            <Image
+              source={require("../../assets/pfp_1.png")}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handlePFP}>
+            <Image
+              source={require("../../assets/pfp_2.png")}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+        </View>
 
+        <View style={styles.avatarContainer}>
+          <TouchableOpacity onPress={handlePFP}>
+            <Image
+              source={require("../../assets/pfp_3.png")}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handlePFP}>
+            <Image
+              source={require("../../assets/pfp_4.png")}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+        </View>
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Name</Text>
           <TextInput
