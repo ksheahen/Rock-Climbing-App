@@ -50,7 +50,7 @@ function ClimbHistory({ climbs, onDelete }: ClimbHistoryProps) {
   //     console.error("Failed to delete climb:", error);
   //   }
   // };
- 
+
   return (
     <ScrollView style={styles.container}>
       {climbs.map((climb) => (
