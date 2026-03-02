@@ -1,14 +1,40 @@
 import ButtonComponent from "@/components/Button/Button";
+import { supabase } from "@/services/supabaseClient";
 import { global } from "@/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Video } from "expo-av";
+import { ResizeMode, Video } from "expo-av";
 import { useRouter } from "expo-router";
-import React, { useRef } from "react";
-import { Image, Text, View } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  Alert,
+  Dimensions,
+  Image,
+  StatusBar,
+  Text,
+  View,
+  TextInput,
+} from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import EmailComponent from "../../components/Email/Email";
+import PasswordComponent from "../../components/Password/Password";
 
 const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
 const color = (isLight: any) => backgroundColor(!isLight);
+
+const { width, height } = Dimensions.get("window");
+const videoWidth = Math.min(width * 0.9, 600);
+const videoHeight = Math.min(height * 0.5, 450);
+const logoSize = Math.min(width * 0.6, 400);
+
+const completeOnboarding = async (router: any) => {
+  try {
+    await AsyncStorage.setItem("hasSeenOnboarding", "true");
+  } catch (e) {
+    console.error("Error setting onboarding flag:", e);
+  }
+  router.replace("/login");
+};
 
 const Square = ({
   isLight,
@@ -70,15 +96,183 @@ const GetStarted = ({ goToNext }: { goToNext: () => void }) => {
         <ButtonComponent onPress={goToNext} title="Get Started" />
       </View>
       <Text>
-        Already have an account? Login here.
-        {/* <Text
+        {"Already have an account? Login "}
+        <Text
           onPress={() => nav.navigate("/login")}
           style={{ color: "#007AFF", textDecorationLine: "underline" }}
         >
           here.
-        </Text> */}
+        </Text>
       </Text>
     </View>
+  );
+};
+
+const SignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+
+  const btnText = "Signup";
+  const router = useRouter();
+
+  // Small styling changes for if invlaid email/password
+  const invalidInputStyle = {
+    borderColor: "red",
+    borderWidth: 1,
+    borderRadius: 6,
+  };
+
+  // handleEmailChange Function
+  function handleEmailChange(text: string) {
+    setEmail(text);
+    if (emailError) setEmailError(false);
+    if (error) setError(null);
+  }
+
+  // hanldePasswordChange Function
+  function handlePasswordChange(text: string) {
+    setPassword(text);
+    if (passwordError) setPasswordError(false);
+    if (confirmPasswordError) setConfirmPasswordError(false);
+    if (error) setError(null);
+  }
+
+  // handleConfirmPasswordChange Function
+  function handleConfirmPasswordChange(text: string) {
+    setConfirmPassword(text);
+    if (confirmPasswordError) setConfirmPasswordError(false);
+    if (passwordError) setPasswordError(false);
+    if (error) setError(null);
+  }
+
+  // Sign up with Email
+  async function signUpWithEmail() {
+    if (!email) {
+      setEmailError(true);
+      setError("Email is required");
+      return;
+    }
+
+    if (!password) {
+      setPasswordError(true);
+      setError("Password is required");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Passwords do not match");
+      setError("Passwords do not match");
+      setPasswordError(true);
+      setConfirmPasswordError(true);
+      return;
+    }
+
+    setLoading(true);
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError(error.message);
+      const errorMessage = (error.message || "").toLowerCase();
+
+      // If error message includes passowrd, set the password error to true
+      if (
+        errorMessage.includes("password") ||
+        errorMessage.includes("weak") ||
+        errorMessage.includes("invalid")
+      ) {
+        setPasswordError(true);
+        setConfirmPasswordError(true);
+      }
+
+      // If the error message includes email, set the email error to true
+      if (
+        errorMessage.includes("email") ||
+        errorMessage.includes("user") ||
+        errorMessage.includes("already")
+      ) {
+        setEmailError(true);
+      }
+    } else {
+      if (!data?.session) {
+        Alert.alert("Please check your inbox for email verification!");
+      }
+      await completeOnboarding(router);
+      return;
+    }
+
+    setLoading(false);
+  }
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView
+        style={{
+          flex: 1,
+          padding: 40,
+          alignItems: "center",
+          justifyContent: "center",
+          paddingBottom: 200,
+          backgroundColor: global.colors.background_1,
+        }}
+      >
+        <EmailComponent
+          email={email}
+          setEmail={handleEmailChange}
+          inputStyle={emailError ? invalidInputStyle : undefined}
+        />
+
+        <PasswordComponent
+          password={password}
+          setPassword={handlePasswordChange}
+          displayText="Create Password"
+          inputStyle={passwordError ? invalidInputStyle : undefined}
+        />
+        <PasswordComponent
+          password={confirmPassword}
+          setPassword={handleConfirmPasswordChange}
+          displayText="Confirm Password"
+          inputStyle={confirmPasswordError ? invalidInputStyle : undefined}
+        />
+
+        {error && (
+          <Text
+            style={{
+              color: "#8B0000",
+              backgroundColor: "#fdecea",
+              paddingVertical: 6,
+              paddingHorizontal: 10,
+              borderRadius: 6,
+              fontWeight: "bold",
+              fontSize: 13,
+              marginTop: 12,
+              marginBottom: 0,
+            }}
+          >
+            {error}
+          </Text>
+        )}
+
+        <View style={{ paddingBottom: 10 }} />
+
+        <View style={{ width: 200 }}>
+          <ButtonComponent
+            title={btnText}
+            disabled={loading}
+            onPress={() => signUpWithEmail()}
+          />
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -88,16 +282,7 @@ const OnboardingPage = () => {
   const onboardingRef = useRef<any>(null);
 
   const handleOnboardingComplete = async () => {
-    try {
-      await AsyncStorage.setItem("hasSeenOnboarding", "true");
-      console.log("Onboarding complete. Flag set in AsyncStorage.");
-      const keys = await AsyncStorage.getAllKeys();
-      const items = await AsyncStorage.multiGet(keys);
-      console.log("asyncStorage contents: ", items);
-      nav.replace("/signup");
-    } catch (error) {
-      console.error("Error setting onboarding flag:", error);
-    }
+    await completeOnboarding(nav);
   };
 
   const goToNext = () => {
@@ -112,11 +297,11 @@ const OnboardingPage = () => {
     <Onboarding
       ref={onboardingRef}
       showSkip={false}
-      showDone={true}
+      showDone={false}
       onDone={handleOnboardingComplete}
       DotComponent={Square}
       bottomBarColor={global.colors.background_1}
-      bottomBarHeight={100}
+      bottomBarHeight={height - 800}
       bottomBarHighlight={false}
       pages={[
         {
@@ -124,7 +309,7 @@ const OnboardingPage = () => {
           image: (
             <Image
               source={require("../../assets/icon.png")}
-              style={{ height: 150, width: 150 }}
+              style={{ height: logoSize, width: logoSize }}
             />
           ),
           title: "Rock Climbing",
@@ -133,13 +318,16 @@ const OnboardingPage = () => {
         {
           backgroundColor: "#fff",
           image: (
-            <Video
-              source={require("../../assets/log_tutorial.mp4")}
-              style={{ width: 600, height: 450 }}
-              isLooping
-              isMuted
-              shouldPlay
-            />
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Video
+                source={require("../../assets/log_tutorial.mp4")}
+                style={{ width: videoWidth, height: videoHeight }}
+                isLooping
+                isMuted
+                shouldPlay
+                resizeMode={ResizeMode.CONTAIN}
+              />
+            </View>
           ),
           title: "Track your climbs",
           subtitle: "Tap the + icon to add a log",
@@ -147,13 +335,16 @@ const OnboardingPage = () => {
         {
           backgroundColor: "#fff",
           image: (
-            <Video
-              source={require("../../assets/profile_tutorial.mp4")}
-              style={{ width: 600, height: 450 }}
-              isLooping
-              isMuted
-              shouldPlay
-            />
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Video
+                source={require("../../assets/profile_tutorial.mp4")}
+                style={{ width: videoWidth, height: videoHeight }}
+                isLooping
+                isMuted
+                shouldPlay
+                resizeMode={ResizeMode.CONTAIN}
+              />
+            </View>
           ),
           title: "See Your Progress",
           subtitle: "View your climbs on your profile",
@@ -161,13 +352,16 @@ const OnboardingPage = () => {
         {
           backgroundColor: "#fff",
           image: (
-            <Image
-              source={require("../../assets/icon.png")}
-              style={{ height: 150, width: 150 }}
-            />
+            <View style={{ alignItems: "center", marginTop: 100 }}>
+              <Image
+                source={require("../../assets/icon.png")}
+                alt="logo"
+                style={{ height: logoSize, width: logoSize }}
+              />
+            </View>
           ),
           title: "Start Climbing Today",
-          subtitle: "Create your account today",
+          subtitle: <SignUp />,
         },
       ]}
     />
