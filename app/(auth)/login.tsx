@@ -8,6 +8,7 @@ import EmailComponent from "../../components/Email/Email";
 import PasswordComponent from "../../components/Password/Password";
 import styles from "../styles/login.styles";
 import BackButton from "@/components/BackButton/BackButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Refreshes session automtically if the app is in the foreground
 AppState.addEventListener("change", (state) => {
@@ -99,17 +100,23 @@ export default function Login() {
         setPasswordError(true);
       }
     } else {
+      try {
+        await AsyncStorage.setItem("hasSeenOnboarding", "true");
+      } catch (e) {
+        console.error("Error setting onboarding flag:", e);
+      }
+
       router.navigate("/profile");
     }
     setLoading(false);
   }
 
+  const canGoBack = router.canGoBack();
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <View style={styles.header}>
-        <BackButton />
-      </View>
+      <View style={styles.header}>{canGoBack && <BackButton />}</View>
       <SafeAreaView style={styles.container}>
         <Image source={logo} alt="logo" style={styles.logo} />
         <EmailComponent
