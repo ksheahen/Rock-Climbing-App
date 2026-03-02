@@ -66,7 +66,7 @@ const GetStarted = ({ goToNext }: { goToNext: () => void }) => {
   const nav = useRouter();
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
-      <View style={{ idth: 250 }}>
+      <View style={{ width: 250 }}>
         <ButtonComponent onPress={goToNext} title="Get Started" />
       </View>
       <Text>
