@@ -1,10 +1,10 @@
 import { syncLocalClimbsSQLite } from "@/services/climbService";
 import { supabase } from "@/services/supabaseClient";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { useEffect, useState } from "react";
-import { Alert, Pressable, Text, View } from "react-native";
+import { useState } from "react";
+import { Alert, Image, Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./ProfileInfo.styles";
 
@@ -13,10 +13,11 @@ export function ProfileInfo() {
   const db = useSQLiteContext();
   const [displayName, setDisplayName] = useState<string>("");
   const [instagramHandle, setInstagramHandle] = useState<string>("");
+  const [profilePicture, setProfilePicture] = useState("pfp_4.png");
 
-  useEffect(() => {
+  useFocusEffect(() => {
     fetchUserData();
-  }, []);
+  });
 
   const handleSyncPress = async () => {
     const {
@@ -43,7 +44,7 @@ export function ProfileInfo() {
       // getting displayname and what not
       const { data: profile } = await supabase
         .from("user")
-        .select("name, email")
+        .select("name, email, profile_picture")
         .eq("user_id", user.id)
         .single();
 
@@ -51,11 +52,19 @@ export function ProfileInfo() {
       setInstagramHandle(
         user.email?.split("@")[0] || profile?.email || "username",
       );
+      setProfilePicture(profile?.profile_picture || "pfp_4.png");
     } else if (!user) {
-      // TODO: Remove Static Data / Fix this in user onboarding
       setDisplayName("");
       setInstagramHandle("");
+      setProfilePicture("pfp_4.png");
     }
+  };
+
+  const profilePictures: Record<string, any> = {
+    "pfp_1.png": require("../../assets/pfp_1.png"),
+    "pfp_2.png": require("../../assets/pfp_2.png"),
+    "pfp_3.png": require("../../assets/pfp_3.png"),
+    "pfp_4.png": require("../../assets/pfp_4.png"),
   };
 
   return (
@@ -83,6 +92,20 @@ export function ProfileInfo() {
               <MaterialIcons name="sync" size={16} color="black" />
             </Pressable>
           </View>
+        <Image
+          source={
+            profilePictures[profilePicture] || profilePictures["pfp_4.png"]
+          }
+          style={styles.avatarPlaceholder}
+        />
+        <View style={{ flexDirection: "row", gap: 10 }}>
+          {/* Temporary Sign out button */}
+          {/* <Pressable
+            style={styles.editButton}
+            onPress={() => supabase.auth.signOut()}
+          >
+            <Text style={styles.editButtonText}>Sign Out</Text>
+          </Pressable> */}
           <Pressable
             style={styles.editButton}
             onPress={() => router.navigate("/(pages)/achievements")}

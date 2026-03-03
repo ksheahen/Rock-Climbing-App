@@ -8,6 +8,7 @@ const mockNavigate = jest.fn();
 jest.mock("expo-router", () => ({
   useRouter: () => ({
     navigate: mockNavigate,
+    canGoBack: () => false,
   }),
 }));
 
@@ -20,6 +21,10 @@ jest.mock("@/services/supabaseClient", () => ({
     },
   },
 }));
+
+jest.mock("@react-native-async-storage/async-storage", () =>
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
+);
 
 // Verifying Jest is working
 test("Jest is working", () => {

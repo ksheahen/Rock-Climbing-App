@@ -311,6 +311,7 @@ function IndividualClimbPage() {
           selectedProp={selectedGrade}
           onSelectedChange={setSelectedGrade}
           editToggle={editToggle}
+          climbType={selectedType as "Boulder" | "Route"}
         />
         <Line />
         <Rating

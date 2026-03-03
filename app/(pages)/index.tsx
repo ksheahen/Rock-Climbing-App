@@ -407,7 +407,7 @@ const Index = () => {
             onSessionPress={handleSessionPress}
           />
         )}
-        <AnalyticsPreview onPress={handleAnalyticsPress} />
+        <AnalyticsPreview onPress={handleAnalyticsPress} climbs={climbs} />
       </View>
       <FilterModal
         visible={filterModalVisible}
