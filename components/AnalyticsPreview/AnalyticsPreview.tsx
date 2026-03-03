@@ -14,7 +14,11 @@ export const AnalyticsPreview: React.FC<AnalyticsPreviewProps> = ({
   climbs = [],
 }) => {
   return (
-    <TouchableOpacity style={styles.section} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={styles.section}
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
       <Text style={styles.sectionTitle}> ANALYTICS </Text>
       <StatCard climbs={climbs} />
     </TouchableOpacity>

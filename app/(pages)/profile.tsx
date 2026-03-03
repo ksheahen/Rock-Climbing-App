@@ -19,6 +19,12 @@ import styles from "../styles/profile.styles";
 // import type { User } from "../../types/User";
 // import { useSession } from "../context/SessionContext";
 
+function safeDate(datetime: string | null | undefined): Date | null {
+  if (!datetime?.trim()) return null;
+  const d = new Date(datetime);
+  return isNaN(d.getTime()) ? null : d;
+}
+
 function ProfilePage() {
   // const [loading, setLoading] = useState(true);
   // const [user, setUser] = useState<User | null>(null);
@@ -91,8 +97,24 @@ function ProfilePage() {
   function filterClimbsByTimeframe(climbs: ClimbData[], tf: typeof timeframe) {
     const now = new Date();
 
-    return climbs.filter((c) => {
+    return climbs.filter((c, idx) => {
+      if (!c.datetime) {
+        console.warn(
+          `[filterClimbsByTimeframe] Row ${idx} has null/empty datetime:`,
+          c,
+        );
+        return false; // skip rows without a valid datetime
+      }
+
       const climbDate = new Date(c.datetime);
+      if (isNaN(climbDate.getTime())) {
+        console.warn(
+          `[filterClimbsByTimeframe] Row ${idx} has invalid date:`,
+          c,
+        );
+        return false;
+      }
+
       switch (tf) {
         case "day":
           return (
@@ -126,6 +148,11 @@ function ProfilePage() {
             [],
           );
           if (!mounted) return;
+          const safeRows = (rows as ClimbData[]).map((c) => ({
+            ...c,
+            datetime:
+              c.datetime && c.datetime.trim() !== "" ? c.datetime : null,
+          }));
           setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
         } catch (err) {
           console.error("Failed to load climbs on focus", err);

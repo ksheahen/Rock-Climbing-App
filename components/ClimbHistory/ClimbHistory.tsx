@@ -2,7 +2,7 @@ import { ClimbCard, ClimbData } from "@/components/ClimbCard/ClimbCard";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import styles from "./ClimbHistory.styles";
 
 type ClimbHistoryProps = {
@@ -21,7 +21,7 @@ function ClimbHistory({ climbs, onDelete }: ClimbHistoryProps) {
 
   // const loadClimbs = async () => {
   //   const results = (await db.getAllAsync(
-  //     `SELECT * FROM log_climb5 WHERE deleted = 0 ORDER BY id DESC`,
+  //     `SELECT * FROM log_climb5 ORDER BY id DESC`,
   //   )) as ClimbData[];
   //   setClimbs(results);
   // };
@@ -53,16 +53,25 @@ function ClimbHistory({ climbs, onDelete }: ClimbHistoryProps) {
 
   return (
     <ScrollView style={styles.container}>
-      {climbs.map((climb) => (
-        <View key={climb.id} style={{ marginBottom: 12 }}>
-          <ClimbCard
-            climb={climb}
-            onPress={() => handleRedirect(climb.id)}
-            onDelete={() => onDelete(climb.id)}
-          />
+      {climbs.length === 0 ? (
+        <View style={{ padding: 20, alignItems: "center" }}>
+          <Text style={{ fontSize: 16, color: "#888" }}>
+            No Current Activity
+          </Text>
         </View>
-      ))}
+      ) : (
+        climbs.map((climb) => (
+          <View key={climb.id} style={{ marginBottom: 12 }}>
+            <ClimbCard
+              climb={climb}
+              onPress={() => handleRedirect(climb.id)}
+              onDelete={() => onDelete(climb.id)}
+            />
+          </View>
+        ))
+      )}
     </ScrollView>
   );
 }
+
 export default ClimbHistory;

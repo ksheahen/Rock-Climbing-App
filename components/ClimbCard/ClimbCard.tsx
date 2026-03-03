@@ -62,7 +62,10 @@ export const ClimbCard: React.FC<ClimbCardProps> = ({
   };
 
   const mediaItems = parseMediaItems(climb.media);
-  const formattedDate = format(new Date(climb.datetime), "M/d/yy");
+  const climbDate = climb.datetime ? new Date(climb.datetime) : new Date();
+  const formattedDate = isNaN(climbDate.getTime())
+    ? "Unknown"
+    : format(climbDate, "M/d/yy");
 
   const renderRightActions = () => (
     <Pressable
