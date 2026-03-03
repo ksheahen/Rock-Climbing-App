@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     borderRadius: global.border.border_radius_large,
     paddingHorizontal: 12,
     paddingVertical: 5,
+    alignItems: "center",
   },
   editButtonText: {
     color: global.colors.text_1,

@@ -70,7 +70,12 @@ export function ProfileInfo() {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <View style={styles.avatarPlaceholder} />
+        <Image
+          source={
+            profilePictures[profilePicture] || profilePictures["pfp_4.png"]
+          }
+          style={styles.avatarPlaceholder}
+        />
         <View style={{ gap: 10 }}>
           <View style={{ flexDirection: "row", gap: 10 }}>
             <Pressable
@@ -92,13 +97,6 @@ export function ProfileInfo() {
               <MaterialIcons name="sync" size={16} color="black" />
             </Pressable>
           </View>
-        <Image
-          source={
-            profilePictures[profilePicture] || profilePictures["pfp_4.png"]
-          }
-          style={styles.avatarPlaceholder}
-        />
-        <View style={{ flexDirection: "row", gap: 10 }}>
           {/* Temporary Sign out button */}
           {/* <Pressable
             style={styles.editButton}
