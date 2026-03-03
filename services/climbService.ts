@@ -306,23 +306,30 @@ export const syncLocalClimbsSQLite = async (
 
     if (remoteClimbs) {
       for (const climb of remoteClimbs) {
-        await db.runAsync(
-          `INSERT OR REPLACE INTO log_climb5
-            (uuid, category, type, complete, attempt, grade, rating, datetime, description, media, synced)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
-          [
-            climb.climb_id,
-            climb.category || "Indoor",
-            climb.type || "boulder",
-            climb.completed ? "Yes" : "No",
-            climb.attempts?.toString() || "0",
-            climb.grade || "Unknown",
-            climb.rating ?? 0,
-            climb.datetime ?? new Date().toISOString(),
-            climb.description || "",
-            "",
-          ],
-        );
+       await db.runAsync(
+        `UPDATE log_climb5
+        SET category = ?,
+        type = ?,
+        complete = ?,
+        attempt = ?,
+        grade = ?,
+        rating = ?,
+        datetime = ?,
+        description = ?,
+        synced = 1
+        WHERE uuid = ?`,
+      [
+        climb.category || "Indoor",
+        climb.type || "boulder",
+        climb.completed ? "Yes" : "No",
+        climb.attempts?.toString() || "0",
+        climb.grade || "Unknown",
+        climb.rating ?? 0,
+        climb.datetime ?? new Date().toISOString(),
+        climb.description || "",
+        climb.climb_id,
+      ],
+    );
       }
     }
 
