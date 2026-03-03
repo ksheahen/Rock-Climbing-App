@@ -27,7 +27,7 @@ export function ProfileInfo() {
     } else {
       try {
         await syncLocalClimbsSQLite(db);
-      } catch (err) {
+      } catch {
         Alert.alert("Sync failed", "Please try again later.");
       }
     }
@@ -62,32 +62,32 @@ export function ProfileInfo() {
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <View style={styles.avatarPlaceholder} />
-        <View style={{ flexDirection: "row", gap: 10 }}>
-          {/* Temporary Achievements button */}
+        <View style={{ gap: 10 }}>
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <Pressable
+              style={styles.editButton}
+              onPress={() => router.navigate("/edit-profile")}
+            >
+              <Text style={styles.editButtonText}>Edit Profile</Text>
+            </Pressable>
+            <Pressable
+              style={{
+                paddingHorizontal: 10,
+                backgroundColor: "#F7F7FC",
+                borderRadius: 8,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={handleSyncPress}
+            >
+              <MaterialIcons name="sync" size={16} color="black" />
+            </Pressable>
+          </View>
           <Pressable
             style={styles.editButton}
             onPress={() => router.navigate("/(pages)/achievements")}
           >
             <Text style={styles.editButtonText}>Achievements</Text>
-          </Pressable>
-          {/*  End of Achievements button  */}
-          <Pressable
-            style={styles.editButton}
-            onPress={() => router.navigate("/edit-profile")}
-          >
-            <Text style={styles.editButtonText}>Edit Profile</Text>
-          </Pressable>
-          <Pressable
-            style={{
-              paddingHorizontal: 10,
-              backgroundColor: "#F7F7FC",
-              borderRadius: 8,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onPress={handleSyncPress}
-          >
-            <MaterialIcons name="sync" size={16} color="black" />
           </Pressable>
         </View>
       </View>

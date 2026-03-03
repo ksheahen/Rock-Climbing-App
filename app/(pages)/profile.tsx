@@ -10,7 +10,6 @@ import { useCallback, useState } from "react";
 import { View } from "react-native";
 import styles from "../styles/profile.styles";
 
-
 // import { useFocusEffect } from "expo-router";
 // import { useCallback, useEffect, useState } from "react";
 // import { Alert, View } from "react-native";
