@@ -40,6 +40,23 @@ function RootLayout() {
               deleted INTEGER DEFAULT 0,
               synced INTEGER DEFAULT 0 
             );
+                    
+            CREATE TABLE IF NOT EXISTS achievement (
+              achievement_id TEXT PRIMARY KEY,
+              name TEXT NOT NULL,
+              description TEXT,
+              badge_icon TEXT
+            );
+
+           
+            CREATE TABLE IF NOT EXISTS user_achievement (
+              user_achievement_id TEXT PRIMARY KEY,
+              user_id TEXT,
+              achievement_id TEXT NOT NULL,
+              earned_at TEXT NOT NULL,
+              synced INTEGER DEFAULT 0,
+              deleted INTEGER DEFAULT 0
+            );
             PRAGMA journal_mode=WAL;
           `);
 

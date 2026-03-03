@@ -1,27 +1,26 @@
-import { Ionicons } from "@expo/vector-icons";
+import StatCard from "@/components/StatCard/StatCard";
+import { LocalClimb } from "@/types/LocalClimb";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { styles } from "./AnalyticsPreview.styles";
 
 export interface AnalyticsPreviewProps {
   onPress?: () => void;
+  climbs?: LocalClimb[];
 }
 
 export const AnalyticsPreview: React.FC<AnalyticsPreviewProps> = ({
   onPress,
+  climbs = [],
 }) => {
   return (
-    <TouchableOpacity style={styles.section} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.section}
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
       <Text style={styles.sectionTitle}> ANALYTICS </Text>
-      <View style={styles.analyticsContainer}>
-        <View style={styles.analyticsCard}>
-          <View style={styles.chartPlaceholder} />
-        </View>
-        <View style={styles.analyticsCard}>
-          <View style={styles.circularPlaceholder} />
-          <View style={styles.smallChartPlaceholder} />
-        </View>
-      </View>
+      <StatCard climbs={climbs} />
     </TouchableOpacity>
   );
 };

@@ -33,7 +33,7 @@ export const global = {
 
   margin: {
     page_border: 15,
-    page_top: 50,
+    page_top: 60,
   },
 
   gap: {

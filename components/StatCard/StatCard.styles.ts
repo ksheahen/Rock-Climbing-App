@@ -3,8 +3,7 @@ import { global } from "@/theme";
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   row: {
     flexDirection: "row",
@@ -12,6 +11,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   card: {
+    flex: 1,
     backgroundColor: global.colors.background_1,
     borderRadius: 12,
     padding: 12,

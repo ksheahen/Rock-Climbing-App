@@ -11,7 +11,6 @@ import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import SettingsButton from "@/components/SettingsButton/SettingsButton";
 import Type from "@/components/Type/Type";
-
 import { useFocusEffect } from "@react-navigation/native";
 import { ResizeMode, Video } from "expo-av";
 import { useRouter, useSearchParams } from "expo-router/build/hooks";
@@ -312,6 +311,7 @@ function IndividualClimbPage() {
           selectedProp={selectedGrade}
           onSelectedChange={setSelectedGrade}
           editToggle={editToggle}
+          climbType={selectedType as "Boulder" | "Route"}
         />
         <Line />
         <Rating
