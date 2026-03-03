@@ -308,8 +308,8 @@ export const syncLocalClimbsSQLite = async (
 
     if (remoteClimbs) {
       for (const climb of remoteClimbs) {
-       await db.runAsync(
-        `UPDATE log_climb5
+        await db.runAsync(
+          `UPDATE log_climb5
         SET category = ?,
         type = ?,
         complete = ?,
@@ -320,18 +320,18 @@ export const syncLocalClimbsSQLite = async (
         description = ?,
         synced = 1
         WHERE uuid = ?`,
-      [
-        climb.category || "Indoor",
-        climb.type || "boulder",
-        climb.completed ? "Yes" : "No",
-        climb.attempts?.toString() || "0",
-        climb.grade || "Unknown",
-        climb.rating ?? 0,
-        climb.datetime ?? new Date().toISOString(),
-        climb.description || "",
-        climb.climb_id,
-      ],
-    );
+          [
+            climb.category || "Indoor",
+            climb.type || "boulder",
+            climb.completed ? "Yes" : "No",
+            climb.attempts?.toString() || "0",
+            climb.grade || "Unknown",
+            climb.rating ?? 0,
+            climb.datetime ?? new Date().toISOString(),
+            climb.description || "",
+            climb.climb_id,
+          ],
+        );
       }
     }
 
