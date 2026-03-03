@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     paddingRight: global.margin.page_border,
   },
   mainContent: {
-    marginTop: global.margin.page_top,
     flex: 1,
     display: "flex",
     flexDirection: "column",

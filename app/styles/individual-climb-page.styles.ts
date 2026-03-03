@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     backgroundColor: global.colors.background_1,
     paddingLeft: global.margin.page_border,
     paddingRight: global.margin.page_border,
-    paddingTop: global.margin.page_top,
     paddingBottom: global.margin.page_top,
   },
   scroll_container: {
@@ -21,6 +20,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     paddingBottom: global.padding.medium,
+    paddingTop: global.margin.page_top,
   },
   left: {},
   right: {

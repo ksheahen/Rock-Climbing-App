@@ -28,7 +28,7 @@ export function ProfileInfo() {
     } else {
       try {
         await syncLocalClimbsSQLite(db);
-      } catch (err) {
+      } catch {
         Alert.alert("Sync failed", "Please try again later.");
       }
     }
@@ -76,7 +76,27 @@ export function ProfileInfo() {
           }
           style={styles.avatarPlaceholder}
         />
-        <View style={{ flexDirection: "row", gap: 10 }}>
+        <View style={{ gap: 10 }}>
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <Pressable
+              style={styles.editButton}
+              onPress={() => router.navigate("/edit-profile")}
+            >
+              <Text style={styles.editButtonText}>Edit Profile</Text>
+            </Pressable>
+            <Pressable
+              style={{
+                paddingHorizontal: 10,
+                backgroundColor: "#F7F7FC",
+                borderRadius: 8,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={handleSyncPress}
+            >
+              <MaterialIcons name="sync" size={16} color="black" />
+            </Pressable>
+          </View>
           {/* Temporary Sign out button */}
           {/* <Pressable
             style={styles.editButton}
@@ -86,21 +106,9 @@ export function ProfileInfo() {
           </Pressable> */}
           <Pressable
             style={styles.editButton}
-            onPress={() => router.navigate("/edit-profile")}
+            onPress={() => router.navigate("/(pages)/achievements")}
           >
-            <Text style={styles.editButtonText}>Edit Profile</Text>
-          </Pressable>
-          <Pressable
-            style={{
-              padding: 8,
-              backgroundColor: "#F7F7FC",
-              borderRadius: 8,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onPress={handleSyncPress}
-          >
-            <MaterialIcons name="sync" size={24} color="black" />
+            <Text style={styles.editButtonText}>Achievements</Text>
           </Pressable>
         </View>
       </View>

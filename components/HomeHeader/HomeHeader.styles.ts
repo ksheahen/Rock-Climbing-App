@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     gap: 4,
     backgroundColor: global.colors.background_3,
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingVertical: 5,
     borderRadius: global.border.border_radius_large,
     width: 65,
   },
