@@ -103,7 +103,9 @@ type SQLiteClimbRow = {
 };
 
 function parseCompleted(v: any): boolean {
-  const s = String(v ?? "").toLowerCase().trim();
+  const s = String(v ?? "")
+    .toLowerCase()
+    .trim();
   return s === "yes" || s === "true" || s === "1";
 }
 
@@ -336,6 +338,7 @@ export const syncLocalClimbsSQLite = async (
     Alert.alert("Sync complete", "Climbs synced successfully.");
   } catch (err) {
     console.error("Sync failed:", err);
+
     Alert.alert("Sync failed", "Please try again later.");
   }
 };

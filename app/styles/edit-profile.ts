@@ -14,10 +14,10 @@ const styles = StyleSheet.create({
     backgroundColor: global.colors.background_1,
     borderRadius: global.border.border_radius,
     padding: global.margin.page_border * 2,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
+    // shadowColor: "#000",
+    // shadowOpacity: 0.1,
+    // shadowRadius: 10,
+    // elevation: 5,
   },
   heading: {
     fontSize: global.font_size.phone_large,
@@ -62,6 +62,23 @@ const styles = StyleSheet.create({
   buttonText: {
     color: global.colors.text_1,
     fontWeight: "bold",
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    backgroundColor: global.colors.background_2,
+    marginHorizontal: 5,
+    marginTop: 2,
+  },
+  avatarContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  avatarSelected: {
+    borderWidth: 3,
+    borderColor: "#ffdb3d",
   },
 });
 

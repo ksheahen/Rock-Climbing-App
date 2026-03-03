@@ -1,4 +1,5 @@
 import { ProfileInfo } from "@/components";
+import { ClimbData } from "@/components/ClimbCard/ClimbCard";
 import ClimbHistory from "@/components/ClimbHistory/ClimbHistory";
 import Line from "@/components/Line/Line";
 import TimeframeFilter from "@/components/TimeframeFilter/TimeframeFilter";
@@ -93,43 +94,49 @@ function ProfilePage() {
   //   }
   // }
 
-  function filterClimbsByTimeframe(climbs: LocalClimb[], tf: typeof timeframe) {
-  const now = new Date();
+  function filterClimbsByTimeframe(climbs: ClimbData[], tf: typeof timeframe) {
+    const now = new Date();
 
-  return climbs.filter((c, idx) => {
-    if (!c.datetime) {
-      console.warn(`[filterClimbsByTimeframe] Row ${idx} has null/empty datetime:`, c);
-      return false; // skip rows without a valid datetime
-    }
-
-    const climbDate = new Date(c.datetime);
-    if (isNaN(climbDate.getTime())) {
-      console.warn(`[filterClimbsByTimeframe] Row ${idx} has invalid date:`, c);
-      return false;
-    }
-
-    switch (tf) {
-      case "day":
-        return (
-          climbDate.getFullYear() === now.getFullYear() &&
-          climbDate.getMonth() === now.getMonth() &&
-          climbDate.getDate() === now.getDate()
+    return climbs.filter((c, idx) => {
+      if (!c.datetime) {
+        console.warn(
+          `[filterClimbsByTimeframe] Row ${idx} has null/empty datetime:`,
+          c,
         );
-      case "week": {
-        const weekAgo = new Date();
-        weekAgo.setDate(now.getDate() - 7);
-        return climbDate >= weekAgo && climbDate <= now;
+        return false; // skip rows without a valid datetime
       }
-      case "month": {
-        const monthAgo = new Date(now);
-        monthAgo.setMonth(now.getMonth() - 1);
-        return climbDate >= monthAgo && climbDate <= now;
+
+      const climbDate = new Date(c.datetime);
+      if (isNaN(climbDate.getTime())) {
+        console.warn(
+          `[filterClimbsByTimeframe] Row ${idx} has invalid date:`,
+          c,
+        );
+        return false;
       }
-      default:
-        return true;
-    }
-  });
-}
+
+      switch (tf) {
+        case "day":
+          return (
+            climbDate.getFullYear() === now.getFullYear() &&
+            climbDate.getMonth() === now.getMonth() &&
+            climbDate.getDate() === now.getDate()
+          );
+        case "week": {
+          const weekAgo = new Date();
+          weekAgo.setDate(now.getDate() - 7);
+          return climbDate >= weekAgo && climbDate <= now;
+        }
+        case "month": {
+          const monthAgo = new Date(now);
+          monthAgo.setMonth(now.getMonth() - 1);
+          return climbDate >= monthAgo && climbDate <= now;
+        }
+        default:
+          return true;
+      }
+    });
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -137,15 +144,15 @@ function ProfilePage() {
       const loadClimbs = async () => {
         try {
           const rows = await db.getAllAsync(
-            `SELECT * FROM log_climb5 ORDER BY datetime DESC`,
+            `SELECT * FROM log_climb5 WHERE deleted = 0 ORDER BY datetime DESC`,
             [],
           );
           if (!mounted) return;
-          const safeRows = (rows as LocalClimb[]).map((c) => ({
-          ...c,
-          datetime:
-            c.datetime && c.datetime.trim() !== "" ? c.datetime : null,
-        }));
+          const safeRows = (rows as ClimbData[]).map((c) => ({
+            ...c,
+            datetime:
+              c.datetime && c.datetime.trim() !== "" ? c.datetime : null,
+          }));
           setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
         } catch (err) {
           console.error("Failed to load climbs on focus", err);
@@ -160,6 +167,18 @@ function ProfilePage() {
 
   const filteredClimbs = filterClimbsByTimeframe(climbsArr, timeframe);
 
+  const handleDeleteClimb = async (id: number) => {
+    try {
+      await db.runAsync(
+        `UPDATE log_climb5 SET deleted = 1, synced = 0 WHERE id = ?`,
+        [id],
+      );
+      setClimbsArr((prev) => prev.filter((c) => c.id !== id));
+    } catch (error) {
+      console.error("Failed to delete climb:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
@@ -167,7 +186,11 @@ function ProfilePage() {
         <Line />
         <TimeframeFilter dates={timeframe} onChange={setTimeframe} />
         {/* <Line /> */}
-        <ClimbHistory dates={timeframe} climbs={filteredClimbs} />
+        <ClimbHistory
+          dates={timeframe}
+          climbs={filteredClimbs}
+          onDelete={handleDeleteClimb}
+        />
       </View>
     </View>
   );
