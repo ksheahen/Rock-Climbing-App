@@ -21,6 +21,7 @@ function EditProfilePage() {
   const [userID, setUserID] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [instagramHandle, setInstagramHandle] = useState("");
   const [selectedPFP, setSelectedPFP] = useState("pfp_4.png");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -78,7 +79,7 @@ function EditProfilePage() {
 
       const { tableData, tableError } = await supabase
         .from("user")
-        .update({ name, email, profile_picture: selectedPFP })
+        .update({ name, email, instagram_handle: instagramHandle, profile_picture: selectedPFP })
         .eq("user_id", userID)
         .single();
 
@@ -181,6 +182,17 @@ function EditProfilePage() {
             onChangeText={setEmail}
             placeholder="Your email"
             keyboardType="email-address"
+          />
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Instagram</Text>
+          <TextInput
+            style={styles.input}
+            value={instagramHandle}
+            onChangeText={setInstagramHandle}
+            placeholder="Your Instagram"
+            keyboardType="twitter"
           />
         </View>
 
