@@ -45,6 +45,15 @@ function EditProfilePage() {
           throw new Error("User not found");
         }
 
+      const { data: profile } = await supabase
+        .from("user")
+        .select("instagram_handle, profile_picture")
+        .eq("user_id", user.id)
+        .single();
+
+        setInstagramHandle(profile?.instagram_handle || null);
+        setSelectedPFP(profile?.profile_picture || "pfp_4.png");
+
         setUserID(userData.user_id);
         setName(userData.name);
         setEmail(userData.email);
@@ -191,8 +200,8 @@ function EditProfilePage() {
             style={styles.input}
             value={instagramHandle}
             onChangeText={setInstagramHandle}
-            placeholder="Your Instagram"
-            keyboardType="twitter"
+            placeholder="username"
+            autoCapitalize="none"
           />
         </View>
 
