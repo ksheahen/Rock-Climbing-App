@@ -1,7 +1,7 @@
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, AppState, Image, StatusBar, Text, View } from "react-native";
+import { Alert, AppState, Image, Keyboard, KeyboardAvoidingView, Platform, StatusBar, Text, TouchableWithoutFeedback, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonComponent from "../../components/Button/Button";
 import EmailComponent from "../../components/Email/Email";
@@ -117,53 +117,59 @@ export default function Login() {
     <>
       <StatusBar barStyle="dark-content" />
       <View style={styles.header}>{canGoBack && <BackButton />}</View>
-      <SafeAreaView style={styles.container}>
-        <Image source={logo} alt="logo" style={styles.logo} />
-        <EmailComponent
-          email={email}
-          setEmail={handleEmailChange}
-          inputStyle={emailError ? invalidInputStyle : undefined}
-        />
-        <PasswordComponent
-          password={password}
-          setPassword={handlePasswordChange}
-          displayText="Password"
-          inputStyle={passwordError ? invalidInputStyle : undefined}
-        />
-        {error && (
-          <Text
-            style={{
-              color: "#8B0000",
-              backgroundColor: "#fdecea",
-              paddingVertical: 6,
-              paddingHorizontal: 10,
-              borderRadius: 6,
-              fontWeight: "bold",
-              fontSize: 13,
-              marginTop: 8,
-            }}
-          >
-            {error}
-          </Text>
-        )}
-        <View style={styles.forgotPasswordContainer}>
-          <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
-        </View>
-        <ButtonComponent
-          title={login}
-          disabled={loading}
-          onPress={() => signInWithEmail()}
-        />
-        <Text>
-          Don&apos;t have an account? Signup{" "}
-          <Text
-            onPress={() => router.navigate("/signup")}
-            style={{ color: "#007AFF", textDecorationLine: "underline" }}
-          >
-            here.
-          </Text>
-        </Text>
-      </SafeAreaView>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <SafeAreaView style={styles.container}>
+            <Image source={logo} alt="logo" style={styles.logo} />
+            <EmailComponent
+              email={email}
+              setEmail={handleEmailChange}
+              inputStyle={emailError ? invalidInputStyle : undefined}
+            />
+            <PasswordComponent
+              password={password}
+              setPassword={handlePasswordChange}
+              displayText="Password"
+              inputStyle={passwordError ? invalidInputStyle : undefined}
+            />
+            {error && (
+              <Text
+                style={{
+                  color: "#8B0000",
+                  backgroundColor: "#fdecea",
+                  paddingVertical: 6,
+                  paddingHorizontal: 10,
+                  borderRadius: 6,
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  marginTop: 8,
+                }}
+              >
+                {error}
+              </Text>
+            )}
+            <View style={styles.forgotPasswordContainer}>
+              <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
+            </View>
+            <ButtonComponent
+              title={login}
+              disabled={loading}
+              onPress={() => signInWithEmail()}
+            />
+            <Text>
+              Don&apos;t have an account? Signup{" "}
+              <Text
+                onPress={() => router.navigate("/signup")}
+                style={{ color: "#007AFF", textDecorationLine: "underline" }}
+              >
+                here.
+              </Text>
+            </Text>
+          </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </>
   );
 }

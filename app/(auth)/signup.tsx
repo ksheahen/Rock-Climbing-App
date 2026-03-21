@@ -1,7 +1,7 @@
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, AppState, Image, StatusBar, Text, View } from "react-native";
+import { Alert, AppState, Image, Keyboard, KeyboardAvoidingView, Platform, StatusBar, Text, TouchableWithoutFeedback, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonComponent from "../../components/Button/Button";
 import EmailComponent from "../../components/Email/Email";
@@ -131,63 +131,69 @@ export default function Signup() {
       <View style={styles.header}>
         <BackButton />
       </View>
-      <SafeAreaView style={styles.container}>
-        <Image source={logo} alt="logo" style={styles.logo} />
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <SafeAreaView style={styles.container}>
+            <Image source={logo} alt="logo" style={styles.logo} />
 
-        <EmailComponent
-          email={email}
-          setEmail={handleEmailChange}
-          inputStyle={emailError ? invalidInputStyle : undefined}
-        />
+            <EmailComponent
+              email={email}
+              setEmail={handleEmailChange}
+              inputStyle={emailError ? invalidInputStyle : undefined}
+            />
 
-        <PasswordComponent
-          password={password}
-          setPassword={handlePasswordChange}
-          displayText="Create Password"
-          inputStyle={passwordError ? invalidInputStyle : undefined}
-        />
-        <PasswordComponent
-          password={confirmPassword}
-          setPassword={handleConfirmPasswordChange}
-          displayText="Confirm Password"
-          inputStyle={confirmPasswordError ? invalidInputStyle : undefined}
-        />
-        {error && (
-          <Text
-            style={{
-              color: "#8B0000",
-              backgroundColor: "#fdecea",
-              paddingVertical: 6,
-              paddingHorizontal: 10,
-              borderRadius: 6,
-              fontWeight: "bold",
-              fontSize: 13,
-              marginTop: 12,
-              marginBottom: 0,
-            }}
-          >
-            {error}
-          </Text>
-        )}
+            <PasswordComponent
+              password={password}
+              setPassword={handlePasswordChange}
+              displayText="Create Password"
+              inputStyle={passwordError ? invalidInputStyle : undefined}
+            />
+            <PasswordComponent
+              password={confirmPassword}
+              setPassword={handleConfirmPasswordChange}
+              displayText="Confirm Password"
+              inputStyle={confirmPasswordError ? invalidInputStyle : undefined}
+            />
+            {error && (
+              <Text
+                style={{
+                  color: "#8B0000",
+                  backgroundColor: "#fdecea",
+                  paddingVertical: 6,
+                  paddingHorizontal: 10,
+                  borderRadius: 6,
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  marginTop: 12,
+                  marginBottom: 0,
+                }}
+              >
+                {error}
+              </Text>
+            )}
 
-        <View style={{ paddingBottom: 10 }} />
+            <View style={{ paddingBottom: 10 }} />
 
-        <ButtonComponent
-          title={btnText}
-          disabled={loading}
-          onPress={() => signUpWithEmail()}
-        />
+            <ButtonComponent
+              title={btnText}
+              disabled={loading}
+              onPress={() => signUpWithEmail()}
+            />
 
-        <Text>
-          Already have an account? Login{" "}
-          <Text
-            onPress={() => router.navigate("/login")}
-            style={{ color: "#007AFF", textDecorationLine: "underline" }}
-          >
-            here.
-          </Text>
-        </Text>
-      </SafeAreaView>
+            <Text>
+              Already have an account? Login{" "}
+              <Text
+                onPress={() => router.navigate("/login")}
+                style={{ color: "#007AFF", textDecorationLine: "underline" }}
+              >
+                here.
+              </Text>
+            </Text>
+          </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </>
   );
 }
