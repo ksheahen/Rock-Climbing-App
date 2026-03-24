@@ -177,7 +177,7 @@ function LineCharts({
         xLabelsOffset={6}
         verticalLabelRotation={-45}
         bezier
-        style={{ borderRadius: 12 }}
+        style={{ borderRadius: 12, marginLeft: -16 }}
       />
     </View>
   );

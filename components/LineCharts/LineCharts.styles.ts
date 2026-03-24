@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   },
   chartSection: {
     marginBottom: 32,
+    alignItems: "center",
     // shadow (iOS)
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 6 },
