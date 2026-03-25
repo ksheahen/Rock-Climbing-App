@@ -10,6 +10,8 @@ import Location from "@/components/Location/Location";
 import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import Type from "@/components/Type/Type";
+import { evaluateHighestGradeAchievement } from "@/services/achievementService";
+import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
@@ -73,8 +75,8 @@ function LogAscent() {
     // Insert into existing log_climb5 table
     await db.runAsync(
       `INSERT INTO log_climb5 
-    (uuid, category, type, complete, attempt, grade, rating, datetime, description, media, location, deleted, synced) 
-   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)`,
+      (uuid, category, type, complete, attempt, grade, rating, datetime, description, media, location, deleted, synced) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)`,
       [
         newId,
         climb.category,
@@ -91,6 +93,14 @@ function LogAscent() {
         0,
       ],
     );
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      await evaluateHighestGradeAchievement(db, user.id);
+    }
 
     console.log("Climb saved to database");
     router.push("/profile");

@@ -1,75 +1,108 @@
-import {
-  Achievement,
-  AchievementInsert,
-  AchievementUpdate,
-} from "../types/Achievement.ts";
-import { table } from "./supabaseHelper.ts";
+import uuid from "react-native-uuid";
+import { HIGHEST_GRADE_ACHIEVEMENT_ID } from "@/components/Achievements/achievements";
 
-// Fetch a single achievement by UUID
-export const getAchievementById = async (
-  achievementId: string,
-): Promise<Achievement | null> => {
-  const { data, error } = await table("achievement")
-    .select("*")
-    .eq("achievement_id", achievementId)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Error fetching achievement:", error);
-    return null;
-  }
-
-  return data as Achievement;
+type ClimbRow = {
+  id: number;
+  type: string | null;
+  grade: string | null;
+  complete: string | null;
+  deleted: number;
 };
 
-// Insert a new achievement
-export const createAchievement = async (
-  newAchievement: AchievementInsert,
-): Promise<Achievement | null> => {
-  const { data, error } = await table("achievement")
-    .insert(newAchievement)
-    .select()
-    .maybeSingle();
+function isCompletedClimb(climb: ClimbRow) {
+  const complete = String(climb.complete ?? "")
+    .trim()
+    .toLowerCase();
 
-  if (error) {
-    console.error("Error creating achievement:", error);
-    return null;
-  }
+  return climb.deleted === 0 && (complete === "yes" || complete === "true");
+}
 
-  return data as Achievement;
-};
+function normalizeGrade(grade: string) {
+  return grade.replace(/\s+/g, "");
+}
 
-// Update an achievement
-export const updateAchievement = async (
+function hasHighestGradeClimb(climbs: ClimbRow[]) {
+  return climbs.some((climb) => {
+    if (!isCompletedClimb(climb) || !climb.grade) return false;
+
+    const type = String(climb.type ?? "")
+      .trim()
+      .toLowerCase();
+
+    const grade = normalizeGrade(climb.grade);
+
+    const isMaxBoulder = type === "boulder" && grade === "9a/V17";
+    const isMaxRoute = type === "route" && grade === "8c/5.13d";
+
+    return isMaxBoulder || isMaxRoute;
+  });
+}
+
+async function getAllActiveClimbs(db: any): Promise<ClimbRow[]> {
+  const rows = await db.getAllAsync(
+    `SELECT id, type, grade, complete, deleted
+     FROM log_climb5
+     WHERE deleted = 0`,
+    [],
+  );
+
+  return Array.isArray(rows) ? (rows as ClimbRow[]) : [];
+}
+
+async function hasEarnedAchievement(
+  db: any,
+  userId: string,
   achievementId: string,
-  updates: AchievementUpdate,
-): Promise<Achievement | null> => {
-  const { data, error } = await table("achievement")
-    .update(updates)
-    .eq("achievement_id", achievementId)
-    .select()
-    .maybeSingle();
+) {
+  const rows = await db.getAllAsync(
+    `SELECT user_achievement_id
+     FROM user_achievement
+     WHERE user_id = ?
+       AND achievement_id = ?
+       AND deleted = 0
+     LIMIT 1`,
+    [userId, achievementId],
+  );
 
-  if (error) {
-    console.error("Error updating achievement:", error);
-    return null;
-  }
+  return Array.isArray(rows) && rows.length > 0;
+}
 
-  return data as Achievement;
-};
-
-// Delete an achievement
-export const deleteAchievement = async (
+async function awardAchievement(
+  db: any,
+  userId: string,
   achievementId: string,
-): Promise<boolean> => {
-  const { error } = await table("achievement")
-    .delete()
-    .eq("achievement_id", achievementId);
+) {
+  const userAchievementId = uuid.v4().toString();
 
-  if (error) {
-    console.error("Error deleting achievement:", error);
-    return false;
-  }
+  await db.runAsync(
+    `INSERT OR IGNORE INTO user_achievement
+     (user_achievement_id, user_id, achievement_id, earned_at, synced, deleted)
+     VALUES (?, ?, ?, ?, 0, 0)`,
+    [
+      userAchievementId,
+      userId,
+      achievementId,
+      new Date().toISOString(),
+    ],
+  );
+}
 
+export async function evaluateHighestGradeAchievement(
+  db: any,
+  userId: string,
+) {
+  const alreadyEarned = await hasEarnedAchievement(
+    db,
+    userId,
+    HIGHEST_GRADE_ACHIEVEMENT_ID,
+  );
+
+  if (alreadyEarned) return false;
+
+  const climbs = await getAllActiveClimbs(db);
+
+  if (!hasHighestGradeClimb(climbs)) return false;
+
+  await awardAchievement(db, userId, HIGHEST_GRADE_ACHIEVEMENT_ID);
   return true;
-};
+}
