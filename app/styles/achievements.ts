@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     gap: global.gap.medium,
   },
   awardImage: {
-    width: 56,
-    height: 56,
+    width: 55,
+    height: 55,
     borderRadius: global.border.border_radius_large,
   },
   awardTextContainer: {

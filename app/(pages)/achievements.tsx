@@ -1,9 +1,15 @@
-import BackButton from "@/components/BackButton/BackButton";
 import { DEFAULT_ACHIEVEMENTS } from "@/components/Achievements/achievements";
+import BackButton from "@/components/BackButton/BackButton";
 import { Image, ScrollView, Text, View } from "react-native";
 import styles from "../styles/achievements";
 
-const awardIcon = require("../../assets/award_test.png");
+const awardIconsById: Record<string, number> = {
+  "highest-grade": require("../../assets/award_highest.png"),
+  "streak-starter": require("../../assets/award_streak.png"),
+  "flash-master": require("../../assets/award_flash.png"),
+};
+
+const defaultAwardIcon = require("../../assets/award_test.png");
 
 function AchievementsPage() {
   return (
@@ -20,7 +26,11 @@ function AchievementsPage() {
       <View style={styles.content}>
         {DEFAULT_ACHIEVEMENTS.map((award) => (
           <View key={award.achievement_id} style={styles.awardRow}>
-            <Image source={awardIcon} style={styles.awardImage} />
+            <Image
+              source={awardIconsById[award.achievement_id] ?? defaultAwardIcon}
+              style={styles.awardImage}
+              resizeMode="contain"
+            />
             <View style={styles.awardTextContainer}>
               <Text style={styles.awardName}>{award.name}</Text>
               <Text style={styles.awardDescription}>{award.description}</Text>
