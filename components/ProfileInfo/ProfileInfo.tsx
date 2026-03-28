@@ -8,7 +8,12 @@ import { Alert, Image, Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./ProfileInfo.styles";
 
-export function ProfileInfo() {
+type ProfileInfoProps = {
+  onSync?: () => Promise<void>;
+  isSyncing?: boolean;
+};
+
+export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
   const router = useRouter();
   const db = useSQLiteContext();
   const [displayName, setDisplayName] = useState<string>("");
@@ -19,20 +24,16 @@ export function ProfileInfo() {
     fetchUserData();
   });
 
-  const handleSyncPress = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      router.navigate("/login");
-    } else {
-      try {
-        await syncLocalClimbsSQLite(db);
-      } catch {
-        Alert.alert("Sync failed", "Please try again later.");
-      }
-    }
-  };
+const handleSyncPress = async () => {
+  console.log("TEST HERE")
+  console.log(isSyncing)
+  if (!onSync || isSyncing) return; 
+  try {
+    await onSync();
+  } catch (error) {
+    console.error("Sync failed:", error);
+  }
+};
 
   // Fetch user data (if logged in recently otherwise it will display a generic name)
   const fetchUserData = async () => {
