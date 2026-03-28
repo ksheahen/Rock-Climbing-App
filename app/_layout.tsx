@@ -4,6 +4,11 @@ import { SQLiteProvider } from "expo-sqlite";
 import { Button, StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { DEFAULT_ACHIEVEMENTS } from "@/components/Achievements/achievements";
+import {
+  evaluateFlashMasterAchievement,
+  evaluateHighestGradeAchievement,
+} from "@/services/achievementService";
+import { supabase } from "@/services/supabaseClient";
 
 function RootLayout() {
   // TEMPORARY
@@ -92,6 +97,14 @@ function RootLayout() {
           achievement.badge_icon,
         ],
       );
+    }
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    
+    if (user) {
+      await evaluateHighestGradeAchievement(db, user.id);
+      await evaluateFlashMasterAchievement(db, user.id);
     }
   }}
 >

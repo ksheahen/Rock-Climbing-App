@@ -10,7 +10,10 @@ import Location from "@/components/Location/Location";
 import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import Type from "@/components/Type/Type";
-import { evaluateHighestGradeAchievement } from "@/services/achievementService";
+import {
+  evaluateFlashMasterAchievement,
+  evaluateHighestGradeAchievement,
+} from "@/services/achievementService";
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
@@ -97,9 +100,10 @@ function LogAscent() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
+    
     if (user) {
       await evaluateHighestGradeAchievement(db, user.id);
+      await evaluateFlashMasterAchievement(db, user.id);
     }
 
     console.log("Climb saved to database");

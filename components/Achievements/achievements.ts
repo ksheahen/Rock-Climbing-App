@@ -1,4 +1,5 @@
 export const HIGHEST_GRADE_ACHIEVEMENT_ID = "highest-grade";
+export const FLASH_MASTER_ACHIEVEMENT_ID = "flash-master";
 
 export const DEFAULT_ACHIEVEMENTS = [
   {
@@ -14,7 +15,7 @@ export const DEFAULT_ACHIEVEMENTS = [
     badge_icon: "trophy",
   },
   {
-    achievement_id: "flash-master",
+    achievement_id: FLASH_MASTER_ACHIEVEMENT_ID,
     name: "Flash Master",
     description: "Complete 5 climbs on your first attempt.",
     badge_icon: "trophy",

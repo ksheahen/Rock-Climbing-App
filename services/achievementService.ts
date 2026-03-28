@@ -1,20 +1,26 @@
 import uuid from "react-native-uuid";
-import { HIGHEST_GRADE_ACHIEVEMENT_ID } from "@/components/Achievements/achievements";
+import {
+  FLASH_MASTER_ACHIEVEMENT_ID,
+  HIGHEST_GRADE_ACHIEVEMENT_ID,
+} from "@/components/Achievements/achievements";;
 
 type ClimbRow = {
   id: number;
   type: string | null;
   grade: string | null;
   complete: string | null;
+  attempt: string | null;
   deleted: number;
 };
 
 function isCompletedClimb(climb: ClimbRow) {
-  const complete = String(climb.complete ?? "")
-    .trim()
-    .toLowerCase();
-
+  const complete = String(climb.complete ?? "").trim().toLowerCase();
   return climb.deleted === 0 && (complete === "yes" || complete === "true");
+}
+
+function isFlashClimb(climb: ClimbRow) {
+  const attempt = String(climb.attempt ?? "").trim();
+  return isCompletedClimb(climb) && attempt === "1";
 }
 
 function normalizeGrade(grade: string) {
@@ -25,10 +31,7 @@ function hasHighestGradeClimb(climbs: ClimbRow[]) {
   return climbs.some((climb) => {
     if (!isCompletedClimb(climb) || !climb.grade) return false;
 
-    const type = String(climb.type ?? "")
-      .trim()
-      .toLowerCase();
-
+    const type = String(climb.type ?? "").trim().toLowerCase();
     const grade = normalizeGrade(climb.grade);
 
     const isMaxBoulder = type === "boulder" && grade === "9a/V17";
@@ -38,9 +41,14 @@ function hasHighestGradeClimb(climbs: ClimbRow[]) {
   });
 }
 
+function hasFiveFlashClimbs(climbs: ClimbRow[]) {
+  const flashCount = climbs.filter(isFlashClimb).length;
+  return flashCount >= 5;
+}
+
 async function getAllActiveClimbs(db: any): Promise<ClimbRow[]> {
   const rows = await db.getAllAsync(
-    `SELECT id, type, grade, complete, deleted
+    `SELECT id, type, grade, complete, attempt, deleted
      FROM log_climb5
      WHERE deleted = 0`,
     [],
@@ -104,5 +112,25 @@ export async function evaluateHighestGradeAchievement(
   if (!hasHighestGradeClimb(climbs)) return false;
 
   await awardAchievement(db, userId, HIGHEST_GRADE_ACHIEVEMENT_ID);
+  return true;
+}
+
+export async function evaluateFlashMasterAchievement(
+  db: any,
+  userId: string,
+) {
+  const alreadyEarned = await hasEarnedAchievement(
+    db,
+    userId,
+    FLASH_MASTER_ACHIEVEMENT_ID,
+  );
+
+  if (alreadyEarned) return false;
+
+  const climbs = await getAllActiveClimbs(db);
+
+  if (!hasFiveFlashClimbs(climbs)) return false;
+
+  await awardAchievement(db, userId, FLASH_MASTER_ACHIEVEMENT_ID);
   return true;
 }

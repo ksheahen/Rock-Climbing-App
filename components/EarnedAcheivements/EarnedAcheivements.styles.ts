@@ -33,4 +33,9 @@ export default StyleSheet.create({
     color: "#B0B0B0",
     fontSize: 12,
   },
+  badgeImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 6,
+  },
 });

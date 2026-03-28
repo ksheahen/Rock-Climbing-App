@@ -1,24 +1,23 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
-import Icon from "react-native-remix-icon";
+import { Image, ScrollView, Text, View } from "react-native";
 import styles from "./EarnedAcheivements.styles.ts";
 
 export type EarnedAchievement = {
   achievement_id: string;
   name: string;
   description: string | null;
-  badge_icon: string | null; // icon_key like "trophy"
+  badge_icon: string | null;
   earned_at: string;
 };
 
-function iconName(iconKey?: string | null) {
-  switch (iconKey) {
-    case "trophy":
-      return "award-line";
-    default:
-      return "medal-line";
-  }
-}
+// SAME ICONS as Achievements page
+const awardIconsById: Record<string, number> = {
+  "highest-grade": require("../../assets/award_highest.png"),
+  "streak-starter": require("../../assets/award_streak.png"),
+  "flash-master": require("../../assets/award_flash.png"),
+};
+
+const defaultAwardIcon = require("../../assets/award_test.png");
 
 export default function AchievementsRow({
   achievements,
@@ -39,8 +38,16 @@ export default function AchievementsRow({
         ) : (
           achievements.map((a) => (
             <View key={a.achievement_id} style={styles.card}>
-              <Icon name={iconName(a.badge_icon)} size={24} color="#FFD700" />
+              <Image
+                source={
+                  awardIconsById[a.achievement_id] ?? defaultAwardIcon
+                }
+                style={styles.badgeImage}
+                resizeMode="contain"
+              />
+
               <Text style={styles.cardTitle}>{a.name}</Text>
+
               {!!a.description && (
                 <Text style={styles.cardDesc}>{a.description}</Text>
               )}
