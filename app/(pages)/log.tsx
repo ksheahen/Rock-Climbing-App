@@ -13,6 +13,7 @@ import Type from "@/components/Type/Type";
 import {
   evaluateFlashMasterAchievement,
   evaluateHighestGradeAchievement,
+  evaluateStreakStarterAchievement,
 } from "@/services/achievementService";
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
@@ -104,6 +105,7 @@ function LogAscent() {
     if (user) {
       await evaluateHighestGradeAchievement(db, user.id);
       await evaluateFlashMasterAchievement(db, user.id);
+      await evaluateStreakStarterAchievement(db, user.id);
     }
 
     console.log("Climb saved to database");

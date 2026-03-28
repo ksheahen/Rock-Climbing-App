@@ -2,7 +2,8 @@ import uuid from "react-native-uuid";
 import {
   FLASH_MASTER_ACHIEVEMENT_ID,
   HIGHEST_GRADE_ACHIEVEMENT_ID,
-} from "@/components/Achievements/achievements";;
+  STREAK_STARTER_ACHIEVEMENT_ID,
+} from "@/components/Achievements/achievements";
 
 type ClimbRow = {
   id: number;
@@ -10,6 +11,7 @@ type ClimbRow = {
   grade: string | null;
   complete: string | null;
   attempt: string | null;
+  datetime: string | null;
   deleted: number;
 };
 
@@ -42,13 +44,50 @@ function hasHighestGradeClimb(climbs: ClimbRow[]) {
 }
 
 function hasFiveFlashClimbs(climbs: ClimbRow[]) {
-  const flashCount = climbs.filter(isFlashClimb).length;
-  return flashCount >= 5;
+  return climbs.filter(isFlashClimb).length >= 5;
+}
+
+function toLocalDateString(datetime: string) {
+  const date = new Date(datetime);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function hasThreeDayStreak(climbs: ClimbRow[]) {
+  const uniqueDays = Array.from(
+    new Set(
+      climbs
+        .filter((climb) => climb.deleted === 0 && !!climb.datetime)
+        .map((climb) => toLocalDateString(climb.datetime as string)),
+    ),
+  ).sort();
+
+  if (uniqueDays.length < 3) return false;
+
+  const dayMs = 24 * 60 * 60 * 1000;
+  let streak = 1;
+
+  for (let i = 1; i < uniqueDays.length; i++) {
+    const prev = new Date(uniqueDays[i - 1]).getTime();
+    const curr = new Date(uniqueDays[i]).getTime();
+    const diffDays = Math.round((curr - prev) / dayMs);
+
+    if (diffDays === 1) {
+      streak += 1;
+      if (streak >= 3) return true;
+    } else if (diffDays > 1) {
+      streak = 1;
+    }
+  }
+
+  return false;
 }
 
 async function getAllActiveClimbs(db: any): Promise<ClimbRow[]> {
   const rows = await db.getAllAsync(
-    `SELECT id, type, grade, complete, attempt, deleted
+    `SELECT id, type, grade, complete, attempt, datetime, deleted
      FROM log_climb5
      WHERE deleted = 0`,
     [],
@@ -132,5 +171,25 @@ export async function evaluateFlashMasterAchievement(
   if (!hasFiveFlashClimbs(climbs)) return false;
 
   await awardAchievement(db, userId, FLASH_MASTER_ACHIEVEMENT_ID);
+  return true;
+}
+
+export async function evaluateStreakStarterAchievement(
+  db: any,
+  userId: string,
+) {
+  const alreadyEarned = await hasEarnedAchievement(
+    db,
+    userId,
+    STREAK_STARTER_ACHIEVEMENT_ID,
+  );
+
+  if (alreadyEarned) return false;
+
+  const climbs = await getAllActiveClimbs(db);
+
+  if (!hasThreeDayStreak(climbs)) return false;
+
+  await awardAchievement(db, userId, STREAK_STARTER_ACHIEVEMENT_ID);
   return true;
 }

@@ -1,5 +1,6 @@
 export const HIGHEST_GRADE_ACHIEVEMENT_ID = "highest-grade";
 export const FLASH_MASTER_ACHIEVEMENT_ID = "flash-master";
+export const STREAK_STARTER_ACHIEVEMENT_ID = "streak-starter";
 
 export const DEFAULT_ACHIEVEMENTS = [
   {
@@ -9,7 +10,7 @@ export const DEFAULT_ACHIEVEMENTS = [
     badge_icon: "trophy",
   },
   {
-    achievement_id: "streak-starter",
+    achievement_id: STREAK_STARTER_ACHIEVEMENT_ID,
     name: "Streak Starter",
     description: "Log climbs on 3 consecutive days.",
     badge_icon: "trophy",

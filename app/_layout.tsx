@@ -7,6 +7,7 @@ import { DEFAULT_ACHIEVEMENTS } from "@/components/Achievements/achievements";
 import {
   evaluateFlashMasterAchievement,
   evaluateHighestGradeAchievement,
+  evaluateStreakStarterAchievement,
 } from "@/services/achievementService";
 import { supabase } from "@/services/supabaseClient";
 
@@ -105,6 +106,7 @@ function RootLayout() {
     if (user) {
       await evaluateHighestGradeAchievement(db, user.id);
       await evaluateFlashMasterAchievement(db, user.id);
+      await evaluateStreakStarterAchievement(db, user.id);
     }
   }}
 >
