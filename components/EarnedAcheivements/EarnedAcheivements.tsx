@@ -26,8 +26,6 @@ export default function AchievementsRow({
 }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Achievements</Text>
-
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -39,9 +37,7 @@ export default function AchievementsRow({
           achievements.map((a) => (
             <View key={a.achievement_id} style={styles.card}>
               <Image
-                source={
-                  awardIconsById[a.achievement_id] ?? defaultAwardIcon
-                }
+                source={awardIconsById[a.achievement_id] ?? defaultAwardIcon}
                 style={styles.badgeImage}
                 resizeMode="contain"
               />

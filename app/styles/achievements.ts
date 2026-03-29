@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   awardRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: global.colors.background_3,
+    backgroundColor: global.colors.background_2,
     borderColor: global.border.border_color,
     borderWidth: 1,
     borderRadius: 12,

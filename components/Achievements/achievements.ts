@@ -5,8 +5,8 @@ export const STREAK_STARTER_ACHIEVEMENT_ID = "streak-starter";
 export const DEFAULT_ACHIEVEMENTS = [
   {
     achievement_id: HIGHEST_GRADE_ACHIEVEMENT_ID,
-    name: "Highest Grade Climbed",
-    description: "Send your hardest grade to unlock this achievement.",
+    name: "Climber Level - Elite",
+    description: "Send your hardest grade V13-V17",
     badge_icon: "trophy",
   },
   {

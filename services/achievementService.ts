@@ -1,9 +1,9 @@
-import uuid from "react-native-uuid";
 import {
-  FLASH_MASTER_ACHIEVEMENT_ID,
-  HIGHEST_GRADE_ACHIEVEMENT_ID,
-  STREAK_STARTER_ACHIEVEMENT_ID,
+    FLASH_MASTER_ACHIEVEMENT_ID,
+    HIGHEST_GRADE_ACHIEVEMENT_ID,
+    STREAK_STARTER_ACHIEVEMENT_ID,
 } from "@/components/Achievements/achievements";
+import uuid from "react-native-uuid";
 
 type ClimbRow = {
   id: number;
@@ -16,7 +16,9 @@ type ClimbRow = {
 };
 
 function isCompletedClimb(climb: ClimbRow) {
-  const complete = String(climb.complete ?? "").trim().toLowerCase();
+  const complete = String(climb.complete ?? "")
+    .trim()
+    .toLowerCase();
   return climb.deleted === 0 && (complete === "yes" || complete === "true");
 }
 
@@ -29,17 +31,21 @@ function normalizeGrade(grade: string) {
   return grade.replace(/\s+/g, "");
 }
 
+function getVGradeValue(grade: string): number | null {
+  const normalized = normalizeGrade(grade);
+  const match = normalized.match(/V(\d+)/i);
+  if (!match) return null;
+
+  const value = Number.parseInt(match[1], 10);
+  return Number.isNaN(value) ? null : value;
+}
+
 function hasHighestGradeClimb(climbs: ClimbRow[]) {
   return climbs.some((climb) => {
     if (!isCompletedClimb(climb) || !climb.grade) return false;
 
-    const type = String(climb.type ?? "").trim().toLowerCase();
-    const grade = normalizeGrade(climb.grade);
-
-    const isMaxBoulder = type === "boulder" && grade === "9a/V17";
-    const isMaxRoute = type === "route" && grade === "8c/5.13d";
-
-    return isMaxBoulder || isMaxRoute;
+    const vGrade = getVGradeValue(climb.grade);
+    return vGrade !== null && vGrade >= 12;
   });
 }
 
@@ -119,25 +125,86 @@ async function awardAchievement(
   userId: string,
   achievementId: string,
 ) {
-  const userAchievementId = uuid.v4().toString();
+  const earnedAt = new Date().toISOString();
 
+  // Re-activate if it already exists but is soft-deleted.
+  const updateResult = await db.runAsync(
+    `UPDATE user_achievement
+     SET deleted = 0,
+         synced = 0,
+         earned_at = ?
+     WHERE user_id = ?
+       AND achievement_id = ?`,
+    [earnedAt, userId, achievementId],
+  );
+
+  if ((updateResult?.changes ?? 0) > 0) return;
+
+  const userAchievementId = uuid.v4().toString();
   await db.runAsync(
     `INSERT OR IGNORE INTO user_achievement
      (user_achievement_id, user_id, achievement_id, earned_at, synced, deleted)
      VALUES (?, ?, ?, ?, 0, 0)`,
-    [
-      userAchievementId,
-      userId,
-      achievementId,
-      new Date().toISOString(),
-    ],
+    [userAchievementId, userId, achievementId, earnedAt],
   );
 }
 
-export async function evaluateHighestGradeAchievement(
+async function unawardAchievement(
   db: any,
   userId: string,
+  achievementId: string,
 ) {
+  await db.runAsync(
+    `UPDATE user_achievement
+     SET deleted = 1,
+         synced = 0
+     WHERE user_id = ?
+       AND achievement_id = ?
+       AND deleted = 0`,
+    [userId, achievementId],
+  );
+}
+
+async function syncAchievementState(
+  db: any,
+  userId: string,
+  achievementId: string,
+  shouldBeEarned: boolean,
+) {
+  if (shouldBeEarned) {
+    await awardAchievement(db, userId, achievementId);
+    return;
+  }
+
+  await unawardAchievement(db, userId, achievementId);
+}
+
+export async function syncAchievementsForUser(db: any, userId: string) {
+  const climbs = await getAllActiveClimbs(db);
+
+  await syncAchievementState(
+    db,
+    userId,
+    HIGHEST_GRADE_ACHIEVEMENT_ID,
+    hasHighestGradeClimb(climbs),
+  );
+
+  await syncAchievementState(
+    db,
+    userId,
+    FLASH_MASTER_ACHIEVEMENT_ID,
+    hasFiveFlashClimbs(climbs),
+  );
+
+  await syncAchievementState(
+    db,
+    userId,
+    STREAK_STARTER_ACHIEVEMENT_ID,
+    hasThreeDayStreak(climbs),
+  );
+}
+
+export async function evaluateHighestGradeAchievement(db: any, userId: string) {
   const alreadyEarned = await hasEarnedAchievement(
     db,
     userId,
@@ -154,10 +221,7 @@ export async function evaluateHighestGradeAchievement(
   return true;
 }
 
-export async function evaluateFlashMasterAchievement(
-  db: any,
-  userId: string,
-) {
+export async function evaluateFlashMasterAchievement(db: any, userId: string) {
   const alreadyEarned = await hasEarnedAchievement(
     db,
     userId,
