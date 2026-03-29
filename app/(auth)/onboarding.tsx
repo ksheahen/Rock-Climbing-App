@@ -31,7 +31,6 @@ const videoWidth = Math.min(width * 0.9, 600);
 const videoHeight = Math.min(height * 0.5, 450);
 const logoSize = Math.min(width * 0.6, 400);
 
-
 const logo = require("../../assets/icon.png");
 
 const completeOnboarding = async (router: any) => {
@@ -223,8 +222,8 @@ const SignUp = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
         keyboardVerticalOffset={Platform.OS === "ios" ? 300 : 0}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -283,7 +282,7 @@ const SignUp = () => {
               </Text>
             )}
 
-            <View style={{ paddingBottom: 10}} />
+            <View style={{ paddingBottom: 10 }} />
 
             <View style={{ width: 200 }}>
               <ButtonComponent

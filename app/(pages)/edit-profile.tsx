@@ -49,11 +49,11 @@ function EditProfilePage() {
           throw new Error("User not found");
         }
 
-      const { data: profile } = await supabase
-        .from("user")
-        .select("instagram_handle, profile_picture")
-        .eq("user_id", user.id)
-        .single();
+        const { data: profile } = await supabase
+          .from("user")
+          .select("instagram_handle, profile_picture")
+          .eq("user_id", user.id)
+          .single();
 
         setInstagramHandle(profile?.instagram_handle || null);
         setSelectedPFP(profile?.profile_picture || "pfp_4.png");
@@ -92,7 +92,12 @@ function EditProfilePage() {
 
       const { tableData, tableError } = await supabase
         .from("user")
-        .update({ name, email, instagram_handle: instagramHandle, profile_picture: selectedPFP })
+        .update({
+          name,
+          email,
+          instagram_handle: instagramHandle,
+          profile_picture: selectedPFP,
+        })
         .eq("user_id", userID)
         .single();
 
@@ -132,9 +137,10 @@ function EditProfilePage() {
   };
 
   return (
-    <KeyboardAvoidingView         
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <View style={styles.card}>

@@ -1,7 +1,18 @@
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, AppState, Image, Keyboard, KeyboardAvoidingView, Platform, StatusBar, Text, TouchableWithoutFeedback, View } from "react-native";
+import {
+  Alert,
+  AppState,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StatusBar,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonComponent from "../../components/Button/Button";
 import EmailComponent from "../../components/Email/Email";
@@ -117,9 +128,10 @@ export default function Login() {
     <>
       <StatusBar barStyle="dark-content" />
       <View style={styles.header}>{canGoBack && <BackButton />}</View>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <SafeAreaView style={styles.container}>
             <Image source={logo} alt="logo" style={styles.logo} />
@@ -151,7 +163,10 @@ export default function Login() {
               </Text>
             )}
             <View style={styles.forgotPasswordContainer}>
-              <Text onPress={() => router.navigate("/")}> Forgot Password?</Text>
+              <Text onPress={() => router.navigate("/")}>
+                {" "}
+                Forgot Password?
+              </Text>
             </View>
             <ButtonComponent
               title={login}
