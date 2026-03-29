@@ -2,7 +2,10 @@
 // npx vitest run services/tests/userAchievementService.test.ts
 
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createAchievement, deleteAchievement } from "../supabaseAchievementService.ts";
+import {
+  createAchievement,
+  deleteAchievement,
+} from "../supabaseAchievementService.ts";
 import {
   createUserAchievement,
   deleteUserAchievement,
