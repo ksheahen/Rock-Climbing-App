@@ -9,25 +9,25 @@ export const DEFAULT_ACHIEVEMENTS = [
   {
     achievement_id: HIGHEST_GRADE_ACHIEVEMENT_ID,
     name: "Climber Level - Elite",
-    description: "Reserved for climbers sending V13-V17 (inclusive).",
+    description: "Send V13-V17 climbs.",
     badge_icon: "trophy",
   },
   {
     achievement_id: ADVANCED_GRADE_ACHIEVEMENT_ID,
     name: "Climber Level - Advanced",
-    description: "Send V8-V12 climbs (inclusive).",
+    description: "Send V8-V12 climbs.",
     badge_icon: "trophy",
   },
   {
     achievement_id: INTERMEDIATE_GRADE_ACHIEVEMENT_ID,
     name: "Climber Level - Intermediate",
-    description: "Send V4-V7 climbs (inclusive).",
+    description: "Send V4-V7 climbs.",
     badge_icon: "trophy",
   },
   {
     achievement_id: BEGINNER_GRADE_ACHIEVEMENT_ID,
     name: "Climber Level - Beginner",
-    description: "Send V0-V3 climbs (inclusive).",
+    description: "Send V0-V3 climbs",
     badge_icon: "trophy",
   },
   {
