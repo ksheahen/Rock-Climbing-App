@@ -48,18 +48,13 @@ function ProfilePage() {
   const [isSyncing, setIsSyncing] = useState(false);
   
   const handleSync = async () => {
-    // TEST
     if (isSyncing) return;
-
-    setIsSyncing(true);
 
     await new Promise(((resolve) => setTimeout(resolve, 50)));
 
+    setIsSyncing(true);
+
     try {
-
-    //TEST
-    await new Promise(((resolve) => setTimeout(resolve, 2000)));
-
 
     await syncLocalClimbsSQLite(db);
   } finally {
