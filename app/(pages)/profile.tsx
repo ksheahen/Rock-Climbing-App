@@ -229,7 +229,7 @@ function ProfilePage() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <View style={styles.mainContent}>
         <ProfileInfo onSync={handleSync} isSyncing={isSyncing} />
         <Line />
