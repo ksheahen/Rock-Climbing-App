@@ -5,10 +5,14 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { getUserById } from "../../services/userService";
@@ -128,106 +132,112 @@ function EditProfilePage() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.heading}>Edit Profile</Text>
-        <Text style={styles.label}>Profile Picture</Text>
-        <View style={styles.avatarContainer}>
-          <TouchableOpacity onPress={() => handlePFP("pfp_1.png")}>
-            <Image
-              source={require("../../assets/pfp_1.png")}
-              style={[
-                styles.avatar,
-                selectedPFP === "pfp_1.png" && styles.avatarSelected,
-              ]}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handlePFP("pfp_2.png")}>
-            <Image
-              source={require("../../assets/pfp_2.png")}
-              style={[
-                styles.avatar,
-                selectedPFP === "pfp_2.png" && styles.avatarSelected,
-              ]}
-            />
-          </TouchableOpacity>
-        </View>
+    <KeyboardAvoidingView         
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <View style={styles.card}>
+            <Text style={styles.heading}>Edit Profile</Text>
+            <Text style={styles.label}>Profile Picture</Text>
+            <View style={styles.avatarContainer}>
+              <TouchableOpacity onPress={() => handlePFP("pfp_1.png")}>
+                <Image
+                  source={require("../../assets/pfp_1.png")}
+                  style={[
+                    styles.avatar,
+                    selectedPFP === "pfp_1.png" && styles.avatarSelected,
+                  ]}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handlePFP("pfp_2.png")}>
+                <Image
+                  source={require("../../assets/pfp_2.png")}
+                  style={[
+                    styles.avatar,
+                    selectedPFP === "pfp_2.png" && styles.avatarSelected,
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
 
-        <View style={styles.avatarContainer}>
-          <TouchableOpacity onPress={() => handlePFP("pfp_3.png")}>
-            <Image
-              source={require("../../assets/pfp_3.png")}
-              style={[
-                styles.avatar,
-                selectedPFP === "pfp_3.png" && styles.avatarSelected,
-              ]}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handlePFP("pfp_4.png")}>
-            <Image
-              source={require("../../assets/pfp_4.png")}
-              style={[
-                styles.avatar,
-                selectedPFP === "pfp_4.png" && styles.avatarSelected,
-              ]}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Name</Text>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={setName}
-            placeholder="Your name"
-          />
-        </View>
+            <View style={styles.avatarContainer}>
+              <TouchableOpacity onPress={() => handlePFP("pfp_3.png")}>
+                <Image
+                  source={require("../../assets/pfp_3.png")}
+                  style={[
+                    styles.avatar,
+                    selectedPFP === "pfp_3.png" && styles.avatarSelected,
+                  ]}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handlePFP("pfp_4.png")}>
+                <Image
+                  source={require("../../assets/pfp_4.png")}
+                  style={[
+                    styles.avatar,
+                    selectedPFP === "pfp_4.png" && styles.avatarSelected,
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Name</Text>
+              <TextInput
+                style={styles.input}
+                value={name}
+                onChangeText={setName}
+                placeholder="Your name"
+              />
+            </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Your email"
-            keyboardType="email-address"
-          />
-        </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+                placeholder="Your email"
+                keyboardType="email-address"
+              />
+            </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Instagram</Text>
-          <TextInput
-            style={styles.input}
-            value={instagramHandle}
-            onChangeText={setInstagramHandle}
-            placeholder="username"
-            autoCapitalize="none"
-          />
-        </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Instagram</Text>
+              <TextInput
+                style={styles.input}
+                value={instagramHandle}
+                onChangeText={setInstagramHandle}
+                placeholder="username"
+                autoCapitalize="none"
+              />
+            </View>
 
-        <View style={styles.buttonRow}>
-          <Pressable
-            style={[styles.button, styles.cancelButton]}
-            onPress={() => navigation.navigate("profile" as never)}
-            disabled={saving}
-          >
-            <Text style={styles.buttonText}>Cancel</Text>
-          </Pressable>
+            <View style={styles.buttonRow}>
+              <Pressable
+                style={[styles.button, styles.cancelButton]}
+                onPress={() => navigation.navigate("profile" as never)}
+                disabled={saving}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </Pressable>
 
-          <Pressable
-            style={[styles.button, styles.saveButton]}
-            onPress={handleSave}
-            disabled={saving}
-          >
-            {saving ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text style={styles.buttonText}>Save</Text>
-            )}
-          </Pressable>
+              <Pressable
+                style={[styles.button, styles.saveButton]}
+                onPress={handleSave}
+                disabled={saving}
+              >
+                {saving ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.buttonText}>Save</Text>
+                )}
+              </Pressable>
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 

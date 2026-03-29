@@ -21,6 +21,7 @@ import Onboarding from "react-native-onboarding-swiper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmailComponent from "../../components/Email/Email";
 import PasswordComponent from "../../components/Password/Password";
+import styles from "../styles/login.styles";
 
 const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
 const color = (isLight: any) => backgroundColor(!isLight);
@@ -29,6 +30,9 @@ const { width, height } = Dimensions.get("window");
 const videoWidth = Math.min(width * 0.9, 600);
 const videoHeight = Math.min(height * 0.5, 450);
 const logoSize = Math.min(width * 0.6, 400);
+
+
+const logo = require("../../assets/icon.png");
 
 const completeOnboarding = async (router: any) => {
   try {
@@ -219,9 +223,9 @@ const SignUp = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 250 : 0}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 300 : 0}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <SafeAreaView
@@ -234,7 +238,7 @@ const SignUp = () => {
             }}
           >
             <Image
-              source={require("../../assets/icon.png")}
+              source={logo}
               alt="logo"
               style={{ height: logoSize, width: logoSize }}
             />
