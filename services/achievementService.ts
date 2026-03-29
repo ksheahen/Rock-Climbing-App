@@ -1,6 +1,9 @@
 import {
+    ADVANCED_GRADE_ACHIEVEMENT_ID,
+    BEGINNER_GRADE_ACHIEVEMENT_ID,
     FLASH_MASTER_ACHIEVEMENT_ID,
     HIGHEST_GRADE_ACHIEVEMENT_ID,
+    INTERMEDIATE_GRADE_ACHIEVEMENT_ID,
     STREAK_STARTER_ACHIEVEMENT_ID,
 } from "@/components/Achievements/achievements";
 import uuid from "react-native-uuid";
@@ -40,13 +43,29 @@ function getVGradeValue(grade: string): number | null {
   return Number.isNaN(value) ? null : value;
 }
 
-function hasHighestGradeClimb(climbs: ClimbRow[]) {
+function hasVGradeInRange(climbs: ClimbRow[], minV: number, maxV: number) {
   return climbs.some((climb) => {
     if (!isCompletedClimb(climb) || !climb.grade) return false;
 
     const vGrade = getVGradeValue(climb.grade);
-    return vGrade !== null && vGrade >= 12;
+    return vGrade !== null && vGrade >= minV && vGrade <= maxV;
   });
+}
+
+function hasEliteGradeClimb(climbs: ClimbRow[]) {
+  return hasVGradeInRange(climbs, 13, 17);
+}
+
+function hasAdvancedGradeClimb(climbs: ClimbRow[]) {
+  return hasVGradeInRange(climbs, 8, 12);
+}
+
+function hasIntermediateGradeClimb(climbs: ClimbRow[]) {
+  return hasVGradeInRange(climbs, 4, 7);
+}
+
+function hasBeginnerGradeClimb(climbs: ClimbRow[]) {
+  return hasVGradeInRange(climbs, 0, 3);
 }
 
 function hasFiveFlashClimbs(climbs: ClimbRow[]) {
@@ -186,7 +205,28 @@ export async function syncAchievementsForUser(db: any, userId: string) {
     db,
     userId,
     HIGHEST_GRADE_ACHIEVEMENT_ID,
-    hasHighestGradeClimb(climbs),
+    hasEliteGradeClimb(climbs),
+  );
+
+  await syncAchievementState(
+    db,
+    userId,
+    ADVANCED_GRADE_ACHIEVEMENT_ID,
+    hasAdvancedGradeClimb(climbs),
+  );
+
+  await syncAchievementState(
+    db,
+    userId,
+    INTERMEDIATE_GRADE_ACHIEVEMENT_ID,
+    hasIntermediateGradeClimb(climbs),
+  );
+
+  await syncAchievementState(
+    db,
+    userId,
+    BEGINNER_GRADE_ACHIEVEMENT_ID,
+    hasBeginnerGradeClimb(climbs),
   );
 
   await syncAchievementState(
@@ -215,7 +255,7 @@ export async function evaluateHighestGradeAchievement(db: any, userId: string) {
 
   const climbs = await getAllActiveClimbs(db);
 
-  if (!hasHighestGradeClimb(climbs)) return false;
+  if (!hasEliteGradeClimb(climbs)) return false;
 
   await awardAchievement(db, userId, HIGHEST_GRADE_ACHIEVEMENT_ID);
   return true;

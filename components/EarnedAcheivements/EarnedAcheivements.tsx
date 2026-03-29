@@ -13,6 +13,9 @@ export type EarnedAchievement = {
 // SAME ICONS as Achievements page
 const awardIconsById: Record<string, number> = {
   "highest-grade": require("../../assets/award_highest.png"),
+  "advanced-grade": require("../../assets/award_highest.png"),
+  "intermediate-grade": require("../../assets/award_highest.png"),
+  "beginner-grade": require("../../assets/award_highest.png"),
   "streak-starter": require("../../assets/award_streak.png"),
   "flash-master": require("../../assets/award_flash.png"),
 };
