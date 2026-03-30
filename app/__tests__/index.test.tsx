@@ -84,17 +84,17 @@ const mockClimbs = [
   },
 ];
 
-describe("Home Page Tests", () => {
-  let mockDbGetAllAsync: jest.Mock;
+const mockDbGetAllAsync = jest.fn();
+const mockRunAsync = jest.fn();
+(useSQLiteContext as jest.Mock).mockReturnValue({
+  getAllAsync: mockDbGetAllAsync,
+  runAsync: mockRunAsync,
+});
 
+describe("Home Page Tests", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockDbGetAllAsync = jest.fn().mockResolvedValue(mockClimbs);
-
-    (useSQLiteContext as jest.Mock).mockReturnValue({
-      getAllAsync: mockDbGetAllAsync,
-      runAsync: jest.fn(),
-    });
+    mockDbGetAllAsync.mockResolvedValue(mockClimbs);
   });
 
   it("renders the home page with loading state initially", async () => {
