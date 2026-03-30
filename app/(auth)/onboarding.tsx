@@ -9,15 +9,19 @@ import {
   Alert,
   Dimensions,
   Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   StatusBar,
   Text,
+  TouchableWithoutFeedback,
   View,
-  TextInput,
 } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmailComponent from "../../components/Email/Email";
 import PasswordComponent from "../../components/Password/Password";
+import styles from "../styles/login.styles";
 
 const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
 const color = (isLight: any) => backgroundColor(!isLight);
@@ -26,6 +30,8 @@ const { width, height } = Dimensions.get("window");
 const videoWidth = Math.min(width * 0.9, 600);
 const videoHeight = Math.min(height * 0.5, 450);
 const logoSize = Math.min(width * 0.6, 400);
+
+const logo = require("../../assets/icon.png");
 
 const completeOnboarding = async (router: any) => {
   try {
@@ -215,63 +221,79 @@ const SignUp = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView
-        style={{
-          flex: 1,
-          padding: 40,
-          alignItems: "center",
-          justifyContent: "center",
-          paddingBottom: 200,
-          backgroundColor: global.colors.background_1,
-        }}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 300 : 0}
       >
-        <EmailComponent
-          email={email}
-          setEmail={handleEmailChange}
-          inputStyle={emailError ? invalidInputStyle : undefined}
-        />
-
-        <PasswordComponent
-          password={password}
-          setPassword={handlePasswordChange}
-          displayText="Create Password"
-          inputStyle={passwordError ? invalidInputStyle : undefined}
-        />
-        <PasswordComponent
-          password={confirmPassword}
-          setPassword={handleConfirmPasswordChange}
-          displayText="Confirm Password"
-          inputStyle={confirmPasswordError ? invalidInputStyle : undefined}
-        />
-
-        {error && (
-          <Text
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <SafeAreaView
             style={{
-              color: "#8B0000",
-              backgroundColor: "#fdecea",
-              paddingVertical: 6,
-              paddingHorizontal: 10,
-              borderRadius: 6,
-              fontWeight: "bold",
-              fontSize: 13,
-              marginTop: 12,
-              marginBottom: 0,
+              width: "100%",
+              padding: 30,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: global.colors.background_1,
             }}
           >
-            {error}
-          </Text>
-        )}
+            <Image
+              source={logo}
+              alt="logo"
+              style={{ height: logoSize, width: logoSize }}
+            />
 
-        <View style={{ paddingBottom: 10 }} />
+            <Text style={{ fontSize: 25, padding: 20 }}>
+              Start Climbing Today
+            </Text>
+            <EmailComponent
+              email={email}
+              setEmail={handleEmailChange}
+              inputStyle={emailError ? invalidInputStyle : undefined}
+            />
 
-        <View style={{ width: 200 }}>
-          <ButtonComponent
-            title={btnText}
-            disabled={loading}
-            onPress={() => signUpWithEmail()}
-          />
-        </View>
-      </SafeAreaView>
+            <PasswordComponent
+              password={password}
+              setPassword={handlePasswordChange}
+              displayText="Create Password"
+              inputStyle={passwordError ? invalidInputStyle : undefined}
+            />
+            <PasswordComponent
+              password={confirmPassword}
+              setPassword={handleConfirmPasswordChange}
+              displayText="Confirm Password"
+              inputStyle={confirmPasswordError ? invalidInputStyle : undefined}
+            />
+
+            {error && (
+              <Text
+                style={{
+                  color: "#8B0000",
+                  backgroundColor: "#fdecea",
+                  paddingVertical: 6,
+                  paddingHorizontal: 10,
+                  borderRadius: 6,
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  marginTop: 12,
+                  marginBottom: 0,
+                }}
+              >
+                {error}
+              </Text>
+            )}
+
+            <View style={{ paddingBottom: 10 }} />
+
+            <View style={{ width: 200 }}>
+              <ButtonComponent
+                title={btnText}
+                disabled={loading}
+                onPress={() => signUpWithEmail()}
+              />
+            </View>
+          </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </>
   );
 };
@@ -351,17 +373,9 @@ const OnboardingPage = () => {
         },
         {
           backgroundColor: "#fff",
-          image: (
-            <View style={{ alignItems: "center", marginTop: 100 }}>
-              <Image
-                source={require("../../assets/icon.png")}
-                alt="logo"
-                style={{ height: logoSize, width: logoSize }}
-              />
-            </View>
-          ),
-          title: "Start Climbing Today",
-          subtitle: <SignUp />,
+          image: <View />,
+          title: <SignUp />,
+          subtitle: "",
         },
       ]}
     />
