@@ -171,7 +171,7 @@ const Index = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [db]);
 
   // Refresh climbs whenever the screen comes into focus (e.g., after logging a climb)
   useFocusEffect(
