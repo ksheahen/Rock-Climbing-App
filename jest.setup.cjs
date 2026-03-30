@@ -27,3 +27,8 @@ jest.mock("expo-image-picker", () => ({
     .mockResolvedValue({ granted: true }),
   requestCameraPermissionsAsync: jest.fn().mockResolvedValue({ granted: true }),
 }));
+
+jest.mock("@react-native-async-storage/async-storage", () => ({
+  getItem: jest.fn().mockResolvedValue("true"),
+  setItem: jest.fn(),
+}));
