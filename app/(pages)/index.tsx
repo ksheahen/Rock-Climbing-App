@@ -140,7 +140,7 @@ const Index = () => {
   // Otherwise, continue as normal
   const router = useRouter();
   useEffect(() => {
-    // Avoids onboarding check in testing environment
+    // Avoids onboarding check in testing environment (IF NEEDED)
     // if (process.env.NODE_ENV === "test") return;
 
     const checkOnboarding = async () => {
@@ -171,7 +171,7 @@ const Index = () => {
     } finally {
       setLoading(false);
     }
-  }, [db]);
+  }, []);
 
   // Refresh climbs whenever the screen comes into focus (e.g., after logging a climb)
   useFocusEffect(
