@@ -3,6 +3,26 @@ import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { useSQLiteContext } from "expo-sqlite";
 import Index from "../(pages)/index";
 
+// Manually suppresses error so changes don't have to be made to index.tsx
+const originalError = console.error;
+beforeAll(() => {
+  console.error = (...args) => {
+    if (
+      typeof args[0] === "string" &&
+      (args[0].includes("not wrapped in act") ||
+        args[0].includes(
+          "Can't perform a React state update on a component that hasn't mounted yet",
+        ))
+    ) {
+      return;
+    }
+    originalError(...args);
+  };
+});
+afterAll(() => {
+  console.error = originalError;
+});
+
 const mockPush = jest.fn();
 const mockReplace = jest.fn();
 
@@ -66,7 +86,6 @@ const mockClimbs = [
 
 describe("Home Page Tests", () => {
   let mockDbGetAllAsync: jest.Mock;
-  let rendered: ReturnType<typeof render> | null = null;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -78,38 +97,30 @@ describe("Home Page Tests", () => {
     });
   });
 
-  afterEach(() => {
-    if (rendered) {
-      rendered.unmount();
-      rendered = null;
-    }
-  });
-
-  it("renders the home page with loading state initially", async () => {
+  it("renders the home page with loading state initially", () => {
     mockDbGetAllAsync.mockImplementation(() => new Promise(() => {}));
-    rendered = render(<Index />);
-    expect(rendered.getByText("Loading logs...")).toBeTruthy();
-    await waitFor(() => true);
+    const { getByText } = render(<Index />);
+    expect(getByText("Loading logs...")).toBeTruthy();
   });
 
   it("renders the home page with climbs after loading", async () => {
-    rendered = render(<Index />);
+    const { getByText } = render(<Index />);
     await waitFor(() => {
-      expect(rendered.getByText("This week")).toBeTruthy();
+      expect(getByText("This week")).toBeTruthy();
     });
   });
 
   it("displays empty state when no climbs exist", async () => {
     mockDbGetAllAsync.mockResolvedValue([]);
-    rendered = render(<Index />);
+    const { getByText } = render(<Index />);
     await waitFor(() => {
-      expect(rendered.getByText(/No climb logs yet/)).toBeTruthy();
-      expect(rendered.getByText(/Start logging your climbs/)).toBeTruthy();
+      expect(getByText(/No climb logs yet/)).toBeTruthy();
+      expect(getByText(/Start logging your climbs/)).toBeTruthy();
     });
   });
 
   it("fetches climbs from the database on render", async () => {
-    rendered = render(<Index />);
+    render(<Index />);
     await waitFor(() => {
       expect(mockDbGetAllAsync).toHaveBeenCalledWith(
         expect.stringContaining("SELECT * FROM log_climb5"),
@@ -118,41 +129,41 @@ describe("Home Page Tests", () => {
   });
 
   it("renders the ANALYTICS section", async () => {
-    rendered = render(<Index />);
+    const { getByText } = render(<Index />);
     await waitFor(() => {
-      expect(rendered.getByText(/ANALYTICS/)).toBeTruthy();
+      expect(getByText(/ANALYTICS/)).toBeTruthy();
     });
   });
 
   it("navigates to analytics page when analytics preview is pressed", async () => {
-    rendered = render(<Index />);
+    const { getByText } = render(<Index />);
     await waitFor(() => {
-      expect(rendered.getByText(/ANALYTICS/)).toBeTruthy();
+      expect(getByText(/ANALYTICS/)).toBeTruthy();
     });
-    fireEvent.press(rendered.getByText(/ANALYTICS/));
+    fireEvent.press(getByText(/ANALYTICS/));
     expect(mockPush).toHaveBeenCalledWith("/analytics");
   });
 
   it("navigates to individual climb page when a session is pressed", async () => {
-    rendered = render(<Index />);
+    const { getByText } = render(<Index />);
     await waitFor(() => {
-      expect(rendered.getByText("6a/V3")).toBeTruthy();
+      expect(getByText("6a/V3")).toBeTruthy();
     });
-    fireEvent.press(rendered.getByText("6a/V3"));
+    fireEvent.press(getByText("6a/V3"));
     expect(mockPush).toHaveBeenCalledWith("/individual-climb-page?id=1");
   });
 
   it("redirects to onboarding if user has not seen it", async () => {
     const AsyncStorage = require("@react-native-async-storage/async-storage");
     AsyncStorage.getItem.mockResolvedValueOnce(null);
-    rendered = render(<Index />);
+    const { getByText } = render(<Index />);
     await waitFor(() => {
       expect(mockReplace).toHaveBeenCalledWith("/onboarding");
     });
   });
 
   it("does not redirect to onboarding if user has already seen it", async () => {
-    rendered = render(<Index />);
+    render(<Index />);
     await waitFor(() => {
       expect(mockReplace).not.toHaveBeenCalledWith("/onboarding");
     });
@@ -160,37 +171,18 @@ describe("Home Page Tests", () => {
 
   it("displays error state when database query fails", async () => {
     mockDbGetAllAsync.mockRejectedValue(new Error("DB connection failed"));
-    rendered = render(<Index />);
+    const { getByText } = render(<Index />);
     await waitFor(() => {
-      expect(rendered.getByText("DB connection failed")).toBeTruthy();
+      expect(getByText("DB connection failed")).toBeTruthy();
     });
   });
 
   it("renders day selector with 7 days", async () => {
-    rendered = render(<Index />);
+    const { getByText } = render(<Index />);
     await waitFor(() => {
-      expect(rendered.getByText("S")).toBeTruthy();
-      expect(rendered.getByText("M")).toBeTruthy();
-      expect(rendered.getByText("F")).toBeTruthy();
+      expect(getByText("S")).toBeTruthy();
+      expect(getByText("M")).toBeTruthy();
+      expect(getByText("F")).toBeTruthy();
     });
   });
-});
-
-// Manually suppresses error so changes don't have to be made to index.tsx
-const originalError = console.error;
-beforeAll(() => {
-  console.error = (...args) => {
-    if (
-      typeof args[0] === "string" &&
-      args[0].includes(
-        "Can't perform a React state update on a component that hasn't mounted yet",
-      )
-    ) {
-      return;
-    }
-    originalError(...args);
-  };
-});
-afterAll(() => {
-  console.error = originalError;
 });
