@@ -97,10 +97,12 @@ describe("Home Page Tests", () => {
     });
   });
 
-  it("renders the home page with loading state initially", () => {
+  it("renders the home page with loading state initially", async () => {
     mockDbGetAllAsync.mockImplementation(() => new Promise(() => {}));
     const { getByText } = render(<Index />);
-    expect(getByText("Loading logs...")).toBeTruthy();
+    await waitFor(() => {
+      expect(getByText("Loading logs...")).toBeTruthy();
+    });
   });
 
   it("renders the home page with climbs after loading", async () => {
