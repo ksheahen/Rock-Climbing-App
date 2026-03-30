@@ -214,6 +214,7 @@ async function createSessionForSync(userId: string): Promise<string | null> {
 
 export const syncLocalClimbsSQLite = async (
   db: ReturnType<typeof useSQLiteContext>,
+  showAlert = true,
 ) => {
   try {
     const {
@@ -221,7 +222,9 @@ export const syncLocalClimbsSQLite = async (
     } = await supabase.auth.getUser();
 
     if (!user) {
-      Alert.alert("Sync failed", "No logged-in user found.");
+      if (showAlert == true) {
+        Alert.alert("Sync failed", "No logged-in user found.");
+      }
       return;
     }
 
@@ -335,10 +338,14 @@ export const syncLocalClimbsSQLite = async (
       }
     }
 
-    Alert.alert("Sync complete", "Climbs synced successfully.");
+    if (showAlert == true) {
+      Alert.alert("Sync complete", "Climbs synced successfully.");
+    }
   } catch (err) {
     console.error("Sync failed:", err);
 
-    Alert.alert("Sync failed", "Please try again later.");
+    if (showAlert == true) {
+      Alert.alert("Sync failed", "Please try again later.");
+    }
   }
 };

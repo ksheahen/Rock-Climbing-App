@@ -10,8 +10,10 @@ import { LocalClimb } from "@/types/LocalClimb";
 import { useFocusEffect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
-import { View } from "react-native";
+import { View, ActivityIndicator, Text } from "react-native";
 import styles from "../styles/profile.styles";
+import { syncLocalClimbsSQLite } from "@/services/climbService";
+import { resolve } from "path";
 
 // import { useFocusEffect } from "expo-router";
 // import { useCallback, useEffect, useState } from "react";
@@ -45,6 +47,26 @@ function ProfilePage() {
   const db = useSQLiteContext();
   const [climbsArr, setClimbsArr] = useState<LocalClimb[]>([]);
   const [achievements, setAchievements] = useState<EarnedAchievement[]>([]);
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const handleSync = async (showLoader = true, showAlert = true) => {
+    if (isSyncing) return;
+
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    if (showLoader) {
+      setIsSyncing(true);
+    }
+
+    try {
+      await syncLocalClimbsSQLite(db, showAlert);
+    } finally {
+      if (showLoader) {
+        setIsSyncing(false);
+      }
+    }
+  };
+
   // const session = useSession();
   // useEffect(() => {
   //   if (!session?.user) return;
@@ -154,6 +176,7 @@ function ProfilePage() {
       let mounted = true;
       const loadClimbs = async () => {
         try {
+          await syncLocalClimbsSQLite(db, false);
           const {
             data: { user },
           } = await supabase.auth.getUser();
@@ -256,18 +279,47 @@ function ProfilePage() {
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
+        <ProfileInfo onSync={handleSync} isSyncing={isSyncing} />
+        <Line />
         <ProfileInfo />
         {/* <Line /> */}
         <AchievementsRow achievements={achievements} />
         <Line />
         <TimeframeFilter dates={timeframe} onChange={setTimeframe} />
-        {/* <Line /> */}
         <ClimbHistory
           dates={timeframe}
           climbs={filteredClimbs}
           onDelete={handleDeleteClimb}
         />
       </View>
+
+      {isSyncing && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.3)",
+            zIndex: 9999,
+          }}
+          pointerEvents="auto"
+        >
+          <ActivityIndicator size="large" color="#fff" />
+          <Text
+            style={{
+              color: "white",
+              marginTop: 10,
+              fontSize: 16,
+            }}
+          >
+            Syncing climbs...
+          </Text>
+        </View>
+      )}
     </View>
   );
 }

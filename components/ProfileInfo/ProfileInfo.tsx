@@ -7,7 +7,12 @@ import { Alert, Image, Modal, Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./ProfileInfo.styles";
 
-export function ProfileInfo() {
+type ProfileInfoProps = {
+  onSync?: () => Promise<void>;
+  isSyncing?: boolean;
+};
+
+export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
   const router = useRouter();
   const db = useSQLiteContext();
   const [displayName, setDisplayName] = useState<string>("");
@@ -20,6 +25,11 @@ export function ProfileInfo() {
   });
 
   const handleSyncPress = async () => {
+    if (!onSync || isSyncing) return;
+    try {
+      await onSync();
+    } catch (error) {
+      console.error("Sync failed:", error);
     const {
       data: { user },
     } = await supabase.auth.getUser();
