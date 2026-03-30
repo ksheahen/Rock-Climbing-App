@@ -25,23 +25,29 @@ export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
   });
 
   const handleSyncPress = async () => {
-    if (!onSync || isSyncing) return;
-    try {
-      await onSync();
-    } catch (error) {
-      console.error("Sync failed:", error);
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
     if (!user) {
       setSettingsModalVisible(false);
       router.navigate("/login");
-    } else {
-      try {
+      return;
+    }
+
+    try {
+      if (onSync && !isSyncing) {
+        await onSync();
+      } else {
         await syncLocalClimbsSQLite(db);
-        setSettingsModalVisible(false);
-      } catch {
+      }
+      setSettingsModalVisible(false);
+    } catch (error) {
+      console.error("Sync failed:", error);
+      try {
         Alert.alert("Sync failed", "Please try again later.");
+      } catch {
+        // noop if alert cannot be shown
       }
     }
   };
@@ -61,7 +67,7 @@ export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
         .single();
 
       setDisplayName(profile?.name || user.email?.split("@")[0] || "User");
-      setInstagramHandle(profile?.instagram_handle || null);
+      setInstagramHandle(profile?.instagram_handle || "");
       setProfilePicture(profile?.profile_picture || "pfp_4.png");
     } else if (!user) {
       setDisplayName("");

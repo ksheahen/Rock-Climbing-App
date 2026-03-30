@@ -5,15 +5,14 @@ import AchievementsRow from "@/components/EarnedAcheivements/EarnedAcheivements"
 import Line from "@/components/Line/Line";
 import TimeframeFilter from "@/components/TimeframeFilter/TimeframeFilter";
 import { syncAchievementsForUser } from "@/services/achievementService";
+import { syncLocalClimbsSQLite } from "@/services/climbService";
 import { supabase } from "@/services/supabaseClient";
 import { LocalClimb } from "@/types/LocalClimb";
 import { useFocusEffect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
-import { View, ActivityIndicator, Text } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import styles from "../styles/profile.styles";
-import { syncLocalClimbsSQLite } from "@/services/climbService";
-import { resolve } from "path";
 
 // import { useFocusEffect } from "expo-router";
 // import { useCallback, useEffect, useState } from "react";
@@ -280,9 +279,6 @@ function ProfilePage() {
     <View style={styles.container}>
       <View style={styles.mainContent}>
         <ProfileInfo onSync={handleSync} isSyncing={isSyncing} />
-        <Line />
-        <ProfileInfo />
-        {/* <Line /> */}
         <AchievementsRow achievements={achievements} />
         <Line />
         <TimeframeFilter dates={timeframe} onChange={setTimeframe} />
