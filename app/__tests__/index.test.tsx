@@ -66,10 +66,12 @@ const mockClimbs = [
 
 describe("Home Page Tests", () => {
   let mockDbGetAllAsync: jest.Mock;
+  const { getByText } = render(<Index />);
 
   beforeEach(() => {
     jest.clearAllMocks();
     mockDbGetAllAsync = jest.fn().mockResolvedValue(mockClimbs);
+    
 
     (useSQLiteContext as jest.Mock).mockReturnValue({
       getAllAsync: mockDbGetAllAsync,
@@ -79,12 +81,12 @@ describe("Home Page Tests", () => {
 
   it("renders the home page with loading state initially", () => {
     mockDbGetAllAsync.mockImplementation(() => new Promise(() => {}));
-    const { getByText } = render(<Index />);
+    
     expect(getByText("Loading logs...")).toBeTruthy();
   });
 
   it("renders the home page with climbs after loading", async () => {
-    const { getByText } = render(<Index />);
+    
 
     await waitFor(() => {
       expect(getByText("This week")).toBeTruthy();
@@ -93,7 +95,6 @@ describe("Home Page Tests", () => {
 
   it("displays empty state when no climbs exist", async () => {
     mockDbGetAllAsync.mockResolvedValue([]);
-    const { getByText } = render(<Index />);
 
     await waitFor(() => {
       expect(getByText(/No climb logs yet/)).toBeTruthy();
@@ -112,7 +113,6 @@ describe("Home Page Tests", () => {
   });
 
   it("renders the ANALYTICS section", async () => {
-    const { getByText } = render(<Index />);
 
     await waitFor(() => {
       expect(getByText(/ANALYTICS/)).toBeTruthy();
@@ -120,7 +120,6 @@ describe("Home Page Tests", () => {
   });
 
   it("navigates to analytics page when analytics preview is pressed", async () => {
-    const { getByText } = render(<Index />);
 
     await waitFor(() => {
       expect(getByText(/ANALYTICS/)).toBeTruthy();
@@ -131,7 +130,6 @@ describe("Home Page Tests", () => {
   });
 
   it("navigates to individual climb page when a session is pressed", async () => {
-    const { getByText } = render(<Index />);
 
     await waitFor(() => {
       expect(getByText("6a/V3")).toBeTruthy();
@@ -162,7 +160,6 @@ describe("Home Page Tests", () => {
 
   it("displays error state when database query fails", async () => {
     mockDbGetAllAsync.mockRejectedValue(new Error("DB connection failed"));
-    const { getByText } = render(<Index />);
 
     await waitFor(() => {
       expect(getByText("DB connection failed")).toBeTruthy();
@@ -170,7 +167,6 @@ describe("Home Page Tests", () => {
   });
 
   it("renders day selector with 7 days", async () => {
-    const { getAllByText, getByText } = render(<Index />);
 
     await waitFor(() => {
       expect(getByText("S")).toBeTruthy();
