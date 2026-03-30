@@ -46,14 +46,12 @@ export function ProfileInfo() {
       // getting displayname and what not
       const { data: profile } = await supabase
         .from("user")
-        .select("name, email, profile_picture")
+        .select("name, email, instagram_handle, profile_picture")
         .eq("user_id", user.id)
         .single();
 
       setDisplayName(profile?.name || user.email?.split("@")[0] || "User");
-      setInstagramHandle(
-        user.email?.split("@")[0] || profile?.email || "username",
-      );
+      setInstagramHandle(profile?.instagram_handle || null);
       setProfilePicture(profile?.profile_picture || "pfp_4.png");
     } else if (!user) {
       setDisplayName("");
