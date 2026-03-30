@@ -170,11 +170,16 @@ describe("Home Page Tests", () => {
   });
 
   it("displays error state when database query fails", async () => {
+    const originalError = console.error;
+    console.error = jest.fn(); // Suppress error log for this test
+
     mockDbGetAllAsync.mockRejectedValue(new Error("DB connection failed"));
     const { getByText } = render(<Index />);
     await waitFor(() => {
       expect(getByText("DB connection failed")).toBeTruthy();
     });
+
+    console.error = originalError; // Restore after test
   });
 
   it("renders day selector with 7 days", async () => {
