@@ -98,7 +98,9 @@ describe("Home Page Tests", () => {
   });
 
   it("renders the home page with loading state initially", async () => {
-    mockDbGetAllAsync.mockImplementation(() => new Promise(() => {}));
+    mockDbGetAllAsync.mockImplementation(
+      () => new Promise((resolve) => setTimeout(() => resolve([]), 100)),
+    );
     const { getByText } = render(<Index />);
     await waitFor(() => {
       expect(getByText("Loading logs...")).toBeTruthy();
