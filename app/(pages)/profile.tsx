@@ -47,18 +47,22 @@ function ProfilePage() {
   const [achievements, setAchievements] = useState<EarnedAchievement[]>([]);
   const [isSyncing, setIsSyncing] = useState(false);
   
-  const handleSync = async () => {
+  const handleSync = async (showLoader = true, showAlert = true) => {
     if (isSyncing) return;
 
     await new Promise(((resolve) => setTimeout(resolve, 50)));
 
-    setIsSyncing(true);
+    if (showLoader) {
+      setIsSyncing(true);
+    }
 
     try {
 
-    await syncLocalClimbsSQLite(db);
+    await syncLocalClimbsSQLite(db, showAlert);
   } finally {
-    setIsSyncing(false);
+    if (showLoader) {
+      setIsSyncing(false);
+    }
   }
 };
   
@@ -171,7 +175,7 @@ function ProfilePage() {
       let mounted = true;
       const loadClimbs = async () => {
         try {
-          await handleSync();
+          await syncLocalClimbsSQLite(db, false);
           const rows = await db.getAllAsync(
             `SELECT * FROM log_climb5 WHERE deleted = 0 ORDER BY datetime DESC`,
             [],

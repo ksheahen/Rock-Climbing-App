@@ -25,8 +25,6 @@ export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
   });
 
 const handleSyncPress = async () => {
-  console.log("TEST HERE")
-  console.log(isSyncing)
   if (!onSync || isSyncing) return; 
   try {
     await onSync();
