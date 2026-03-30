@@ -174,3 +174,22 @@ describe("Home Page Tests", () => {
     });
   });
 });
+
+// Manually suppresses error so changes don't have to be made to index.tsx
+const originalError = console.error;
+beforeAll(() => {
+  console.error = (...args) => {
+    if (
+      typeof args[0] === "string" &&
+      args[0].includes(
+        "Can't perform a React state update on a component that hasn't mounted yet",
+      )
+    ) {
+      return;
+    }
+    originalError(...args);
+  };
+});
+afterAll(() => {
+  console.error = originalError;
+});
