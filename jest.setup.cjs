@@ -2,6 +2,7 @@
 
 // Basic mocks for native Expo modules used in tests
 const React = require("react");
+require('dotenv').config({ path: './services/.env' });
 
 jest.mock("expo-av", () => {
   return {
