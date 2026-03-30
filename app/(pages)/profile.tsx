@@ -50,14 +50,13 @@ function ProfilePage() {
   const handleSync = async (showLoader = true, showAlert = true) => {
     if (isSyncing) return;
 
-    await new Promise(((resolve) => setTimeout(resolve, 50)));
+    await new Promise((resolve) => setTimeout(resolve, 50));
 
     if (showLoader) {
       setIsSyncing(true);
     }
 
     try {
-
     await syncLocalClimbsSQLite(db, showAlert);
   } finally {
     if (showLoader) {
@@ -234,49 +233,49 @@ function ProfilePage() {
   };
 
   return (
-  <View style={{ flex: 1 }}> 
-    <View style={styles.mainContent}>
-      <ProfileInfo onSync={handleSync} isSyncing={isSyncing} />
-      <Line />
-      <AchievementsRow achievements={achievements} />
-      <Line />
-      <TimeframeFilter dates={timeframe} onChange={setTimeframe} />
-      <ClimbHistory
-        dates={timeframe}
-        climbs={filteredClimbs}
-        onDelete={handleDeleteClimb}
-      />
-    </View>
-
-    {isSyncing && (
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "rgba(0,0,0,0.3)",
-          zIndex: 9999,
-        }}
-        pointerEvents="auto"
-      >
-        <ActivityIndicator size="large" color="#fff" />
-        <Text
-          style={{
-            color: "white",
-            marginTop: 10,
-            fontSize: 16,
-          }}
-        >
-          Syncing climbs...
-        </Text>
+    <View style={styles.container}>
+      <View style={styles.mainContent}>
+        <ProfileInfo onSync={handleSync} isSyncing={isSyncing} />
+        <Line />
+        <AchievementsRow achievements={achievements} />
+        <Line />
+        <TimeframeFilter dates={timeframe} onChange={setTimeframe} />
+        <ClimbHistory
+          dates={timeframe}
+          climbs={filteredClimbs}
+          onDelete={handleDeleteClimb}
+        />
       </View>
-    )}
-  </View>
-);
+
+      {isSyncing && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.3)",
+            zIndex: 9999,
+          }}
+          pointerEvents="auto"
+        >
+          <ActivityIndicator size="large" color="#fff" />
+          <Text
+            style={{
+              color: "white",
+              marginTop: 10,
+              fontSize: 16,
+            }}
+          >
+            Syncing climbs...
+          </Text>
+        </View>
+      )}
+    </View>
+  );
 }
 
 export default ProfilePage;
