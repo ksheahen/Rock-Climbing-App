@@ -46,7 +46,7 @@ function ProfilePage() {
   const [climbsArr, setClimbsArr] = useState<LocalClimb[]>([]);
   const [achievements, setAchievements] = useState<EarnedAchievement[]>([]);
   const [isSyncing, setIsSyncing] = useState(false);
-  
+
   const handleSync = async (showLoader = true, showAlert = true) => {
     if (isSyncing) return;
 
@@ -57,14 +57,14 @@ function ProfilePage() {
     }
 
     try {
-    await syncLocalClimbsSQLite(db, showAlert);
-  } finally {
-    if (showLoader) {
-      setIsSyncing(false);
+      await syncLocalClimbsSQLite(db, showAlert);
+    } finally {
+      if (showLoader) {
+        setIsSyncing(false);
+      }
     }
-  }
-};
-  
+  };
+
   // const session = useSession();
   // useEffect(() => {
   //   if (!session?.user) return;

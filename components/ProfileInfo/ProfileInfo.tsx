@@ -24,14 +24,14 @@ export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
     fetchUserData();
   });
 
-const handleSyncPress = async () => {
-  if (!onSync || isSyncing) return; 
-  try {
-    await onSync();
-  } catch (error) {
-    console.error("Sync failed:", error);
-  }
-};
+  const handleSyncPress = async () => {
+    if (!onSync || isSyncing) return;
+    try {
+      await onSync();
+    } catch (error) {
+      console.error("Sync failed:", error);
+    }
+  };
 
   // Fetch user data (if logged in recently otherwise it will display a generic name)
   const fetchUserData = async () => {
