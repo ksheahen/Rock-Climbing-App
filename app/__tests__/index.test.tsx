@@ -77,6 +77,14 @@ describe("Home Page Tests", () => {
     });
   });
 
+  let rendered: { unmount: () => void } | null;
+  afterEach(() => {
+    if (rendered) {
+      rendered.unmount();
+      rendered = null;
+    }
+  });
+
   it("renders the home page with loading state initially", () => {
     mockDbGetAllAsync.mockImplementation(() => new Promise(() => {}));
     const { getByText } = render(<Index />);

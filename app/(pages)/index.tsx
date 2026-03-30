@@ -142,7 +142,7 @@ const Index = () => {
   useEffect(() => {
     // Avoids onboarding check in testing environment
     if (process.env.NODE_ENV === "test") return;
-    
+
     const checkOnboarding = async () => {
       const hasSeenOnboarding = await AsyncStorage.getItem("hasSeenOnboarding");
       if (!hasSeenOnboarding) {
