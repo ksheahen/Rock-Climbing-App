@@ -7,7 +7,7 @@ import {
   deleteAchievement,
   getAchievementById,
   updateAchievement,
-} from "../achievementService";
+} from "../supabaseAchievementService.ts";
 
 let testAchievementId: string;
 
