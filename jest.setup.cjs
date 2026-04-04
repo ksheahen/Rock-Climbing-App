@@ -2,6 +2,7 @@
 
 // Basic mocks for native Expo modules used in tests
 const React = require("react");
+require('dotenv').config({ path: './services/.env' });
 
 jest.mock("expo-av", () => {
   return {
@@ -26,4 +27,9 @@ jest.mock("expo-image-picker", () => ({
     .fn()
     .mockResolvedValue({ granted: true }),
   requestCameraPermissionsAsync: jest.fn().mockResolvedValue({ granted: true }),
+}));
+
+jest.mock("@react-native-async-storage/async-storage", () => ({
+  getItem: jest.fn().mockResolvedValue("true"),
+  setItem: jest.fn(),
 }));

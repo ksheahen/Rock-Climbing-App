@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: global.colors.background_1,
     paddingTop: global.margin.page_top,
+    paddingBottom: 10,
   },
   button: {
     backgroundColor: global.colors.background_3,

@@ -71,7 +71,9 @@ const Analytics = () => {
       </View>
 
       {/* Stat Cards */}
-      <StatCard climbs={climbsArr} />
+      <View style={styles.content}>
+        <StatCard climbs={climbsArr} />
+      </View>
 
       {/* Line Chart */}
       <View style={styles.content}>

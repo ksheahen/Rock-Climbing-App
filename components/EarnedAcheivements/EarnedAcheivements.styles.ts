@@ -1,15 +1,17 @@
+import { global } from "@/theme";
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
-    marginTop: 12,
+    // marginTop: 12,
+    marginBottom: 12,
   },
   title: {
     fontSize: 16,
     fontWeight: "600",
   },
   scrollContent: {
-    paddingTop: 8,
+    // paddingTop: 8,
     paddingBottom: 4,
   },
   emptyText: {
@@ -17,7 +19,7 @@ export default StyleSheet.create({
     marginTop: 8,
   },
   card: {
-    backgroundColor: "#1C1C1E",
+    backgroundColor: global.colors.background_2,
     borderRadius: 12,
     padding: 12,
     marginRight: 10,
@@ -25,12 +27,17 @@ export default StyleSheet.create({
   },
   cardTitle: {
     marginTop: 8,
-    color: "white",
+    color: global.colors.text_1,
     fontWeight: "600",
   },
   cardDesc: {
     marginTop: 4,
-    color: "#B0B0B0",
+    color: global.colors.text_2,
     fontSize: 12,
+  },
+  badgeImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 6,
   },
 });

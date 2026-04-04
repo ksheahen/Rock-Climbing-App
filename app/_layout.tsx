@@ -1,7 +1,10 @@
+import { DEFAULT_ACHIEVEMENTS } from "@/components/Achievements/achievements";
+import { syncAchievementsForUser } from "@/services/achievementService";
+import { supabase } from "@/services/supabaseClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
-import { Button, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function RootLayout() {
@@ -24,43 +27,46 @@ function RootLayout() {
         databaseName="climb.db"
         onInit={async (db) => {
           await db.execAsync(`
-            CREATE TABLE IF NOT EXISTS log_climb5 (
-              id INTEGER PRIMARY KEY AUTOINCREMENT, 
-              uuid TEXT UNIQUE,
-              category TEXT NOT NULL,
-              type TEXT NOT NULL,
-              complete TEXT NOT NULL,
-              attempt TEXT NOT NULL, 
-              grade TEXT,
-              rating INTEGER,
-              datetime TEXT, 
-              description TEXT,
-              media TEXT,
-              location TEXT,
-              deleted INTEGER DEFAULT 0,
-              synced INTEGER DEFAULT 0 
-            );
-                    
-            CREATE TABLE IF NOT EXISTS achievement (
-              achievement_id TEXT PRIMARY KEY,
-              name TEXT NOT NULL,
-              description TEXT,
-              badge_icon TEXT
-            );
+      CREATE TABLE IF NOT EXISTS log_climb5 (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        uuid TEXT UNIQUE,
+        category TEXT NOT NULL,
+        type TEXT NOT NULL,
+        complete TEXT NOT NULL,
+        attempt TEXT NOT NULL, 
+        grade TEXT,
+        rating INTEGER,
+        datetime TEXT, 
+        description TEXT,
+        media TEXT,
+        location TEXT,
+        deleted INTEGER DEFAULT 0,
+        synced INTEGER DEFAULT 0 
+      );
+                
+      CREATE TABLE IF NOT EXISTS achievement (
+        achievement_id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT,
+        badge_icon TEXT
+      );
 
-           
-            CREATE TABLE IF NOT EXISTS user_achievement (
-              user_achievement_id TEXT PRIMARY KEY,
-              user_id TEXT,
-              achievement_id TEXT NOT NULL,
-              earned_at TEXT NOT NULL,
-              synced INTEGER DEFAULT 0,
-              deleted INTEGER DEFAULT 0
-            );
-            PRAGMA journal_mode=WAL;
-          `);
 
-          // Check existing columns
+      CREATE TABLE IF NOT EXISTS user_achievement (
+        user_achievement_id TEXT PRIMARY KEY,
+        user_id TEXT,
+        achievement_id TEXT NOT NULL,
+        earned_at TEXT NOT NULL,
+        synced INTEGER DEFAULT 0,
+        deleted INTEGER DEFAULT 0
+      );
+
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_user_achievement_unique
+      ON user_achievement(user_id, achievement_id);
+
+      PRAGMA journal_mode=WAL;
+    `);
+
           const columns = await db.getAllAsync(
             "PRAGMA table_info(log_climb5);",
           );
@@ -77,9 +83,33 @@ function RootLayout() {
               `ALTER TABLE log_climb5 ADD COLUMN deleted INTEGER DEFAULT 0;`,
             );
           }
+
+          for (const achievement of DEFAULT_ACHIEVEMENTS) {
+            await db.runAsync(
+              `INSERT INTO achievement
+         (achievement_id, name, description, badge_icon)
+         VALUES (?, ?, ?, ?)
+         ON CONFLICT(achievement_id) DO UPDATE SET
+           name = excluded.name,
+           description = excluded.description,
+           badge_icon = excluded.badge_icon`,
+              [
+                achievement.achievement_id,
+                achievement.name,
+                achievement.description,
+                achievement.badge_icon,
+              ],
+            );
+          }
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+
+          if (user) {
+            await syncAchievementsForUser(db, user.id);
+          }
         }}
       >
-        {/* this makes apple's status bar black */}
         <StatusBar barStyle="dark-content" />
 
         <Stack screenOptions={{ headerShown: false }}>
