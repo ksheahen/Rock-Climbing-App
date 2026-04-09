@@ -224,7 +224,7 @@ async function createSessionForSync(userId: string): Promise<string | null> {
 
 export const syncLocalClimbsSQLite = async (
   db: ReturnType<typeof useSQLiteContext>,
-  showAlert = true
+  showAlert = true,
 ) => {
   try {
     const {

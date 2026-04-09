@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   awardRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: global.colors.background_3,
+    backgroundColor: global.colors.background_2,
     borderColor: global.border.border_color,
     borderWidth: 1,
     borderRadius: 12,
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     gap: global.gap.medium,
   },
   awardImage: {
-    width: 56,
-    height: 56,
+    width: 55,
+    height: 55,
     borderRadius: global.border.border_radius_large,
   },
   awardTextContainer: {

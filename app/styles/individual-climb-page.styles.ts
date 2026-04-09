@@ -1,10 +1,11 @@
 import { global } from "@/theme";
-import { StyleSheet, Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     display: "flex",
+    flex: 1,
     width: "100%",
     backgroundColor: global.colors.background_1,
     paddingLeft: global.margin.page_border,
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
   scroll_container: {
     display: "flex",
     gap: global.gap.medium,
+    paddingBottom: global.padding.large * 2,
   },
   leftright_container: {
     display: "flex",

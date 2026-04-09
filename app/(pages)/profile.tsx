@@ -33,7 +33,7 @@ function ProfilePage() {
   const [climbsArr, setClimbsArr] = useState<LocalClimb[]>([]);
   const [achievements, setAchievements] = useState<EarnedAchievement[]>([]);
   const [isSyncing, setIsSyncing] = useState(false);
-  
+
   const handleSync = async (showLoader = true, showAlert = true) => {
     if (isSyncing) return;
 
@@ -44,10 +44,11 @@ function ProfilePage() {
     }
 
     try {
-    await syncLocalClimbsSQLite(db, showAlert);
-  } finally {
-    if (showLoader) {
-      setIsSyncing(false);
+      await syncLocalClimbsSQLite(db, showAlert);
+    } finally {
+      if (showLoader) {
+        setIsSyncing(false);
+      }
     }
   }
 };
@@ -102,6 +103,14 @@ function ProfilePage() {
       const loadClimbs = async () => {
         try {
           await syncLocalClimbsSQLite(db, false);
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+
+          if (user) {
+            await syncAchievementsForUser(db, user.id);
+          }
+
           const rows = await db.getAllAsync(
             `SELECT * FROM log_climb5 WHERE deleted = 0 ORDER BY datetime DESC`,
             [],
@@ -114,20 +123,23 @@ function ProfilePage() {
           }));
           setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
 
-          const achievementRows = await db.getAllAsync(
-            `SELECT
-                a.achievement_id,
-                a.name,
-                a.description,
-                a.badge_icon,
-                ua.earned_at
-             FROM user_achievement ua
-             JOIN achievement a
-               ON a.achievement_id = ua.achievement_id
-             WHERE ua.deleted = 0
-             ORDER BY ua.earned_at DESC;`,
-            [],
-          );
+          const achievementRows = user
+            ? await db.getAllAsync(
+                `SELECT
+                    a.achievement_id,
+                    a.name,
+                    a.description,
+                    a.badge_icon,
+                    ua.earned_at
+                 FROM user_achievement ua
+                 JOIN achievement a
+                   ON a.achievement_id = ua.achievement_id
+                 WHERE ua.deleted = 0
+                   AND ua.user_id = ?
+                 ORDER BY ua.earned_at DESC;`,
+                [user.id],
+              )
+            : [];
           if (!mounted) return;
           setAchievements(
             Array.isArray(achievementRows)
@@ -153,6 +165,37 @@ function ProfilePage() {
         `UPDATE log_climb5 SET deleted = 1, synced = 0 WHERE id = ?`,
         [id],
       );
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await syncAchievementsForUser(db, user.id);
+
+        const achievementRows = await db.getAllAsync(
+          `SELECT
+              a.achievement_id,
+              a.name,
+              a.description,
+              a.badge_icon,
+              ua.earned_at
+           FROM user_achievement ua
+           JOIN achievement a
+             ON a.achievement_id = ua.achievement_id
+           WHERE ua.deleted = 0
+             AND ua.user_id = ?
+           ORDER BY ua.earned_at DESC;`,
+          [user.id],
+        );
+
+        setAchievements(
+          Array.isArray(achievementRows)
+            ? (achievementRows as EarnedAchievement[])
+            : [],
+        );
+      }
+
       setClimbsArr((prev) => prev.filter((c) => c.id !== id));
     } catch (error) {
       console.error("Failed to delete climb:", error);
@@ -164,6 +207,8 @@ function ProfilePage() {
       <View style={styles.mainContent}>
         <ProfileInfo onSync={handleSync} isSyncing={isSyncing} />
         <Line />
+        <ProfileInfo />
+        {/* <Line /> */}
         <AchievementsRow achievements={achievements} />
         <Line />
         <TimeframeFilter dates={timeframe} onChange={setTimeframe} />

@@ -1,10 +1,9 @@
 import { syncLocalClimbsSQLite } from "@/services/climbService";
 import { supabase } from "@/services/supabaseClient";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
-import { Alert, Image, Pressable, Text, View } from "react-native";
+import { Alert, Image, Modal, Pressable, Text, View } from "react-native";
 import Icon from "react-native-remix-icon";
 import { styles } from "./ProfileInfo.styles";
 
@@ -19,19 +18,33 @@ export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
   const [displayName, setDisplayName] = useState<string>("");
   const [instagramHandle, setInstagramHandle] = useState<string>("");
   const [profilePicture, setProfilePicture] = useState("pfp_4.png");
+  const [settingsModalVisible, setSettingsModalVisible] = useState(false);
 
   useFocusEffect(() => {
     fetchUserData();
   });
 
-const handleSyncPress = async () => {
-  if (!onSync || isSyncing) return; 
-  try {
-    await onSync();
-  } catch (error) {
-    console.error("Sync failed:", error);
-  }
-};
+  const handleSyncPress = async () => {
+    if (!onSync || isSyncing) return;
+    try {
+      await onSync();
+    } catch (error) {
+      console.error("Sync failed:", error);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setSettingsModalVisible(false);
+      router.navigate("/login");
+    } else {
+      try {
+        await syncLocalClimbsSQLite(db);
+        setSettingsModalVisible(false);
+      } catch {
+        Alert.alert("Sync failed", "Please try again later.");
+      }
+    }
+  };
 
   // Fetch user data (if logged in recently otherwise it will display a generic name)
   const fetchUserData = async () => {
@@ -43,14 +56,12 @@ const handleSyncPress = async () => {
       // getting displayname and what not
       const { data: profile } = await supabase
         .from("user")
-        .select("name, email, profile_picture")
+        .select("name, email, instagram_handle, profile_picture")
         .eq("user_id", user.id)
         .single();
 
       setDisplayName(profile?.name || user.email?.split("@")[0] || "User");
-      setInstagramHandle(
-        user.email?.split("@")[0] || profile?.email || "username",
-      );
+      setInstagramHandle(profile?.instagram_handle || null);
       setProfilePicture(profile?.profile_picture || "pfp_4.png");
     } else if (!user) {
       setDisplayName("");
@@ -75,47 +86,57 @@ const handleSyncPress = async () => {
           }
           style={styles.avatarPlaceholder}
         />
-        <View style={{ gap: 10 }}>
-          <View style={{ flexDirection: "row", gap: 10 }}>
-            <Pressable
-              style={styles.editButton}
-              onPress={() => router.navigate("/edit-profile")}
-            >
-              <Text style={styles.editButtonText}>Edit Profile</Text>
-            </Pressable>
-            <Pressable
-              style={{
-                paddingHorizontal: 10,
-                backgroundColor: "#F7F7FC",
-                borderRadius: 8,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onPress={handleSyncPress}
-            >
-              <MaterialIcons name="sync" size={16} color="black" />
-            </Pressable>
-          </View>
-          {/* Temporary Sign out button */}
-          {/* <Pressable
-            style={styles.editButton}
-            onPress={() => supabase.auth.signOut()}
-          >
-            <Text style={styles.editButtonText}>Sign Out</Text>
-          </Pressable> */}
-          <Pressable
-            style={styles.editButton}
-            onPress={() => router.navigate("/(pages)/achievements")}
-          >
-            <Text style={styles.editButtonText}>Achievements</Text>
-          </Pressable>
-        </View>
+        <Pressable
+          style={styles.settingsButton}
+          onPress={() => setSettingsModalVisible(true)}
+        >
+          <Icon name="settings-3-line" size="24" color="#111111" />
+        </Pressable>
       </View>
       <Text style={styles.name}>{displayName}</Text>
       <View style={styles.socialRow}>
         <Icon name="instagram-line" size="20" />
         <Text style={styles.handle}>{instagramHandle}</Text>
       </View>
+
+      <Modal
+        visible={settingsModalVisible}
+        animationType="slide"
+        transparent={true}
+      >
+        <Pressable
+          style={styles.modalOverlay}
+          onPress={() => setSettingsModalVisible(false)}
+        />
+        <View style={styles.modalContainer}>
+          <Pressable style={styles.modalButton} onPress={handleSyncPress}>
+            <View style={styles.modalSyncRow}>
+              <Icon name="refresh-line" size="18" color="#111111" />
+              <Text style={styles.modalButtonText}>Sync</Text>
+            </View>
+          </Pressable>
+
+          <Pressable
+            style={styles.modalButton}
+            onPress={() => {
+              setSettingsModalVisible(false);
+              router.navigate("/(pages)/achievements");
+            }}
+          >
+            <Text style={styles.modalButtonText}>Achievements</Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.modalButton}
+            onPress={() => {
+              setSettingsModalVisible(false);
+              router.navigate("/edit-profile");
+            }}
+          >
+            <Text style={styles.modalButtonText}>Edit Profile</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </View>
   );
 }

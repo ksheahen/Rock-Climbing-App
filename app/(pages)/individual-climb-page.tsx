@@ -11,6 +11,8 @@ import Media from "@/components/Media/Media";
 import Rating from "@/components/Rating/Rating";
 import SettingsButton from "@/components/SettingsButton/SettingsButton";
 import Type from "@/components/Type/Type";
+import { syncAchievementsForUser } from "@/services/achievementService";
+import { supabase } from "@/services/supabaseClient";
 import { useFocusEffect } from "@react-navigation/native";
 import { ResizeMode, Video } from "expo-av";
 import { useRouter, useSearchParams } from "expo-router/build/hooks";
@@ -183,6 +185,14 @@ function IndividualClimbPage() {
         ],
     );
 
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await syncAchievementsForUser(db, user.id);
+      }
+
       console.log("Updating logs in db", result);
       setEditToggle(false);
     } catch (error: any) {
@@ -224,6 +234,15 @@ function IndividualClimbPage() {
           WHERE id = ?`,
         [paramsid],
       );
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await syncAchievementsForUser(db, user.id);
+      }
+
       console.log(`Deleted log ${paramsid} from db`, result);
       setModalVisible(false); // this doesnt really matter
       handleRedirect();
