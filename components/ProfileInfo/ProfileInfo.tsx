@@ -35,7 +35,7 @@ export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
         .single();
 
       setDisplayName(profile?.name || user.email?.split("@")[0] || "User");
-      setInstagramHandle(profile?.instagram_handle || null);
+      setInstagramHandle(profile?.instagram_handle || "");
       setProfilePicture(profile?.profile_picture || "pfp_4.png");
     } else if (!user) {
       setDisplayName("");

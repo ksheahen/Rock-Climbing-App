@@ -6,13 +6,20 @@ import Index from "../(pages)/index";
 const mockPush = jest.fn();
 const mockReplace = jest.fn();
 
-jest.mock("expo-router", () => ({
-  useRouter: () => ({
-    push: mockPush,
-    replace: mockReplace,
-  }),
-  useFocusEffect: (effect: any) => effect(),
-}));
+jest.mock("expo-router", () => {
+  const React = require("react");
+  return {
+    useRouter: () => ({
+      push: mockPush,
+      replace: mockReplace,
+    }),
+    useFocusEffect: (effect: any) => {
+      React.useEffect(() => {
+        effect();
+      }, []);
+    },
+  };
+});
 
 jest.mock("expo-sqlite", () => ({
   useSQLiteContext: jest.fn(),
@@ -170,12 +177,13 @@ describe("Home Page Tests", () => {
   });
 
   it("renders day selector with 7 days", async () => {
-    const { getAllByText, getByText } = render(<Index />);
+    const { getAllByText } = render(<Index />);
 
     await waitFor(() => {
-      expect(getByText("S")).toBeTruthy();
-      expect(getByText("M")).toBeTruthy();
-      expect(getByText("F")).toBeTruthy();
+      expect(getAllByText("S")).toHaveLength(2);
+      expect(getAllByText("T")).toHaveLength(2);
+      expect(getAllByText("M")).toHaveLength(1);
+      expect(getAllByText("F")).toHaveLength(1);
     });
   });
 });

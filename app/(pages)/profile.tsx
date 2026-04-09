@@ -207,9 +207,6 @@ function ProfilePage() {
     <View style={styles.container}>
       <View style={styles.mainContent}>
         <ProfileInfo onSync={handleSync} isSyncing={isSyncing} />
-        <Line />
-        <ProfileInfo />
-        {/* <Line /> */}
         <AchievementsRow achievements={achievements} />
         <Line />
         <TimeframeFilter dates={timeframe} onChange={setTimeframe} />
