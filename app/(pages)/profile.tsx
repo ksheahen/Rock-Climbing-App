@@ -4,7 +4,9 @@ import ClimbHistory from "@/components/ClimbHistory/ClimbHistory";
 import AchievementsRow from "@/components/EarnedAcheivements/EarnedAcheivements";
 import Line from "@/components/Line/Line";
 import TimeframeFilter from "@/components/TimeframeFilter/TimeframeFilter";
+import { syncAchievementsForUser } from "@/services/achievementService";
 import { syncLocalClimbsSQLite } from "@/services/climbService";
+import { supabase } from "@/services/supabaseClient";
 import { LocalClimb } from "@/types/LocalClimb";
 import { useFocusEffect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
@@ -51,7 +53,6 @@ function ProfilePage() {
       }
     }
   }
-};
 
   function filterClimbsByTimeframe(climbs: ClimbData[], tf: typeof timeframe) {
     const now = new Date();

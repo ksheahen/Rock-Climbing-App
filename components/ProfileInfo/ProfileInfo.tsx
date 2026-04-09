@@ -20,32 +20,6 @@ export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
   const [profilePicture, setProfilePicture] = useState("pfp_4.png");
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
 
-  useFocusEffect(() => {
-    fetchUserData();
-  });
-
-  const handleSyncPress = async () => {
-    if (!onSync || isSyncing) return;
-    try {
-      await onSync();
-    } catch (error) {
-      console.error("Sync failed:", error);
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      setSettingsModalVisible(false);
-      router.navigate("/login");
-    } else {
-      try {
-        await syncLocalClimbsSQLite(db);
-        setSettingsModalVisible(false);
-      } catch {
-        Alert.alert("Sync failed", "Please try again later.");
-      }
-    }
-  };
-
   // Fetch user data (if logged in recently otherwise it will display a generic name)
   const fetchUserData = async () => {
     const {
@@ -67,6 +41,33 @@ export function ProfileInfo({ onSync, isSyncing }: ProfileInfoProps) {
       setDisplayName("");
       setInstagramHandle("");
       setProfilePicture("pfp_4.png");
+    }
+  };
+
+  useFocusEffect(() => {
+    fetchUserData();
+  });
+
+  const handleSyncPress = async () => {
+    if (!onSync || isSyncing) return;
+    try {
+      await onSync();
+    } catch (error) {
+      console.error("Sync failed:", error);
+    }
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setSettingsModalVisible(false);
+      router.navigate("/login");
+    } else {
+      try {
+        await syncLocalClimbsSQLite(db);
+        setSettingsModalVisible(false);
+      } catch {
+        Alert.alert("Sync failed", "Please try again later.");
+      }
     }
   };
 
