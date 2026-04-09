@@ -152,12 +152,22 @@ function IndividualClimbPage() {
       console.log("DB Storage 'desc'       - ", climb.description);
       console.log("DB Storage 'media'      - ", climb.media);
       console.log("DB Storage 'location'   - ", climb.location);
-
+      
       // update the db
       const result = await db.runAsync(
         `UPDATE log_climb5 
-         SET category = ?, type = ?, complete = ?, attempt = ?, grade = ?, rating = ?, datetime = ?, description = ?, media = ?, location = ?
-         WHERE id = ?`,
+        SET category = ?, 
+          type = ?, 
+          complete = ?, 
+          attempt = ?, 
+          grade = ?, 
+          rating = ?, 
+          datetime = ?, 
+          description = ?, 
+          media = ?, 
+          location = ?,
+          synced = 0
+        WHERE id = ?`,
         [
           climb.category,
           climb.type,
@@ -171,7 +181,7 @@ function IndividualClimbPage() {
           climb.location,
           paramsid,
         ],
-      );
+    );
 
       console.log("Updating logs in db", result);
       setEditToggle(false);

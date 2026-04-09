@@ -177,7 +177,7 @@ async function uploadToStorage(params: {
 
 async function ensureMediaRow(params: { file_url: string; type: string }) {
   const { data: inserted, error: insErr } = await table("media")
-    .insert({ file_url: params.file_url, type: params.type })
+    .upsert({ file_url: params.file_url, type: params.type })
     .select("media_id")
     .maybeSingle();
 
@@ -196,7 +196,17 @@ async function ensureClimbMediaLink(params: {
   climbId: string;
   mediaId: string;
 }) {
-  const { error } = await table("climb_media").insert({
+  const { data: existing } = await table("climb_media")
+    .select("climb_id")
+    .eq("climb_id", params.climbId)
+    .eq("media_id", params.mediaId)
+    .maybeSingle();
+
+  if (existing) {
+    return;
+  }
+
+  const { error } = await table("climb_media").upsert({
     climb_id: params.climbId,
     media_id: params.mediaId,
   });
@@ -252,7 +262,7 @@ export const syncLocalClimbsSQLite = async (
         await db.runAsync("DELETE FROM log_climb5 WHERE uuid = ?", [climbId]);
         continue;
       }
-
+      
       await table("climb").upsert({
         climb_id: climbId,
         acct_id: user.id,
@@ -312,18 +322,32 @@ export const syncLocalClimbsSQLite = async (
     if (remoteClimbs) {
       for (const climb of remoteClimbs) {
         await db.runAsync(
-          `UPDATE log_climb5
-        SET category = ?,
-        type = ?,
-        complete = ?,
-        attempt = ?,
-        grade = ?,
-        rating = ?,
-        datetime = ?,
-        description = ?,
-        synced = 1
-        WHERE uuid = ?`,
+          `INSERT INTO log_climb5 (
+            uuid,
+            category,
+            type,
+            complete,
+            attempt,
+            grade,
+            rating,
+            datetime,
+            description,
+            synced,
+            deleted
+          )
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 0)
+          ON CONFLICT(uuid) DO UPDATE SET
+            category = excluded.category,
+            type = excluded.type,
+            complete = excluded.complete,
+            attempt = excluded.attempt,
+            grade = excluded.grade,
+            rating = excluded.rating,
+            datetime = excluded.datetime,
+            description = excluded.description,
+            synced = 1`,
           [
+            climb.climb_id,
             climb.category || "Indoor",
             climb.type || "boulder",
             climb.completed ? "Yes" : "No",
@@ -332,8 +356,7 @@ export const syncLocalClimbsSQLite = async (
             climb.rating ?? 0,
             climb.datetime ?? new Date().toISOString(),
             climb.description || "",
-            climb.climb_id,
-          ],
+          ]
         );
       }
     }
