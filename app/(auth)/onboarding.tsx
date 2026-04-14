@@ -334,7 +334,7 @@ const OnboardingPage = () => {
               style={{ height: logoSize, width: logoSize }}
             />
           ),
-          title: "Rock Climbing",
+          title: "Climbr",
           subtitle: <GetStarted goToNext={goToNext} />,
         },
         {
