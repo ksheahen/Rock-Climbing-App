@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./HomeHeader.styles";
-import Icon from "react-native-remix-icon";
 
 export interface HomeHeaderProps {
   streakCount: number;
@@ -15,7 +14,7 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({
 }) => {
   return (
     <View style={styles.header}>
-      <Text style={styles.logo}>Logo</Text>
+      <Text style={styles.logo}>Climbr</Text>
       <View style={styles.headerRight}>
         <View style={styles.flameBadge}>
           <Ionicons name="flame" size={12} color="#FF3B30" />
