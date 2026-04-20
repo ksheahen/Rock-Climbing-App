@@ -114,7 +114,7 @@ const GetStarted = ({ goToNext }: { goToNext: () => void }) => {
   );
 };
 
-const SignUp = () => {
+export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
