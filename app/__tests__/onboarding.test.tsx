@@ -1,7 +1,6 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
-import OnboardingPage from "../(auth)/onboarding";
-import { SignUp } from "../(auth)/onboarding";
+import OnboardingPage, { SignUp } from "../(auth)/onboarding";
 
 // Mocks and declared variables
 const mockNavigate = jest.fn();
@@ -19,7 +18,9 @@ jest.mock("@/services/supabaseClient", () => ({
   supabase: {
     auth: {
       signInWithPassword: jest.fn().mockResolvedValue({ error: null }),
-      signUp: jest.fn().mockResolvedValue({ data: { session: null }, error: null }),
+      signUp: jest
+        .fn()
+        .mockResolvedValue({ data: { session: null }, error: null }),
       startAutoRefresh: jest.fn(),
       stopAutoRefresh: jest.fn(),
     },
@@ -79,7 +80,7 @@ describe("OnboardingPage (renders and navigations)", () => {
     fireEvent.press(signupButton);
 
     await waitFor(() => {
-        expect(mockReplace).toHaveBeenCalledWith("/login");
+      expect(mockReplace).toHaveBeenCalledWith("/login");
     });
   });
 });
@@ -100,7 +101,10 @@ describe("SignUp validation (checks for matching passwords, error checks)", () =
 
   it("shows an error when submitting with an empty password", async () => {
     const { getByText, getByPlaceholderText } = render(<SignUp />);
-    fireEvent.changeText(getByPlaceholderText("Email Address"), "test@example.com");
+    fireEvent.changeText(
+      getByPlaceholderText("Email Address"),
+      "test@example.com",
+    );
     fireEvent.press(getByText("Signup"));
     await waitFor(() => {
       expect(getByText("Password is required")).toBeTruthy();
@@ -109,9 +113,18 @@ describe("SignUp validation (checks for matching passwords, error checks)", () =
 
   it("shows an error when passwords do not match", async () => {
     const { getByText, getByPlaceholderText } = render(<SignUp />);
-    fireEvent.changeText(getByPlaceholderText("Email Address"), "test@example.com");
-    fireEvent.changeText(getByPlaceholderText("Create Password"), "password123");
-    fireEvent.changeText(getByPlaceholderText("Confirm Password"), "different456");
+    fireEvent.changeText(
+      getByPlaceholderText("Email Address"),
+      "test@example.com",
+    );
+    fireEvent.changeText(
+      getByPlaceholderText("Create Password"),
+      "password123",
+    );
+    fireEvent.changeText(
+      getByPlaceholderText("Confirm Password"),
+      "different456",
+    );
     fireEvent.press(getByText("Signup"));
     await waitFor(() => {
       expect(getByText("Passwords do not match")).toBeTruthy();
@@ -128,7 +141,10 @@ describe("SignUp validation (checks for matching passwords, error checks)", () =
 
   it("clears the password error when the user starts retyping their password", async () => {
     const { getByText, getByPlaceholderText, queryByText } = render(<SignUp />);
-    fireEvent.changeText(getByPlaceholderText("Email Address"), "test@example.com");
+    fireEvent.changeText(
+      getByPlaceholderText("Email Address"),
+      "test@example.com",
+    );
     fireEvent.press(getByText("Signup"));
     await waitFor(() => expect(getByText("Password is required")).toBeTruthy());
     fireEvent.changeText(getByPlaceholderText("Create Password"), "a");
