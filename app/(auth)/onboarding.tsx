@@ -21,10 +21,6 @@ import Onboarding from "react-native-onboarding-swiper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmailComponent from "../../components/Email/Email";
 import PasswordComponent from "../../components/Password/Password";
-import styles from "../styles/login.styles";
-
-const backgroundColor = (isLight: boolean) => (isLight ? "blue" : "lightblue");
-const color = (isLight: any) => backgroundColor(!isLight);
 
 const { width, height } = Dimensions.get("window");
 const videoWidth = Math.min(width * 0.9, 600);
@@ -33,6 +29,7 @@ const logoSize = Math.min(width * 0.6, 400);
 
 const logo = require("../../assets/icon.png");
 
+//completeOnboarding - sets the hasSeenOnboarding flag to true and reroutes the user to /login
 const completeOnboarding = async (router: any) => {
   try {
     await AsyncStorage.setItem("hasSeenOnboarding", "true");
@@ -42,6 +39,7 @@ const completeOnboarding = async (router: any) => {
   router.replace("/login");
 };
 
+// Square Function for Dot Componenet (UI)
 const Square = ({
   isLight,
   selected,
@@ -114,6 +112,7 @@ const GetStarted = ({ goToNext }: { goToNext: () => void }) => {
   );
 };
 
+// Signup Function for Last Page in Onboarding
 export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -303,10 +302,12 @@ const OnboardingPage = () => {
   const nav = useRouter();
   const onboardingRef = useRef<any>(null);
 
+  // Handles onboarding completion
   const handleOnboardingComplete = async () => {
     await completeOnboarding(nav);
   };
 
+  // Tracks onboarding page
   const goToNext = () => {
     if (onboardingRef.current) {
       onboardingRef.current.goToPage(1, true);
