@@ -15,11 +15,11 @@ const Analytics = () => {
   const [dates, setDates] = useState<"week" | "month" | "year" | "all time">(
     "week",
   );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Fetch climbs from SQLite - runs every time the page comes into focus
   const fetchClimbs = useCallback(async () => {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
     try {
       setLoading(true);
       setError(null);
