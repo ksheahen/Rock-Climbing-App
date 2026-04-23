@@ -343,7 +343,7 @@ const OnboardingPage = () => {
           image: (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Video
-                source={require("../../assets/log_tutorial.mp4")}
+                source={require("../../assets/log_ascent_updated.mp4")}
                 style={{ width: videoWidth, height: videoHeight }}
                 isLooping
                 isMuted
@@ -360,7 +360,7 @@ const OnboardingPage = () => {
           image: (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Video
-                source={require("../../assets/profile_tutorial.mp4")}
+                source={require("../../assets/profile_tutorial_updated.mp4")}
                 style={{ width: videoWidth, height: videoHeight }}
                 isLooping
                 isMuted
