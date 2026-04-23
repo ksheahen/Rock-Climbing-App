@@ -4,7 +4,7 @@ import LineCharts from "@/components/LineCharts/LineCharts";
 import StatCard from "@/components/StatCard/StatCard";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSQLiteContext } from "expo-sqlite";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { LocalClimb } from "../../types/LocalClimb";
 import styles from "../styles/analytics.styles.";
