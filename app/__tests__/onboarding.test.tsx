@@ -52,7 +52,7 @@ describe("OnboardingPage (renders and navigations)", () => {
 
   it("renders the onboarding component and first page", () => {
     const { getByText } = render(<OnboardingPage />);
-    expect(getByText("Rock Climbing")).toBeTruthy();
+    expect(getByText("Climbr")).toBeTruthy();
     expect(getByText("Get Started")).toBeTruthy();
   });
 
