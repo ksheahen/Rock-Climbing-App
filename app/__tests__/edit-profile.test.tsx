@@ -3,6 +3,7 @@ import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { Alert } from "react-native";
 import EditProfilePage from "../(pages)/edit-profile";
 import { getUserById } from "../../services/userService";
+import { supabase } from "@/services/supabaseClient";
 
 const mockNavigate = jest.fn();
 const mockUpdateUser = jest.fn();
@@ -30,7 +31,7 @@ jest.mock("@/services/supabaseClient", () => ({
         },
         error: null,
       }),
-      updateUser: mockUpdateUser,
+      updateUser: jest.fn(),
     },
     from: jest.fn(() => ({
       select: jest.fn(() => ({
@@ -73,7 +74,7 @@ describe("Edit Profile Page Tests", () => {
       error: null,
     });
 
-    mockUpdateUser.mockResolvedValue({
+    supabase.auth.updateUser.mockResolvedValue({
       data: {},
       error: null,
     });
@@ -155,7 +156,7 @@ describe("Edit Profile Page Tests", () => {
     fireEvent.press(getByText("Save"));
 
     await waitFor(() => {
-      expect(mockUpdateUser).toHaveBeenCalledWith({
+      expect(supabase.auth.updateUser).toHaveBeenCalledWith({
         email: "new@test.com",
         data: {
           display_name: "New Name",

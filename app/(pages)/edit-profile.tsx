@@ -90,7 +90,7 @@ function EditProfilePage() {
 
       if (error) throw error;
 
-      const { tableData, tableError } = await supabase
+      const { data: tableData, error: tableError } = await supabase
         .from("user")
         .update({
           name,
@@ -98,8 +98,7 @@ function EditProfilePage() {
           instagram_handle: instagramHandle,
           profile_picture: selectedPFP,
         })
-        .eq("user_id", userID)
-        .single();
+        .eq("user_id", userID);
 
       if (tableError) throw tableError;
 

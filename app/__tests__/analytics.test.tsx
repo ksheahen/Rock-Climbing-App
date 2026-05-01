@@ -28,9 +28,7 @@ jest.mock("@/components/BackButton/BackButton", () => {
 
 jest.mock("@/components/StatCard/StatCard", () => {
   const { Text } = require("react-native");
-  return ({ climbs }: any) => (
-    <Text>StatCard Count: {climbs.length}</Text>
-  );
+  return ({ climbs }: any) => <Text>StatCard Count: {climbs.length}</Text>;
 });
 
 jest.mock("@/components/AnalyticsDateButton/AnalyticsDateButtons", () => {
