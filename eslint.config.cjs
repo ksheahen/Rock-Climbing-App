@@ -10,4 +10,10 @@ module.exports = defineConfig([
     files: ["**/*.{js,jsx,ts,tsx}"],
     ignores: ["dist/*", "node_modules/*"],
   },
+  {
+    files: ["**/__tests__/**", "**/*.test.{ts,tsx}"],
+    rules: {
+      "react/display-name": "off",
+    },
+  },
 ]);
