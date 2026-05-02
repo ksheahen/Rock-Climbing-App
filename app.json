@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "Rock-Climbing-App",
-    "slug": "Rock-Climbing-App",
+    "name": "Climbr",
+    "slug": "climbr",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "rockclimbingapp",
+    "scheme": "climbr",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.Rock-Climbing-App"
+      "bundleIdentifier": "com.anonymous.climbr"
     },
     "android": {
       "adaptiveIcon": {

@@ -8,6 +8,21 @@ interface TimeframeFilterProps {
 function TimeframeFilter({ dates, onChange }: TimeframeFilterProps) {
   return (
     <View style={styles.dateRow}>
+      {/* All Time */}
+      <TouchableOpacity
+        style={[styles.dateButton, dates === "all" && styles.dateButtonActive]}
+        onPress={() => onChange("all")}
+      >
+        <Text
+          style={[
+            styles.dateButtonText,
+            dates === "all" && styles.dateButtonTextActive,
+          ]}
+        >
+          All
+        </Text>
+      </TouchableOpacity>
+
       {/* Day */}
       <TouchableOpacity
         style={[styles.dateButton, dates === "day" && styles.dateButtonActive]}
@@ -53,21 +68,6 @@ function TimeframeFilter({ dates, onChange }: TimeframeFilterProps) {
           ]}
         >
           Month
-        </Text>
-      </TouchableOpacity>
-
-      {/* All Time */}
-      <TouchableOpacity
-        style={[styles.dateButton, dates === "all" && styles.dateButtonActive]}
-        onPress={() => onChange("all")}
-      >
-        <Text
-          style={[
-            styles.dateButtonText,
-            dates === "all" && styles.dateButtonTextActive,
-          ]}
-        >
-          All
         </Text>
       </TouchableOpacity>
     </View>

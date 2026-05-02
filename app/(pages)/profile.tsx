@@ -41,7 +41,7 @@ function ProfilePage() {
   // const [user, setUser] = useState<User | null>(null);
   // const [climbs, setClimbs] = useState<Climb[]>([]);
   const [timeframe, setTimeframe] = useState<"day" | "week" | "month" | "all">(
-    "day",
+    "all",
   );
   const db = useSQLiteContext();
   const [climbsArr, setClimbsArr] = useState<LocalClimb[]>([]);

@@ -4,61 +4,46 @@ import LineCharts from "@/components/LineCharts/LineCharts";
 import StatCard from "@/components/StatCard/StatCard";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSQLiteContext } from "expo-sqlite";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { LocalClimb } from "../../types/LocalClimb";
 import styles from "../styles/analytics.styles.";
 
-// Currently a WIP
 const Analytics = () => {
   const db = useSQLiteContext();
-  const [climbsArr, setClimbsArr] = useState<LocalClimb[]>([]);
+  const [climbs, setClimbs] = useState<LocalClimb[]>([]);
   const [dates, setDates] = useState<"week" | "month" | "year" | "all time">(
     "week",
   );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let mounted = true;
-    const loadClimbs = async () => {
-      try {
-        const rows = await db.getAllAsync(
-          `SELECT * FROM log_climb5 ORDER BY id DESC LIMIT 50`,
-          [],
-        );
-        if (!mounted) return;
-        setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
-      } catch (err) {
-        console.error("Failed to load climbs for analytics", err);
-      }
-    };
+  // Fetch climbs from SQLite - runs every time the page comes into focus
+  const fetchClimbs = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-    loadClimbs();
-    return () => {
-      mounted = false;
-    };
+      // Query all climbs from log_climb5 table, ordered by datetime descending (most recent first)
+      const result = await db.getAllAsync<LocalClimb>(
+        `SELECT * FROM log_climb5 WHERE deleted = 0 ORDER BY datetime DESC, id DESC LIMIT 50`,
+      );
+
+      setClimbs(result);
+    } catch (err: any) {
+      const errorMessage = err?.message || "Failed to load climbs";
+      console.error("Error fetching climbs:", err);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   }, [db]);
 
-  // Refetch when screen gains focus so UI (StatCard, charts) updates after DB changes
+  // Refresh climbs whenever the screen comes into focus (e.g., after logging a climb)
   useFocusEffect(
     useCallback(() => {
-      let mounted = true;
-      const loadClimbsOnFocus = async () => {
-        try {
-          const rows = await db.getAllAsync(
-            `SELECT * FROM log_climb5 ORDER BY id DESC LIMIT 50`,
-            [],
-          );
-          if (!mounted) return;
-          setClimbsArr(Array.isArray(rows) ? (rows as LocalClimb[]) : []);
-        } catch (err) {
-          console.error("Failed to load climbs on focus", err);
-        }
-      };
-      loadClimbsOnFocus();
-      return () => {
-        mounted = false;
-      };
-    }, [db]),
+      fetchClimbs();
+    }, [fetchClimbs]),
   );
 
   return (
@@ -72,13 +57,13 @@ const Analytics = () => {
 
       {/* Stat Cards */}
       <View style={styles.content}>
-        <StatCard climbs={climbsArr} />
+        <StatCard climbs={climbs} />
       </View>
 
       {/* Line Chart */}
       <View style={styles.content}>
         <AnalyticsDateButtons dates={dates} onChange={setDates} />
-        <LineCharts climbs={climbsArr} dateRange={dates} />
+        <LineCharts climbs={climbs} dateRange={dates} />
       </View>
     </ScrollView>
   );
